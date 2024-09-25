@@ -48,10 +48,6 @@ public class Member {
         this.password = password;
     }
 
-    public void changeSex(String sex){
-        this.sex=sex;
-    }
-
     public void changeAddress(String address){
         this.address=address;
     }
