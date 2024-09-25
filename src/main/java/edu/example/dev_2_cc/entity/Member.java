@@ -29,6 +29,7 @@ public class Member {
     private String sex;
     private String address;
     private String profilePic;
+    private String role;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -55,5 +56,10 @@ public class Member {
     public void changeProfilePic(String profilePic){
         this.profilePic=profilePic;
     }
+
+    public void changeRole(String role){
+        this.role = role;
+    }
+
 
 }
