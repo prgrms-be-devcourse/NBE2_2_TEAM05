@@ -26,6 +26,9 @@ public class MemberUpdateDTO {
 
     private String profilePic;
 
+    private String role;
+
+
 }
 
 // 클라이언트가 Update 할 때 필요한 바꾸고 싶은 부분만 입력받고,
