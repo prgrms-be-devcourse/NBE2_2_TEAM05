@@ -1,5 +1,7 @@
 package edu.example.dev_2_cc.entity;
 
+import edu.example.dev_2_cc.OrderStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +37,6 @@ public class Orders {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
 
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
