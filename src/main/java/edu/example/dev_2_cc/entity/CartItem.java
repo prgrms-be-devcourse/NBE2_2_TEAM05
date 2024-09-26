@@ -28,14 +28,10 @@ public class CartItem {
     private Product product;
 
     private int quantity;
-    private Long eachPrice;
 
     public void changeQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public void changeEachPrice(Long eachPrice) {
-        this.eachPrice = eachPrice;
-    }
 
 }
