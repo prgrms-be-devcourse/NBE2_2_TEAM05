@@ -30,15 +30,6 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
 
-//    public CartResponseDTO getCartResponse(Cart cart) {
-//        return new CartResponseDTO(
-//                cart.getCartId(),
-//                cart.getMember().getMemberId(),
-//                cart.getCartItems().stream()
-//                        .map(CartItemResponseDTO::new)
-//                        .collect(Collectors.toList()));
-//    }
-
     //Cart 등록
     public CartResponseDTO create(CartRequestDTO cartRequestDTO) {
         // 사용자의 Cart 가 있는지 확인
@@ -107,10 +98,17 @@ public class CartService {
         return new CartItemResponseDTO(cartItem);
     }
 
-    //장바구니 삭제
+    //Cart 삭제 - Order 생성시 필요
+    public void deleteCart(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
+
+    //CartItem 삭제
     public void delete(Long cartItemId) {
         cartItemRepository.deleteById(cartItemId);
     }
+
+    // 프론트에서의 요구에 따라
 
 
 
