@@ -29,9 +29,9 @@ public class CartItem {
 
     private int quantity;
 
+
     public void changeQuantity(int quantity) {
         this.quantity = quantity;
     }
-
 
 }

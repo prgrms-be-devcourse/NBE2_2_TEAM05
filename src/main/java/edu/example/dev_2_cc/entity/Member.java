@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Member {
+
     @Id
     private String memberId;
 
@@ -36,6 +37,7 @@ public class Member {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
 
     public void changeEmail(String email) {
         this.email = email;
@@ -61,5 +63,4 @@ public class Member {
         this.role = role;
     }
 
-    //PR연습
 }
