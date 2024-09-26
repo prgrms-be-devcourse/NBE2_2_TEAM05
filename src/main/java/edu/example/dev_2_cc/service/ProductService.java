@@ -62,5 +62,18 @@ public class ProductService {
         }
     }
 
+    public void delete(Long productId) {
+        Optional<Product> foundProduct = productRepository.findById(productId);
+        Product product = foundProduct.orElseThrow(ProductException.NOT_FOUND::get);
+
+        try{
+            productRepository.delete(product);
+        }catch (Exception e){
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_DELETED.get();
+        }
+
+    }
+
 
 }
