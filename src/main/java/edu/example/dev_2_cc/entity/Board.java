@@ -38,6 +38,7 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+
     public void changeTitle(String title) {
         this.title = title;
     }
