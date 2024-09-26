@@ -18,7 +18,8 @@ import java.time.LocalDateTime;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Order {
+@Table
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
