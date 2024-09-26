@@ -6,6 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MemberTaskException extends RuntimeException{
-    private  String message;
-    private  int code;
+
+    private String message;
+    private int code;
+
 }

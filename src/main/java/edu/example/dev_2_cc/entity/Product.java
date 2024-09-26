@@ -34,6 +34,7 @@ public class Product {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+
     public void changePName(String pName) {
         this.pName = pName;
     }

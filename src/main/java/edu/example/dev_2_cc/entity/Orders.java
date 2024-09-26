@@ -36,6 +36,7 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }

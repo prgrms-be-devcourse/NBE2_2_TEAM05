@@ -1,18 +1,20 @@
 package edu.example.dev_2_cc.exception;
 
 public enum MemberException {
-    NOT_FOUND("Member NOT FOUND", 404),
-    NOT_REMOVED("Member NOT REMOVED", 400),
-    NOT_MODIFIED("Member NOT MODIFIED", 500);
 
+    NOT_FOUND("NOT_FOUND", 404),
+    DUPLICATE("DUPLICATE(중복되는 아이디가 존재합니다)", 409), // 임의로 에러 메시지 변경
+    INVALID("INVALID", 400),
+    BAD_CREDENTIALS("BAD_CREDENTIALS", 401);
 
-    private final MemberTaskException memberTaskException;
+    private MemberTaskException memberTaskException;
 
     MemberException(String message, int code) {
-        this.memberTaskException = new MemberTaskException(message, code);
+        memberTaskException = new MemberTaskException(message, code);
     }
 
-    public MemberTaskException get() {
+    public MemberTaskException get(){
         return memberTaskException;
     }
+
 }
