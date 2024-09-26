@@ -2,12 +2,14 @@ package edu.example.dev_2_cc.service;
 
 import edu.example.dev_2_cc.dto.member.MemberRequestDTO;
 import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
+import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -52,13 +54,75 @@ public class MemberService {
 
         // 엔티티를 ResponseDTO로 변환하는 메서드 사용
         return toResponseDTO(savedMember);
-        }
+    }
 
     // 회원 조회
 
 
     // 회원 전체 조회
 
+
+
+
+    //회원 정보 수정
+    @Transactional
+    public MemberResponseDTO modify(MemberUpdateDTO request) {
+        //수정하려는 멤버를 데이터베이스에서 조회
+        Member member = memberRepository.findById(request.getMemberId())
+                .orElseThrow(() -> MemberException.NOT_FOUND.get());
+
+        try {
+            // 비밀번호 수정
+            if (request.getPassword() != null) {
+                member.changePassword(request.getPassword());
+            }
+            // 회원 이메일 수정
+            if (request.getEmail() != null) {
+                member.changeEmail(request.getEmail());
+            }
+            // 회원 이름 수정
+            if (request.getName() != null) {
+                member.changeName(request.getName());
+            }
+            // 회원 주소 수정
+            if (request.getAddress() != null) {
+                member.changeAddress(request.getAddress());
+            }
+            // 회원 사진 변경
+            if (request.getProfilePic() != null) {
+                member.changeProfilePic(request.getProfilePic());
+            }
+            // role 변경
+            if (request.getRole() != null) {
+                member.changeRole(request.getRole());
+            }
+            // 수정한 회원 정보 저장
+            Member modifiedMember = memberRepository.save(member);
+
+            // 엔티티를 dto로 변환
+            return toResponseDTO(modifiedMember);
+        } catch (Exception e) {
+            log.error("Error modifying member : " + e.getMessage());
+            throw MemberException.NOT_MODIFIED.get();
+        }
+    }
+
+    // 회원 삭제
+    @Transactional
+    public void delete(String id) {
+        // 삭제히려는 멤버를 데이터베이스에서 조회
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> MemberException.NOT_FOUND.get());
+
+        try {
+            //회원 삭제
+            memberRepository.delete(member);
+        } catch (Exception e) {
+            log.error("Error removing member: " + e.getMessage());
+            throw MemberException.NOT_REMOVED.get();
+        }
+
+    }
 
     // 엔티티를 ResponseDTO로 변환하는 메서드
     private MemberResponseDTO toResponseDTO(Member member) {
@@ -74,7 +138,6 @@ public class MemberService {
         responseDTO.setUpdatedAt(member.getUpdatedAt());
         return responseDTO;
     }
-
 }
 
 // Service의 create메서드에(회원 가입) .build로 toEntity 구현
