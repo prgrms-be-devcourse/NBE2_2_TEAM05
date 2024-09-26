@@ -2,6 +2,7 @@ package edu.example.dev_2_cc.service;
 
 import edu.example.dev_2_cc.dto.product.ProductRequestDTO;
 import edu.example.dev_2_cc.dto.product.ProductResponseDTO;
+import edu.example.dev_2_cc.dto.product.ProductUpdateDTO;
 import edu.example.dev_2_cc.entity.Product;
 import edu.example.dev_2_cc.exception.ProductException;
 import edu.example.dev_2_cc.repository.ProductRepository;
@@ -41,6 +42,24 @@ public class ProductService {
             throw ProductException.NOT_FOUND.get();
         }
 
+    }
+
+    public ProductResponseDTO update(ProductUpdateDTO productUpdateDTO) {
+        Optional<Product> foundProduct = productRepository.findById(productUpdateDTO.getProductId());
+        Product product = foundProduct.orElseThrow(ProductException.NOT_FOUND::get);
+
+        try{
+            product.changePName(productUpdateDTO.getPName());
+            product.changePrice(productUpdateDTO.getPrice());
+            product.changeDescription(productUpdateDTO.getDescription());
+            product.changeStock(productUpdateDTO.getStock());
+            product.changeFilename(productUpdateDTO.getFilename());
+
+            return new ProductResponseDTO(productRepository.save(product));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw ProductException.NOT_UPDATED.get();
+        }
     }
 
 
