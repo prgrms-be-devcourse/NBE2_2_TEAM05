@@ -16,11 +16,9 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final ProjectInfoAutoConfiguration projectInfoAutoConfiguration;
 
-    public MemberService(MemberRepository memberRepository, ProjectInfoAutoConfiguration projectInfoAutoConfiguration) {
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.projectInfoAutoConfiguration = projectInfoAutoConfiguration;
     }
 
     // 회원 생성
