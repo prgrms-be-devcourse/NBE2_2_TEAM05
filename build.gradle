@@ -42,6 +42,11 @@ dependencies {
             'com.querydsl:querydsl-apt:5.1.0:jakarta',
             'org.projectlombok:lombok'
     )
+
+    // mysql 연결 위해 의존성 추가
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    // querydsl 사용 위해 의존성 추가
+    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
 }
 
 tasks.named('test') {

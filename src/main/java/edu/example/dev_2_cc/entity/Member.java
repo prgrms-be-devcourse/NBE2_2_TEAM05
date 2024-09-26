@@ -61,5 +61,4 @@ public class Member {
         this.role = role;
     }
 
-    //PR연습
 }
