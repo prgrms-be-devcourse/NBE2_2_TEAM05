@@ -1,6 +1,6 @@
 package edu.example.dev_2_cc.entity;
 
-import edu.example.dev_2_cc.OrderStatus;
+import edu.example.dev_2_cc.entity.OrderStatus;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

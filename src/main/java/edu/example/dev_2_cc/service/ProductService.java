@@ -10,6 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,6 +29,18 @@ public class ProductService {
             log.error(e.getMessage());
             throw ProductException.NOT_CREATED.get();
         }
+    }
+
+    public ProductResponseDTO read(Long productId) {
+        try{
+            Optional<Product> foundProduct = productRepository.findById(productId);
+            Product product = foundProduct.get();
+            return new ProductResponseDTO(product);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw ProductException.NOT_FOUND.get();
+        }
+
     }
 
 
