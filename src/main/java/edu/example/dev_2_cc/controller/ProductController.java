@@ -10,6 +10,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cc/product")
@@ -37,6 +39,15 @@ public class ProductController {
         }
 
         return ResponseEntity.ok(productService.update(productUpdateDTO));
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable("productId") Long productId) {
+        // ADMIN role인지 아닌지 확인하는 코드? 여기다가 넣는 것 같습니다
+
+        productService.delete(productId);
+
+        return ResponseEntity.ok(Map.of("message", "Product deleted"));
     }
 
 }
