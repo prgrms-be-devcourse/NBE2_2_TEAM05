@@ -2,9 +2,12 @@ package edu.example.dev_2_cc.service;
 
 import edu.example.dev_2_cc.dto.member.MemberRequestDTO;
 import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
+import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.entity.Member;
+import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberService {
@@ -56,6 +59,13 @@ public class MemberService {
         responseDTO.setCreatedAt(member.getCreatedAt());
         responseDTO.setUpdatedAt(member.getUpdatedAt());
         return responseDTO;
+    }
+
+    //회원 정보 수정
+    @Transactional
+    public MemberResponseDTO modify(MemberUpdateDTO memberUpdateDTO) {
+        Member member = memberRepository.findById(memberUpdateDTO.getMemberId())
+                .orElseThrow(() -> MemberException.NOT_FOUND.get());
     }
 
 }

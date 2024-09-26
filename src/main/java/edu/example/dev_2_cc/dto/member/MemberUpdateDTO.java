@@ -1,6 +1,7 @@
 package edu.example.dev_2_cc.dto.member;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,13 +9,21 @@ import lombok.Setter;
 @Setter
 public class MemberUpdateDTO {
 
+    @NotBlank(message = "회원 ID는 필수 항목입니다.")
+    private String memberId;
+
     @Email(message = "올바른 이메일 형식이 아닙니다.")
     private String email;
 
     private String name;
+
+    @NotBlank(message = "비밀번호는 필수 항목입니다.")
     private String password;
+
     private String sex;
+
     private String address;
+
     private String profilePic;
 
 }
