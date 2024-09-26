@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductRequestDTO {
 
-    @NotEmpty
     private String pName;
 
     @Min(0)
     private Long price;
+
     private String description;
     private String filename;
 
