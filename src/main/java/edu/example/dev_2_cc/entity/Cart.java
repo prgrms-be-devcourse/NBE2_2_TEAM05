@@ -33,5 +33,4 @@ public class Cart {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-
 }

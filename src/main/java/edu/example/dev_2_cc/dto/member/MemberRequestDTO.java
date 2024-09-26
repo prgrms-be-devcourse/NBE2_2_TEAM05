@@ -28,7 +28,6 @@ public class MemberRequestDTO {
     @NotBlank(message = "주소는 필수 항목입니다.")
     private String address;
 
-    // 아바타 프로필 입력하지 않을 시, 디폴트 프로필 기능 구현 필요
     private String profilePic;
 
 }

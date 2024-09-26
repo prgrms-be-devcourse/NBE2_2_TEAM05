@@ -39,6 +39,7 @@ public class Review {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+
     public void changeContent(String content) {
         this.content = content;
     }
