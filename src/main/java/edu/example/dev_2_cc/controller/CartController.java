@@ -1,4 +1,4 @@
-package edu.example.dev_2_cc.dto.api_controller;
+package edu.example.dev_2_cc.controller;
 
 import edu.example.dev_2_cc.dto.cart.CartRequestDTO;
 import edu.example.dev_2_cc.dto.cart.CartResponseDTO;
