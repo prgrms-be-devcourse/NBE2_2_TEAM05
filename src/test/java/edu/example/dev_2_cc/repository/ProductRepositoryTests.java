@@ -1,7 +1,6 @@
-package edu.example.dev_2_cc;
+package edu.example.dev_2_cc.repository;
 
 import edu.example.dev_2_cc.entity.Product;
-import edu.example.dev_2_cc.repository.ProductRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

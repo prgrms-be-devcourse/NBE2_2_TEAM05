@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Builder
-//@ToString
+@ToString // 테스트에서 log로 찍을 때, 보기 쉽게 출력하기 위해서 추가
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Member {
