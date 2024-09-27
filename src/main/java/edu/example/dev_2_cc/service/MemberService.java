@@ -5,6 +5,7 @@ import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
 import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.exception.MemberException;
+import edu.example.dev_2_cc.exception.MemberTaskException;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
@@ -57,7 +58,12 @@ public class MemberService {
     }
 
     // 회원 조회
+    public MemberResponseDTO readMember(String memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()-> MemberException.NOT_FOUND.get());
 
+        return toResponseDTO(member);
+    }
 
     // 회원 전체 조회
 
@@ -138,6 +144,8 @@ public class MemberService {
         responseDTO.setUpdatedAt(member.getUpdatedAt());
         return responseDTO;
     }
+
+
 }
 
 // Service의 create메서드에(회원 가입) .build로 toEntity 구현
