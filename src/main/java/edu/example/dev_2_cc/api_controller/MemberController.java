@@ -30,14 +30,18 @@ public class MemberController {
         return ResponseEntity.ok(memberService.create(memberRequestDTO));
     }
 
-    // 관리자 회원 단일 조회
-
-
     // 회원 전체 조회
     @GetMapping("/list")
     public ResponseEntity<List<MemberResponseDTO>> getAllMembers() {
         List<MemberResponseDTO> memberList = memberService.list();
         return ResponseEntity.ok(memberList);
+
+    // 관리자의 단일 회원 조회
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberResponseDTO> getMember(
+            @PathVariable String memberId
+    ) {
+        return ResponseEntity.ok(memberService.readMember(memberId));
     }
 
     // 마이페이지 내에서 회원의 직접 정보 수정
