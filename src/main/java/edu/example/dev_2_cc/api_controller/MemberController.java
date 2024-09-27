@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static edu.example.dev_2_cc.entity.QMember.member;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cc/member")
@@ -28,6 +28,16 @@ public class MemberController {
     public ResponseEntity<MemberResponseDTO> createMember(
             @Validated @RequestBody MemberRequestDTO memberRequestDTO) {
         return ResponseEntity.ok(memberService.create(memberRequestDTO));
+    }
+
+    // 관리자 회원 단일 조회
+
+
+    // 회원 전체 조회
+    @GetMapping("/list")
+    public ResponseEntity<List<MemberResponseDTO>> getAllMembers() {
+        List<MemberResponseDTO> memberList = memberService.list();
+        return ResponseEntity.ok(memberList);
     }
 
     // 마이페이지 내에서 회원의 직접 정보 수정

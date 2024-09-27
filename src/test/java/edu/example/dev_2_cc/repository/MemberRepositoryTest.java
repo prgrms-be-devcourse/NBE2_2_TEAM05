@@ -1,43 +1,76 @@
 package edu.example.dev_2_cc.repository;
 
 import edu.example.dev_2_cc.entity.Member;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Log4j2
 class MemberRepositoryTest {
+
     @Autowired
     private MemberRepository memberRepository;
 
-//    @Test
-//    void testSaveMember() {
-//        // Given: 멤버 생성
-//        Member member = Member.builder()
-//                .memberId("member1")
-//                .email("test@example.com")
-//                .name("John Doe")
-//                .password("securepassword")
-//                .sex("M")
-//                .address("1234 Test Street")
-//                .profilePic("profilePicUrl")
-//                .role("USER")
-//                .createdAt(LocalDateTime.now())
-//                .updatedAt(LocalDateTime.now())
-//                .build();
-//
-//        // When: 멤버를 저장
-//        Member savedMember = memberRepository.save(member);
-//
-//        // Then: 저장된 멤버가 존재하는지 검증
-//        assertThat(savedMember).isNotNull();
-//        assertThat(savedMember.getMemberId()).isEqualTo("member1");
-//        assertThat(savedMember.getEmail()).isEqualTo("test@example.com");
-//    }
+    @Test
+    void testSaveMember() {
+        // Given: 멤버 생성
+        Member member = Member.builder()
+                .memberId("member1")
+                .email("test@example.com")
+                .name("John Doe")
+                .password("securepassword")
+                .sex("M")
+                .address("1234 Test Street")
+                .profilePic("profilePicUrl")
+                .role("USER")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        // When: 멤버를 저장
+        Member savedMember = memberRepository.save(member);
+
+        // Then: 저장된 멤버가 존재하는지 검증
+        assertThat(savedMember).isNotNull();
+        assertThat(savedMember.getMemberId()).isEqualTo("member1");
+        assertThat(savedMember.getEmail()).isEqualTo("test@example.com");
+
+        log.info("---savedMember : " + savedMember);
+    }
+
+    @Test
+    void testFindList() {
+        // GIVEN 회원 등록
+        Member member = Member.builder()
+                .memberId("member1")
+                .email("test@example.com")
+                .name("John Doe")
+                .password("securepassword")
+                .sex("M")
+                .address("1234 Test Street")
+                .profilePic("profilePicUrl")
+                .role("USER")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        // WHEN 회원 저장, 회원 전체 리스트로 가져오기
+        memberRepository.save(member);
+        List<Member> memberList = memberRepository.findAll();
+
+        // THEN
+        assertThat(memberList).isNotEmpty(); // 회원 전체 리스트가 비었는지 확인
+        assertThat(memberList.size()).isEqualTo(1); // 회원 전체 리스트의 회원이 1개인지 확인
+        log.info("---memberList : " + memberList);
+    }
 
     @Test
     void testUpdateMember() {
@@ -100,4 +133,5 @@ class MemberRepositoryTest {
         Optional<Member> deletedMember = memberRepository.findById("member2");
         assertThat(deletedMember).isNotPresent(); // 멤버가 존재하지 않아야 함
     }
+
 }
