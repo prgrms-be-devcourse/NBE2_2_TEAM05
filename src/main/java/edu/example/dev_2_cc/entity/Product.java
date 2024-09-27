@@ -25,7 +25,7 @@ public class Product {
     private String pName;
     private Long price;
     private String description;
-    private String filename;
+    private String filename; //이미지 파일
     private int stock;
 
     @CreatedDate
