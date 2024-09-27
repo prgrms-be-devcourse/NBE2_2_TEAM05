@@ -5,11 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +28,13 @@ public class Product {
     private String pName;
     private Long price;
     private String description;
-    private String filename; //이미지 파일
+
+    @ElementCollection(fetch = FetchType.LAZY)  // 지연 로딩
+    @CollectionTable(name="product_image", joinColumns = @JoinColumn(name="productId"))
+    @Builder.Default
+    @BatchSize(size = 100)
+    private SortedSet<ProductImage> images = new TreeSet<>();
+
     private int stock;
 
     @CreatedDate
@@ -33,6 +42,17 @@ public class Product {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    //Product 이미지 추가
+    public void addImage(String filename){
+        ProductImage productImage =ProductImage.builder().filename(filename).ino(images.size()).build();
+        images.add(productImage);
+    }
+
+    //Product 이미지 제거
+    public void clearImages(){
+        images.clear();
+    }
 
 
     public void changePName(String pName) {
@@ -45,10 +65,6 @@ public class Product {
 
     public void changeDescription(String description){
         this.description = description;
-    }
-
-    public void changeFilename(String filename){
-        this.filename = filename;
     }
 
     public void changeStock(int stock){

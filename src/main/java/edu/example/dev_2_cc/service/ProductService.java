@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,7 +55,12 @@ public class ProductService {
             product.changePrice(productUpdateDTO.getPrice());
             product.changeDescription(productUpdateDTO.getDescription());
             product.changeStock(productUpdateDTO.getStock());
-            product.changeFilename(productUpdateDTO.getFilename());
+
+            product.getImages();
+            List<String> images = productUpdateDTO.getImages();
+            if(images != null && !images.isEmpty()) {
+                images.forEach(product::addImage);  //추가
+            }
 
             return new ProductResponseDTO(productRepository.save(product));
         }catch (Exception e){
