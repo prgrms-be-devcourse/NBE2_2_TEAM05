@@ -16,6 +16,7 @@ import java.util.Map;
 @RestControllerAdvice
 @Log4j2
 public class APIControllerAdvice {
+
     // MemberTaskException 예외 처리
     @ExceptionHandler(MemberTaskException.class)
     public ResponseEntity<?> handleMemberTaskException(MemberTaskException e) {
@@ -67,4 +68,8 @@ public class APIControllerAdvice {
 
         return new ResponseEntity<>(errMap, HttpStatus.BAD_REQUEST);
     }
+
 }
+
+
+

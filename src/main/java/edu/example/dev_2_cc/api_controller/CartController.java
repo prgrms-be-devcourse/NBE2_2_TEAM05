@@ -47,7 +47,7 @@ public class CartController {
         return ResponseEntity.ok(cartService.update(cartItemUpdateDTO));
     }
 
-    //Cart 삭제(장바구니 비우기)
+    //CartItem 삭제(단일 상품 지우기)
     @DeleteMapping("/cartItem/{cartItemId}")
     public ResponseEntity<Map<String, String>> delete(
             @PathVariable("cartItemId") Long cartItemId){
@@ -55,7 +55,7 @@ public class CartController {
         return ResponseEntity.ok(Map.of("result", "success"));
     }
 
-    //CartItem 삭제(단일 상품 지우기)
+    //Cart 삭제(장바구니 비우기)
     @DeleteMapping("/{cartId}")
     public ResponseEntity<Map<String, String>> deleteCart(
             @PathVariable("cartId") Long cartId){

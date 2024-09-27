@@ -5,13 +5,15 @@ import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
 import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.exception.MemberException;
+import edu.example.dev_2_cc.exception.MemberTaskException;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -57,10 +59,28 @@ public class MemberService {
     }
 
     // 회원 조회
+    public MemberResponseDTO readMember(String memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()-> MemberException.NOT_FOUND.get());
 
+        return toResponseDTO(member);
+    }
 
     // 회원 전체 조회
+    public List<MemberResponseDTO> list() {
+        // 데이터베이스에서 모든 회원을 조회
+        List<Member> memberList = memberRepository.findAll();
 
+        // 조회된 회원 목록이 비어있는지 확인
+        if (memberList.isEmpty()) {
+            throw MemberException.NOT_FOUND.get();
+        }
+
+        // 각 Member 엔티티를 MemberResponseDTO로 변환하여 리스트로 반환
+        return memberList.stream()
+                         .map(this::toResponseDTO)
+                         .collect(Collectors.toList());
+    }
 
 
 
@@ -138,12 +158,10 @@ public class MemberService {
         responseDTO.setUpdatedAt(member.getUpdatedAt());
         return responseDTO;
     }
+
+
 }
 
 // Service의 create메서드에(회원 가입) .build로 toEntity 구현
 // Service에 toResponseDTO 구현
 // 이미지 업로드 기능구현 시, 이름 "default_avatar.png"의 사진을 디텍토리에 추가
-
-// 1. 이미지 업로드 설정 완료
-// 2. 회원 조회, 전체 조회 구현
-// 3. Mapper 구현 및 이해
