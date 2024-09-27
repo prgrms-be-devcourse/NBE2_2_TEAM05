@@ -7,7 +7,6 @@ import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,8 +72,8 @@ public class MemberService {
 
         // 각 Member 엔티티를 MemberResponseDTO로 변환하여 리스트로 반환
         return memberList.stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                         .map(this::toResponseDTO)
+                         .collect(Collectors.toList());
     }
 
 
