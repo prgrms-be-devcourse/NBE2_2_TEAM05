@@ -1,0 +1,116 @@
+:root {
+    --text-color: #000000;
+    --background-color: #263343;
+    --accent-color : #d49466;
+
+}
+
+body {
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    /* color: orange; */
+    color: var(--text-color);
+}
+
+.navbar {
+    display: flex; /* 나란히 */
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 0px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    /* height: 100px; */
+}
+
+.navbar__logo {
+    font-size: 24px;
+    color: black;
+}
+
+.navbar__logo i {
+    color: skyblue;
+}
+
+.navbar__menu, .navbar__menu2 {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.navbar__menu li {
+    padding: 12px 12px;
+    border-bottom: 4px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+.navbar__menu li:hover {
+    /* background-color: rgb(204, 247, 247); */
+    border-bottom: 4px solid rgba(0, 0, 0, 0.5);
+
+
+    /* text-decoration: underline;
+    text-decoration-thickness: 3px;  */
+
+}
+
+.navbar__menu2 {
+    display: flex;
+    list-style: none;
+    color: skyblue;
+    padding-left: 0;
+
+}
+
+.navbar__menu2 li {
+    padding: 8px 12px;
+}
+
+.navbar__toogleBtn {
+    display: none;
+    position: absolute;
+    right: 32px;
+    font-size: 24px;
+    color: skyblue;
+
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+    }
+
+    .navbar__menu {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        display: none;
+    }
+
+    .navbar__menu li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar__menu2 {
+        justify-content: center;
+        width: 100%;
+        display: none;
+    }
+
+    .navbar__toogleBtn {
+        display: block;
+    }
+
+    .navbar__menu.active, .navbar__menu2.active {
+        display: flex;
+    }
+}
