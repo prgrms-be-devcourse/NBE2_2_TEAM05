@@ -1,6 +1,7 @@
 package edu.example.dev_2_cc.util;
 
 import edu.example.dev_2_cc.entity.Product;
+import edu.example.dev_2_cc.entity.ProductImage;
 import edu.example.dev_2_cc.exception.ProductException;
 
 import edu.example.dev_2_cc.repository.ProductRepository;
@@ -26,7 +27,6 @@ public class ProductUploadUtil {
     @Value("${edu.example.upload.path}") //application.properties 파일에서 업로드 설정 경로 읽어오기
     private String uploadPath;
 
-//    private final ProductImageRepository productImageRepository;
     private final ProductRepository productRepository;
 
     @PostConstruct  //객체 생성 후 자동 실행 메서드 지정
@@ -88,24 +88,34 @@ public class ProductUploadUtil {
     }
 
     //업로드 파일 삭제
-//    public void deleteFile(Long ino){   // 1. FileController에서 삭제할 파일명을 매개변수로 받기
-//
-////        ProductImage productImage = productImageRepository.findById(ino).orElseThrow(ProductException.NOT_FOUND::get);
-//        String filename = productImage.getFilename();
-//
-//        File file = new File(uploadPath + File.separator + filename); // 2. 삭제할 원본 File 객체 생성 - 저장 경로 + 파일 구분자 + 파일명
-//        File thumbFile = new File(uploadPath + File.separator + "s_" + filename);  // 3. 원본의 썸네일 File 객체 생성 -              "
-//
-//        try{
-//            if(file.exists()) file.delete(); // 4. 만약 원본 파일이 존재하면 파일 삭제 - delete() 이용
-//            if(thumbFile.exists()) file.delete(); // 5. 만약 썸네일 파일이 존재하면 파일 삭제 - delete() 이용
-//        }catch(Exception e){
-//            // 6. 만약 예외 처리를 해야하면 try/catch로
-//            //      발생한 예외 메시지를 에러 로그로 출력
-//            log.error(e.getMessage());
-//        }
-//
-//    }
+    public void deleteFile(Long productId, Long ino) {
+        // 1. Product 엔티티에서 해당 이미지 가져오기
+        Product product = productRepository.findById(productId)
+                .orElseThrow(ProductException.NOT_FOUND::get);
+
+        // 2. 이미지 컬렉션에서 삭제할 이미지 찾기
+        ProductImage productImage = product.getImages().stream()
+                .filter(image -> image.getIno() == ino)
+                .findFirst()
+                .orElseThrow(ProductException.NOT_FOUND::get); //나중에 IMAGE_NOT_FOUND 만들기
+
+        String filename = productImage.getFilename();
+
+        File file = new File(uploadPath + File.separator + filename); // 원본 파일
+        File thumbFile = new File(uploadPath + File.separator + "s_" + filename); // 썸네일 파일
+
+        try {
+            // 파일 삭제
+            if (file.exists()) file.delete();
+            if (thumbFile.exists()) thumbFile.delete(); // 썸네일 파일도 삭제
+
+            // 3. 이미지 목록에서 해당 이미지 제거
+            product.getImages().remove(productImage);
+            productRepository.save(product); // 엔티티 저장
+        } catch (Exception e) {
+            log.error("파일 삭제 중 에러 발생: {}", e.getMessage());
+        }
+    }
 
 
 

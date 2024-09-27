@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,11 +40,11 @@ public class ProductFileController {
         return ResponseEntity.ok(productUploadUtil.upload(files, productId));
     }
 
-//    @DeleteMapping("/{ino}")   //Delete 요청의 경로에 파라미터값으로 삭제하려는 파일명을 전달받아서
-//    public ResponseEntity<Map<String, String>> deleteFile(@PathVariable Long ino) {
-//        uploadUtil.deleteFile(ino);    // UploadUtil 클래스의 해당 메서드에 전달한 후
-//        return ResponseEntity.ok(Map.of("message", "Product Image deleted"));
-//    }
+    @DeleteMapping("/{productId}/{ino}")   //Delete 요청의 경로에 파라미터값으로 삭제하려는 파일명을 전달받아서
+    public ResponseEntity<Map<String, String>> deleteFile(@PathVariable Long productId, @PathVariable Long ino) {
+        productUploadUtil.deleteFile(productId, ino);    // UploadUtil 클래스의 해당 메서드에 전달한 후
+        return ResponseEntity.ok(Map.of("message", "Product Image deleted"));
+    }
 
     //업로드 파일 확장자 체크
     public void checkFileExt(String filename) throws UploadNotSupportedException {
