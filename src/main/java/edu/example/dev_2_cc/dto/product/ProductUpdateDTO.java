@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,14 +23,20 @@ public class ProductUpdateDTO {
     @Min(0)
     private Long price;
     private String description;
-    private String filename;
+
+    private List<String> images;
+
 
     @Min(0)
     private int stock;
 
     public Product toEntity(){
         Product product = Product.builder().productId(productId).pName(pName)
-                .price(price).description(description).stock(stock).filename(filename).build();
+                .price(price).description(description).stock(stock).build();
+
+        if(images != null || !images.isEmpty()){
+            images.forEach(product::addImage);
+        }
 
         return product;
     }
