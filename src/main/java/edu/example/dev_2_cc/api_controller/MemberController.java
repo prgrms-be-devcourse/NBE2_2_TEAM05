@@ -35,6 +35,7 @@ public class MemberController {
     public ResponseEntity<List<MemberResponseDTO>> getAllMembers() {
         List<MemberResponseDTO> memberList = memberService.list();
         return ResponseEntity.ok(memberList);
+    }
 
     // 관리자의 단일 회원 조회
     @GetMapping("/{memberId}")
