@@ -1,5 +1,5 @@
 :root {
-    --text-color: #000000;
+    --text-color: #FFFFFF;
     --background-color: #263343;
     --accent-color : #d49466;
 
@@ -20,7 +20,7 @@ a {
     display: flex; /* 나란히 */
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: #333333;
     padding: 0px 12px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
@@ -46,13 +46,13 @@ a {
 
 .navbar__menu li {
     padding: 12px 12px;
-    border-bottom: 4px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 4px solid #333333;
     border-radius: 4px;
 }
 
 .navbar__menu li:hover {
     /* background-color: rgb(204, 247, 247); */
-    border-bottom: 4px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 4px solid rgba(255, 255, 255, 0.5);
 
 
     /* text-decoration: underline;

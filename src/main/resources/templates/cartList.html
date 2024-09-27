@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="main.js" defer></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/main.js}" defer></script>
     <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
 
     <title></title>
@@ -33,9 +34,26 @@
             <i class="fa-solid fa-bars"></i>
         </a>
     </nav>
-    <div>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+            <th scope="col">CreatedAt</th>
+            <th scope="col">UpdatedAt</th>
+        </tr>
+        </thead>
+        <tbody id="cart-list">
 
-    </div>
+        </tbody>
+
+    </table>
+
+
+
 
 </body>
 </html>

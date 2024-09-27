@@ -1,4 +1,4 @@
-package edu.example.dev_2_cc.controller.advice;
+package edu.example.dev_2_cc.api_controller.advice;
 
 import edu.example.dev_2_cc.exception.CartTaskException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
