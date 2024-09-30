@@ -2,6 +2,7 @@ package edu.example.dev_2_cc.service;
 
 import edu.example.dev_2_cc.dto.review.ReviewRequestDTO;
 import edu.example.dev_2_cc.dto.review.ReviewResponseDTO;
+import edu.example.dev_2_cc.dto.review.ReviewUpdateDTO;
 import edu.example.dev_2_cc.dto.product.ProductResponseDTO;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Product;
@@ -42,6 +43,23 @@ public class ReviewService {
         }catch (Exception e){
             log.error(e.getMessage());
             throw ReviewException.NOT_CREATED.get();
+        }
+    }
+
+
+    public ReviewResponseDTO update(ReviewUpdateDTO reviewUpdateDTO) {
+        Optional<Review> foundReview = reviewRepository.findById(reviewUpdateDTO.getReviewId());
+        Review review = foundReview.orElseThrow(ReviewException.NOT_FOUND::get);
+
+        try {
+            review.changeContent(reviewUpdateDTO.getContent());
+            review.changeStar(reviewUpdateDTO.getStar());
+
+            return new ReviewResponseDTO(reviewRepository.save(review));
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw ReviewException.NOT_UPDATED.get();
         }
     }
 

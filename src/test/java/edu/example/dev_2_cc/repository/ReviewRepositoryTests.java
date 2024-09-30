@@ -8,10 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -42,5 +45,25 @@ public class ReviewRepositoryTests {
 
         Review savedReview = reviewRepository.save(review);
         assertNotNull(savedReview);
+    }
+
+    @Test
+    @Commit
+    @Transactional
+    public void testUpdate(){
+        Long reviewId = 1L;
+        String content = "리뷰 수정합니다";
+        int star = 1;
+
+        Optional<Review> foundReview = reviewRepository.findById(reviewId);
+        assertTrue(foundReview.isPresent());
+
+        Review review = foundReview.get();
+        review.changeContent(content);
+        review.changeStar(star);
+
+        foundReview = reviewRepository.findById(reviewId);
+        assertEquals(content, foundReview.get().getContent());
+        assertEquals(star, foundReview.get().getStar());
     }
 }
