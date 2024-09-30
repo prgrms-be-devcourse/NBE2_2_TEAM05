@@ -8,15 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/app")
+@RequestMapping("/app/cart")
 @RequiredArgsConstructor
 @Log4j2
 public class CartViewController {
     private final CartService cartService;
 
+    @GetMapping()
+    public String getCart() {
+        return "cart";
+    }
+
     @GetMapping("/carts")
     public String cartList() {
-        return "cartList";
+        return "cart-list";
     }
 
 }

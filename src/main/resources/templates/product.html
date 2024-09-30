@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/main.js}" defer></script>
+
+    <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
+    <title></title>
+</head>
+<body>
+    <!-- 네비게이션 바 -->
+    <header>
+        <div th:replace="~{navbar :: navbar}"></div>
+    </header>
+    <main>
+        <div class="content_1">
+            <div class="content_url">
+                Home > 상품
+            </div><hr>
+            <h1>청소용품</h1>
+            <div class="content_search">
+                <div>
+                    <input type="text">
+                    <button class="search-button" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="content_1_3" id="product-list">
+
+<!--                <div onclick="getProduct()">-->
+<!--                    <img th:src="@{/images/image01.png}" alt="이미지 없음">-->
+<!--                    <p>상품 이름</p><hr>-->
+<!--                    <p>상품 가격</p>-->
+<!--                </div>-->
+<!--                <div>b</div>-->
+<!--                <div>c</div>-->
+<!--                <div>d</div>-->
+<!--                <div>e</div>-->
+<!--                <div>f</div>-->
+<!--                <div>g</div>-->
+
+            </div>
+        </div>
+
+    </main>
+<!--    <footer>-->
+<!--        <div>-->
+<!--            <h1>footer 영역 입니다!</h1>-->
+<!--        </div>-->
+<!--    </footer>-->
+</body>
+</html>

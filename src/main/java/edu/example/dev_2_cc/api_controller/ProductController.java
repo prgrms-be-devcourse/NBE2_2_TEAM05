@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,6 +49,13 @@ public class ProductController {
         productService.delete(productId);
 
         return ResponseEntity.ok(Map.of("message", "Product deleted"));
+    }
+
+
+    //뷰제작용 임시
+    @GetMapping("/list")
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts2() {
+        return ResponseEntity.ok(productService.findAll2());
     }
 
 }

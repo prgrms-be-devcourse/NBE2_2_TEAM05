@@ -8,15 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/app")
-@RequiredArgsConstructor
+@RequestMapping("/app/product")
 @Log4j2
 public class ProductViewController {
-    private final ProductService productService;
-
-//    @GetMapping("/products")
-//    public String productList() {
-//        return "";
-//    }
+    @GetMapping()
+    public String productView() {
+        return "product";
+    }
 
 }

@@ -2,6 +2,8 @@
     --text-color: #FFFFFF;
     --background-color: #263343;
     --accent-color : #d49466;
+    --navbar-color : #333333;
+    --content-color : #FFFFFF;
 
 }
 
@@ -15,17 +17,37 @@ a {
     /* color: orange; */
     color: var(--text-color);
 }
+p {
+    margin: 8px 0 8px 0;
+    font-size: 110%;
+}
+hr {
+    border: none;
+    height: 1px;
+    opacity: 0.1;
+    background-color: black;
+}
 
+
+
+header {
+    width:100%;
+    background-color: var(--navbar-color);
+    display: flex;
+    justify-content: center;
+
+}
 .navbar {
     display: flex; /* 나란히 */
     justify-content: space-between;
     align-items: center;
-    background-color: #333333;
+    background-color: var(--navbar-color);
     padding: 0px 12px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
+    width: 1280px;
     /* height: 100px; */
 }
+
 
 .navbar__logo {
     font-size: 24px;
@@ -113,4 +135,84 @@ a {
     .navbar__menu.active, .navbar__menu2.active {
         display: flex;
     }
+}
+
+main {
+    background-color: var(--content-color);
+    display: flex;
+    justify-content: center;
+}
+
+.content_1 {
+    padding: 12px 12px;
+    background-color: var(--content-color);
+    width: 1280px;
+}
+
+.content_url {
+
+    font-size: 80%;
+    margin-right: 40px;
+}
+
+.content_search {
+    display : flex;
+    justify-content: right;
+}
+
+.content_search > div {
+    padding: 4px;
+    border-bottom: 1px solid black;
+    opacity: 0.5;
+    margin-bottom: 4px;
+}
+
+.content_search > div > input {
+    border: none;
+    outline : none;
+    width: 200px;
+}
+
+.content_1_3 {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+.content_1_3 > div {
+    background-color: white;
+    flex: 0 0 calc(25% - 40px);
+
+
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.content_1_3 > div > img {
+    max-width: 100%;
+    height: 240px;
+}
+
+.search-button {
+    border: none;
+    background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+footer {
+    background-color: #6ea8fe;
+    display: flex;
+    justify-content: center;
 }
