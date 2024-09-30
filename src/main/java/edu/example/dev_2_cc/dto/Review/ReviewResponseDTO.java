@@ -1,4 +1,4 @@
-package edu.example.dev_2_cc.dto.review;
+package edu.example.dev_2_cc.dto.Review;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.example.dev_2_cc.entity.Member;
