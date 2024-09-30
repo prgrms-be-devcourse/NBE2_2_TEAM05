@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class OrderItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,5 +30,10 @@ public class OrderItem {
     private int quantity;
 //    private Long eachPrice;
 
+    public OrderItem(Product product, int quantity, Orders orders) {
+        this.product = product;
+        this.quantity = quantity;
+        this.orders = orders;
+    }
 
 }
