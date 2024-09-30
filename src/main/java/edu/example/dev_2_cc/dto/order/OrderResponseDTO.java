@@ -8,6 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +35,6 @@ public class OrderResponseDTO {
         // 추가적으로 주문 항목 DTO로 변환하는 로직을 구현해야 합니다.
         this.orderItems = order.getOrderItems().stream()
                 .map(OrderItemResponseDTO::new) // 각 OrderItem을 OrderItemResponseDTO로 변환
-                .toList();
+                .collect(Collectors.toList());
     }
 }

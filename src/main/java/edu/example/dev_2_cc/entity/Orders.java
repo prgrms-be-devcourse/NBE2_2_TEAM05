@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -42,7 +43,8 @@ public class Orders {
     private String address;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItems;
+    @Builder.Default
+    private List<OrderItem> orderItems= new ArrayList<>();;
 
 
     @Enumerated(EnumType.STRING)
@@ -54,4 +56,17 @@ public class Orders {
         this.orderStatus = orderStatus;
     }
 
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrders(this); // 이곳에서 OrderItem의 Orders를 설정
+    }
+
+    // 주문 항목 제거 메서드
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        if (orderItem != null) {
+            orderItem.setOrders(null); // 양방향 관계 설정 해제
+        }
+    }
 }
