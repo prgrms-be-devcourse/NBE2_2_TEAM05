@@ -51,10 +51,11 @@ public class MemberController {
             @PathVariable String memberId,
             @Validated @RequestBody MemberUpdateDTO memberUpdateDTO
     ) {
-        //updateDTO에 memberId 설정
-        memberUpdateDTO.setMemberId(memberId);
+//        //updateDTO에 memberId 설정
+//        memberUpdateDTO.setMemberId(memberId);
+
         //회원 정보 수정
-        MemberResponseDTO response = memberService.modify(memberUpdateDTO);
+        MemberResponseDTO response = memberService.modify(memberId, memberUpdateDTO);
 
         return ResponseEntity.ok(response);
     }

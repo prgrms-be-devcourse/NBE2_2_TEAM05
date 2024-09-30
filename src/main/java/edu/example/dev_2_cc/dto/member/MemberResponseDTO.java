@@ -11,10 +11,11 @@ public class MemberResponseDTO {
 
     private String memberId;
     private String email;
+    private String phoneNumber;
     private String name;
     private String sex;
     private String address;
-    private String profilePic;
+    private String image;
     private String role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

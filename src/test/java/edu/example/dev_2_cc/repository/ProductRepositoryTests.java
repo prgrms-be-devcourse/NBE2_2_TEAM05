@@ -10,6 +10,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,9 +32,11 @@ public class ProductRepositoryTests {
                 .description("테스트 상품5 설명")
                 .stock(6).build();
 
+        product.addImage("test.png");
+        product.addImage("s_test.png");
+
         Product savedProduct = productRepository.save(product);
         assertNotNull(savedProduct);
-
     }
 
     @Test
@@ -44,42 +47,48 @@ public class ProductRepositoryTests {
         Optional<Product> foundProduct = productRepository.findById(productId);
         assertTrue(foundProduct.isPresent(), "Product should be present");
         assertEquals(productId, foundProduct.get().getProductId());
-
     }
 
     @Test
     @Commit
     @Transactional
     public void testUpdate(){
-        Long productId = 2L;
+        Long productId = 1L;
         String pName = "수정테스트상품";
         Long price = 10000L;
         String description = "수정설명테스트";
-        String filename = "modifiedProduct.png";
         int stock = 15;
 
         Optional<Product> foundProduct = productRepository.findById(productId);
         assertTrue(foundProduct.isPresent(), "Product should be present");
 
-        Product product = foundProduct.get();
+        Product product = foundProduct.get(); // Optional 벗기기
+
+        product.clearImages(); // ProductImage 초기화
+        product.addImage("test2.png");
+        product.addImage("s_test2.png");
+
         product.changePName(pName);
         product.changePrice(price);
         product.changeDescription(description);
         product.changeStock(stock);
 
-        foundProduct = productRepository.findById(productId);
-        assertEquals(pName, foundProduct.get().getPName());
-        assertEquals(price, foundProduct.get().getPrice());
-        assertEquals(description, foundProduct.get().getDescription());
-        assertEquals(stock, foundProduct.get().getStock());
+        assertEquals(pName, product.getPName());
+        assertEquals(price, product.getPrice());
+        assertEquals(description, product.getDescription());
+        assertEquals(stock, product.getStock());
 
+        assertTrue(product.getImages().stream()
+                .anyMatch(image -> "test2.png".equals(image.getFilename())), "Image 'test2.png' should be present");
+        assertTrue(product.getImages().stream()
+                .anyMatch(image -> "s_test2.png".equals(image.getFilename())), "Image 's_test2.png' should be present");
     }
 
     @Test
     @Transactional
     @Commit
     public void testDelete(){
-        Long productId = 5L;
+        Long productId = 2L;
         assertTrue(productRepository.findById(productId).isPresent(), "Product should be present");
 
         productRepository.deleteById(productId);
@@ -89,8 +98,9 @@ public class ProductRepositoryTests {
     @Test
     @Transactional(readOnly = true)
     public void testList(){
-
+        List<Product> foundAllProduct = productRepository.findAll();
+        assertFalse(foundAllProduct.isEmpty(), "Product should be present");
+        log.info("---foundAllProduct : " + foundAllProduct);
     }
-
 
 }
