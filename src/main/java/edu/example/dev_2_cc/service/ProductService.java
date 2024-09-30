@@ -1,13 +1,14 @@
 package edu.example.dev_2_cc.service;
 
-import edu.example.dev_2_cc.dto.product.ProductRequestDTO;
-import edu.example.dev_2_cc.dto.product.ProductResponseDTO;
-import edu.example.dev_2_cc.dto.product.ProductUpdateDTO;
+import edu.example.dev_2_cc.dto.product.*;
 import edu.example.dev_2_cc.entity.Product;
 import edu.example.dev_2_cc.exception.ProductException;
 import edu.example.dev_2_cc.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,5 +82,17 @@ public class ProductService {
 
     }
 
+    public Page<ProductListDTO> getList(PageRequestDTO pageRequestDTO) { //목록
+        try {
+
+            Sort sort = Sort.by("productId").descending();
+            Pageable pageable = pageRequestDTO.getPageable(sort);
+            Page<ProductListDTO> productList = productRepository.list(pageable);
+            return productList;
+        } catch(Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ProductException.NOT_FOUND.get(); //임시
+        }
+    }
 
 }
