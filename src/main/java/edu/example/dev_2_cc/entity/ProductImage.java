@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @ToString
-public class ProductImage implements Comparable<ProductImage>{
+public class ProductImage implements Comparable<ProductImage> {
 
     private int ino;
     private String filename;
