@@ -1,15 +1,16 @@
 package edu.example.dev_2_cc.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,11 +26,11 @@ public class Member {
 
     @Email
     private String email;
+    private String phoneNumber;
     private String name;
     private String password;
     private String sex;
     private String address;
-    private String profilePic;
     private String role;
 
     @CreatedDate
@@ -38,9 +39,29 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Embedded // MeberImage의 필드들을 Member 테이블에 컬럼으로 포함시킴
+    // 추후 MeberImage의 확장성을 고려하여 따로 엔티티 클래스로 생성(썸네일, 업로드 시간 등)
+    @AttributeOverrides({
+            @AttributeOverride(name = "filename", column = @Column(name = "member_image"))
+    })       // Member 테이블의 Embedded 컬럼의 이름을 변경하기 위한 어노테이션
+    private MemberImage image;
+
+
+    public void addImage(String filename){
+        this.image =MemberImage.builder().filename(filename).build();
+    }
+
+    public void clearImage(){ //
+        this.image = null;
+    }
+
 
     public void changeEmail(String email) {
         this.email = email;
+    }
+
+    public void changePhoneNumber(String phoneNumber){
+        this.phoneNumber = phoneNumber;
     }
 
     public void changeName(String name) {
@@ -53,10 +74,6 @@ public class Member {
 
     public void changeAddress(String address){
         this.address=address;
-    }
-
-    public void changeProfilePic(String profilePic){
-        this.profilePic=profilePic;
     }
 
     public void changeRole(String role){

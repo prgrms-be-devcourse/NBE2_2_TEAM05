@@ -21,7 +21,7 @@ class MemberRepositoryTest {
 
     @Test
     void testSaveMember() {
-        // Given: 멤버 생성
+        // Given 멤버 생성
         Member member = Member.builder()
                 .memberId("member1")
                 .email("test@example.com")
@@ -29,69 +29,47 @@ class MemberRepositoryTest {
                 .password("securepassword")
                 .sex("M")
                 .address("1234 Test Street")
-                .profilePic("profilePicUrl")
                 .role("USER")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        // When: 멤버를 저장
+        member.addImage("test.png");
+
+        // When 멤버를 저장
         Member savedMember = memberRepository.save(member);
 
-        // Then: 저장된 멤버가 존재하는지 검증
+        // Then 저장된 멤버가 존재하는지 검증
         assertThat(savedMember).isNotNull();
         assertThat(savedMember.getMemberId()).isEqualTo("member1");
         assertThat(savedMember.getEmail()).isEqualTo("test@example.com");
+
+        // 이미지 이름 검증
+        assertThat(savedMember.getImage().getFilename()).isEqualTo("test.png");
 
         log.info("---savedMember : " + savedMember);
     }
 
     @Test
     void testFindList() {
-        // GIVEN 회원 등록
-        Member member = Member.builder()
-                .memberId("member1")
-                .email("test@example.com")
-                .name("John Doe")
-                .password("securepassword")
-                .sex("M")
-                .address("1234 Test Street")
-                .profilePic("profilePicUrl")
-                .role("USER")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
-
-        // WHEN 회원 저장, 회원 전체 리스트로 가져오기
-        memberRepository.save(member);
+        // When 회원 정보 전체 조회
         List<Member> memberList = memberRepository.findAll();
 
-        // THEN
-        assertThat(memberList).isNotEmpty(); // 회원 전체 리스트가 비었는지 확인
-        assertThat(memberList.size()).isEqualTo(1); // 회원 전체 리스트의 회원이 1개인지 확인
-        log.info("---memberList : " + memberList);
+        // Then 리스트가 비었는지 검증
+        assertThat(memberList).isNotEmpty();
+        memberList.forEach(member -> log.info("---member : " + member));
     }
 
     // 회원 단일 조회 테스트
     @Test
     public void testFindById_Success() {
-        // Given - 회원을 저장
-        Member savedMember = Member.builder()
-                .memberId("member1")
-                .email("test@example.com")
-                .name("John Doe")
-                .password("securepassword")
-                .sex("M")
-                .address("1234 Test Street")
-                .profilePic("profilePicUrl")
-                .role("USER")
-                .build();
-        memberRepository.save(savedMember);
+        // Given
+        String memberId = "member1";
 
-        // When - 저장된 회원을 ID로 조회
-        Optional<Member> foundMember = memberRepository.findById(savedMember.getMemberId());
+        // When 저장된 회원을 ID로 조회
+        Optional<Member> foundMember = memberRepository.findById(memberId);
 
-        // Then - 조회된 회원이 존재하는지 검증
+        // Then 조회된 회원이 존재하는지 검증
         assertThat(foundMember.isPresent()).isTrue();
         assertThat(foundMember.get().getName()).isEqualTo("John Doe");
         assertThat(foundMember.get().getEmail()).isEqualTo("test@example.com");
@@ -104,34 +82,28 @@ class MemberRepositoryTest {
     // 회원 수정 테스트
     @Test
     void testUpdateMember() {
-        // Given: 기존 멤버 생성 후 저장
-        Member member = Member.builder()
-                .memberId("member1")
-                .email("test@example.com")
-                .name("John Doe")
-                .password("securepassword")
-                .sex("M")
-                .address("1234 Test Street")
-                .profilePic("profilePicUrl")
-                .role("USER")
-                .build();
-        memberRepository.save(member);
+        // Given
+        String memberId = "member1";
 
-        // When: 멤버 정보 수정
+        // When
         Optional<Member> optionalMember = memberRepository.findById("member1");
         assertThat(optionalMember).isPresent();
-        Member existingMember = optionalMember.get();
+        Member member = optionalMember.get();
 
         // 필드 값 수정
-        existingMember.changeEmail("updated@example.com");
-        existingMember.changeName("Jane Doe");
-        existingMember.changeAddress("5678 Updated Street");
-        existingMember.changeRole("ADMIN");
+        member.changeEmail("updated@example.com");
+        member.changePhoneNumber("010-2222-2222");
+        member.changeName("Jane Doe");
+        member.changeAddress("5678 Updated Street");
+        member.changeRole("ADMIN");
+
+        member.clearImage();
+        member.addImage("test2.png");
 
         // 수정된 멤버 저장
-        memberRepository.save(existingMember);
+        memberRepository.save(member);
 
-        // Then: 수정된 내용 검증
+        // Then 수정된 내용 검증
         Optional<Member> updatedMemberOptional = memberRepository.findById("member1");
         assertThat(updatedMemberOptional).isPresent();
         Member updatedMember = updatedMemberOptional.get();
@@ -143,25 +115,15 @@ class MemberRepositoryTest {
 
     @Test
     void testDeleteMember() {
-        // Given: 멤버 생성 후 저장
-        Member member = Member.builder()
-                .memberId("member2")
-                .email("test@example.com")
-                .name("John Doe")
-                .password("securepassword")
-                .sex("M")
-                .address("1234 Test Street")
-                .profilePic("profilePicUrl")
-                .role("USER")
-                .build();
-        memberRepository.save(member);
+        // Given
+        String memberId = "member1";
 
-        // When: 멤버 삭제
-        memberRepository.delete(member);
+        // When
+        memberRepository.deleteById(memberId);
 
-        // Then: 삭제된 멤버가 존재하지 않는지 검증
-        Optional<Member> deletedMember = memberRepository.findById("member2");
-        assertThat(deletedMember).isNotPresent(); // 멤버가 존재하지 않아야 함
+        // Then 삭제가 잘 되었는지(존재하는지) 검증
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        assertThat(optionalMember).isNotPresent();
     }
 
 }

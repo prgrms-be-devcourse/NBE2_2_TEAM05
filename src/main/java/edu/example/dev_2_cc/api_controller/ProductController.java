@@ -1,13 +1,13 @@
 package edu.example.dev_2_cc.api_controller;
 
-import edu.example.dev_2_cc.dto.product.ProductRequestDTO;
-import edu.example.dev_2_cc.dto.product.ProductResponseDTO;
-import edu.example.dev_2_cc.dto.product.ProductUpdateDTO;
+import edu.example.dev_2_cc.dto.product.*;
 import edu.example.dev_2_cc.exception.ProductException;
 import edu.example.dev_2_cc.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,4 +58,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAll2());
     }
 
+    @GetMapping                         //목록
+    public ResponseEntity<Page<ProductListDTO>> getProductList(@Validated PageRequestDTO pageRequestDTO){
+        log.info("getList() ----- " + pageRequestDTO);         //로그로 출력
+        return ResponseEntity.ok(productService.getList(pageRequestDTO));
+    }
 }
