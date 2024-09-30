@@ -33,11 +33,13 @@ public class ReviewController {
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long reviewId, @Validated @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
         return ResponseEntity.ok(reviewService.update(reviewUpdateDTO));
+    }
 
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDTO> getReview(@PathVariable("reviewId") Long reviewId) {
         return ResponseEntity.ok(reviewService.read(reviewId));
     }
+
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Map<String, String>> deleteReview(@PathVariable("reviewId") Long reviewId) {

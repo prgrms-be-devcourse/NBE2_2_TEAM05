@@ -1,3 +1,43 @@
+// export function fetchProductList(page, pageSize) {
+//     fetch(`/cc/product?page=${page}&size=${pageSize}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data);
+//             const div = document.getElementById('product-list');
+//             div.innerHTML = '';
+//             data.content.forEach((item, index) => {
+//                 const productDiv = document.createElement('div');
+//
+//                 productDiv.addEventListener('click', () => getProduct(item.productId));
+//
+//                 const productImg = document.createElement('img');
+//                 productImg.src = `/uploadPath/${item.images[0]}`;
+//                 productImg.alt = '이미지 없음';
+//
+//                 productImg.onerror = function() {
+//                     this.src = `/images/image01.png`
+//                 }
+//
+//                 const productName = document.createElement('p');
+//                 productName.textContent = `${item.pname}`;
+//
+//                 const hr = document.createElement('hr');
+//
+//                 const productPrice = document.createElement('p');
+//                 const price = item.price.toLocaleString();
+//                 productPrice.textContent = `${price}원`;
+//                 productDiv.appendChild(productImg);
+//                 productDiv.appendChild(productName);
+//                 productDiv.appendChild(hr);
+//                 productDiv.appendChild(productPrice);
+//
+//                 div.appendChild(productDiv);
+//
+//             });
+//         })
+//         .catch(error => console.error('Error fetching products:', error));
+// }
+
 
 export function fetchProducts() {
     fetch('/cc/product/list')

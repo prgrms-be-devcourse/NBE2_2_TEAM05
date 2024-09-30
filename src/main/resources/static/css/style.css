@@ -244,9 +244,15 @@ main {
     display: flex;
     justify-content: left;
 }
+
+.change_quantity_div {
+    display: flex;
+    justify-content: center;
+}
 .quantity_div {
     display: flex;
     justify-content: right;
+    align-items: center;
     width: 68px;
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -277,6 +283,11 @@ main {
     width: 20px;
     background-color: #263343;
 }
+.quantity2-button {
+    color: var(--text-color);
+    width: 20px;
+    background-color: #263343;
+}
 
 
 .content_prod_info > div > button {
@@ -292,7 +303,6 @@ main {
     width: 1000px;
 
     border-top : 1px solid rgba(0, 0, 0, 0.1);
-
 
 }
 
@@ -316,11 +326,24 @@ main {
     border-right: none;
 }
 
-.cart_table tr > td > input {
-
+.cart_change_button, .remove_button, .totalDiv > div > button {
+    font-size: 105%;
+    color: var(--text-color);
+    font-weight: bold;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 4px 4px 4px 4px;
 }
-.cart_table tr > td > button {
 
+.totalDiv {
+    display : flex;
+    padding: 12px 12px 12px 12px;
+    justify-content: right;
+    align-items: center;
+}
+
+.totalDiv > div {
+    margin-right: 12px;
 }
 
 

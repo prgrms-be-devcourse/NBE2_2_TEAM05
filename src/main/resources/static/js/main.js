@@ -10,18 +10,19 @@ toggleBtn.addEventListener('click', () => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetchCartItems();
-});
-
-document.addEventListener("DOMContentLoaded", function () {
     fetchProducts();
 });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     fetchProductList(1, 10);
+// });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const pathArray = window.location.pathname.split('/');
     const productId = pathArray[pathArray.length - 1];
     if (productId) {
-        fetchProduct(productId); // productId가 존재하면 fetchProduct 호출
+        fetchProduct(productId);
     }
 });
 
@@ -46,6 +47,7 @@ document.getElementById('fetch-cart-btn').addEventListener('click', function() {
             alert('카트 정보를 불러오는 중 오류가 발생했습니다.');
         });
 });
+
 
 
 
