@@ -53,6 +53,6 @@ public class ProductController {
     @GetMapping                         //목록
     public ResponseEntity<Page<ProductListDTO>> getProductList(@Validated PageRequestDTO pageRequestDTO){
         log.info("getList() ----- " + pageRequestDTO);         //로그로 출력
-        return ResponseEntity.ok(productService.getProductList(pageRequestDTO));
+        return ResponseEntity.ok(productService.getList(pageRequestDTO));
     }
 }

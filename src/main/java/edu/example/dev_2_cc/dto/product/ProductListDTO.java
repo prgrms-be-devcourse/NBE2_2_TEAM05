@@ -10,6 +10,6 @@ public class ProductListDTO {
     private String pName;
     private Long price;
     //private String description; //리스트니까 제외
-    private String filename;
+    private String pimage;
     private int stock;
 }

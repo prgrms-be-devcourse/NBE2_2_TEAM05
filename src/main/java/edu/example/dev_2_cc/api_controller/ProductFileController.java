@@ -1,4 +1,4 @@
-package edu.example.dev_2_cc.controller;
+package edu.example.dev_2_cc.api_controller;
 
 import edu.example.dev_2_cc.exception.UploadNotSupportedException;
 import edu.example.dev_2_cc.util.ProductUploadUtil;

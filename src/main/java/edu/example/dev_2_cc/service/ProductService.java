@@ -84,12 +84,12 @@ public class ProductService {
 
     public Page<ProductListDTO> getList(PageRequestDTO pageRequestDTO) { //목록
         try {
-            Sort sort = Sort.by("pno").descending();
+            Sort sort = Sort.by("productId").descending();
             Pageable pageable = pageRequestDTO.getPageable(sort);
             return productRepository.list(pageable );
         } catch(Exception e) {
             log.error("--- " + e.getMessage());
-            throw ProductException.NOT_FETCHED.get();
+            throw ProductException.NOT_FOUND.get(); //임시
         }
     }
 
