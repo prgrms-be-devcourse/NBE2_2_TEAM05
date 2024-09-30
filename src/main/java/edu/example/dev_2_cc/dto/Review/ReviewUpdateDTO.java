@@ -1,4 +1,4 @@
-package edu.example.dev_2_cc.dto.review;
+package edu.example.dev_2_cc.dto.Review;
 
 import edu.example.dev_2_cc.entity.Review;
 import jakarta.validation.constraints.NotEmpty;
