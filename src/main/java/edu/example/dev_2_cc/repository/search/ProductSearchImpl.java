@@ -28,14 +28,17 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 = from(product).leftJoin(product.images, productImage)  //조인
                 .where( productImage.ino.eq(0) );   //WHERE 조건 = ino가 0인 이미지 파일
 
-        JPQLQuery<ProductListDTO> dtoQuery
-                = query.select(Projections.bean(
+
+        // Projections.fields를 사용하여 매핑
+        JPQLQuery<ProductListDTO> dtoQuery = query.select(Projections.fields(
                 ProductListDTO.class,
                 product.productId,
                 product.pName,
                 product.price,
                 product.stock,
-                productImage.filename.as("pimage")));
+                productImage.filename.as("pimage")
+        ));
+
 
         getQuerydsl().applyPagination(pageable, dtoQuery);      //페이징
         List<ProductListDTO> productList = dtoQuery.fetch();    //쿼리 실행
