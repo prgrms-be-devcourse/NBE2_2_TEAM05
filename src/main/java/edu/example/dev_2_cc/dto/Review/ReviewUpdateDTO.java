@@ -1,9 +1,7 @@
-package edu.example.dev_2_cc.dto.review;
+package edu.example.dev_2_cc.dto.Review;
 
 import edu.example.dev_2_cc.entity.Review;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewUpdateDTO {
 
-    @NotNull
+    @NotEmpty
     private Long reviewId;
 
     private String content;
-
-    @Min(0)
     private int star;
 
     public Review toEntity(){
