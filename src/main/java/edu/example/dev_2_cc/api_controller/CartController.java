@@ -1,8 +1,7 @@
-package edu.example.dev_2_cc.controller;
+package edu.example.dev_2_cc.api_controller;
 
 import edu.example.dev_2_cc.dto.cart.CartRequestDTO;
 import edu.example.dev_2_cc.dto.cart.CartResponseDTO;
-import edu.example.dev_2_cc.dto.cartItem.CartItemRequestDTO;
 import edu.example.dev_2_cc.dto.cartItem.CartItemResponseDTO;
 import edu.example.dev_2_cc.dto.cartItem.CartItemUpdateDTO;
 import edu.example.dev_2_cc.service.CartService;

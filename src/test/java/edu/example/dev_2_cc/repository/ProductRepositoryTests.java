@@ -29,7 +29,6 @@ public class ProductRepositoryTests {
                 .pName("테스트 상품5")
                 .price(9000L)
                 .description("테스트 상품5 설명")
-                .filename("testProduct5.png")
                 .stock(6).build();
 
         Product savedProduct = productRepository.save(product);
@@ -67,14 +66,12 @@ public class ProductRepositoryTests {
         product.changePrice(price);
         product.changeDescription(description);
         product.changeStock(stock);
-        product.changeFilename(filename);
 
         foundProduct = productRepository.findById(productId);
         assertEquals(pName, foundProduct.get().getPName());
         assertEquals(price, foundProduct.get().getPrice());
         assertEquals(description, foundProduct.get().getDescription());
         assertEquals(stock, foundProduct.get().getStock());
-        assertEquals(filename, foundProduct.get().getFilename());
 
     }
 
