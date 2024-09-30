@@ -17,10 +17,10 @@ public class ReviewResponseDTO {
     private Long reviewId;
 
     @NotEmpty
-    private Member member;
+    private String memberId;
 
     @NotEmpty
-    private Product product;
+    private Long productId;
 
     private String content;
     private int star;
@@ -30,8 +30,8 @@ public class ReviewResponseDTO {
 
     public ReviewResponseDTO(Review review) {
         this.reviewId = review.getReviewId();
-        this.member = review.getMember();
-        this.product = review.getProduct();
+        this.memberId = review.getMember().getMemberId();
+        this.productId = review.getProduct().getProductId();
         this.content = review.getContent();
         this.star = review.getStar();
         this.createdAt = review.getCreatedAt();

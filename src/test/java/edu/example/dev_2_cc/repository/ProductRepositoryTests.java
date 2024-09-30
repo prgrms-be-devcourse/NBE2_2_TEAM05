@@ -55,7 +55,6 @@ public class ProductRepositoryTests {
         String pName = "수정테스트상품";
         Long price = 10000L;
         String description = "수정설명테스트";
-        String filename = "modifiedProduct.png";
         int stock = 15;
 
         Optional<Product> foundProduct = productRepository.findById(productId);
