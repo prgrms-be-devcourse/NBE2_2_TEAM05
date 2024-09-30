@@ -202,11 +202,126 @@ main {
     background-color: transparent;
 }
 
+.content_product {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.productDiv {
+    display: flex;
+    justify-content: center;
+}
+
+.content_prod_image {
+    display: flex;
+    justify-content: center;
+    width : 500px;
+    height: 500px;
+    overflow: hidden;
+}
+.content_prod_image > img {
+    width: 100%;
+}
+
+.content_prod_info {
+    width: 420px;
+    padding : 12px 40px;
+}
+
+.content_prod_info > div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 12px 24px 12px 24px;
+}
+
+.content_prod_info > h2 {
+    padding: 10px 20px 10px 20px;
+}
+
+.add_cart_div {
+    display: flex;
+    justify-content: left;
+}
+.quantity_div {
+    display: flex;
+    justify-content: right;
+    width: 68px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.quantity_div > input {
+    border: none;
+    outline: none;
+    width: 40px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.quantity_div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.quantity_div > div > button {
+    margin: 0;
+    padding: 0;
+}
+
+.quantity-button {
+    color: var(--text-color);
+    width: 20px;
+    background-color: #263343;
+}
 
 
+.content_prod_info > div > button {
+    color: var(--text-color);
+    font-weight: bold;
+    background-color: var(--background-color);
+    height: 40px;
+}
+
+.product_description {
+    padding : 40px 20px;
+    margin-top : 40px;
+    width: 1000px;
+
+    border-top : 1px solid rgba(0, 0, 0, 0.1);
 
 
+}
 
+
+.cart_img {
+    width: 80px;
+    height: 80px;
+}
+
+.cart_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart_table th, .cart_table td {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-collapse: collapse;
+    padding : 10px 10px 10px 10px;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+}
+
+.cart_table tr > td > input {
+
+}
+.cart_table tr > td > button {
+
+}
 
 
 

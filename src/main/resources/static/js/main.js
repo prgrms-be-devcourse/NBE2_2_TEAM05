@@ -1,3 +1,5 @@
+import { fetchProduct, fetchProducts } from "./product.js";
+import { displayCartData } from "./cart.js";
 const toggleBtn = document.querySelector('.navbar__toogleBtn');
 const menu = document.querySelector('.navbar__menu');
 const icons = document.querySelector('.navbar__menu2');
@@ -15,70 +17,35 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchProducts();
 });
 
-function fetchCartItems() {
-    fetch('/cc/cart')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            const tbody = document.getElementById('cart-list');
-            tbody.innerHTML = ''; // 기존 내용을 비움
-            data.forEach((item, index) => {
-                const row = document.createElement('tr');
+document.addEventListener("DOMContentLoaded", function () {
+    const pathArray = window.location.pathname.split('/');
+    const productId = pathArray[pathArray.length - 1];
+    if (productId) {
+        fetchProduct(productId); // productId가 존재하면 fetchProduct 호출
+    }
+});
 
-                row.innerHTML = `
-                    <td>${item.cartId}</td>
-                    <td>${item.memberId}</td>
-                    <td>
-                        <li th:each="cartitem : ${item.cartItems}">
-                            <a href="" th:text="${cartitem.productId}"></a>
-                            <a href="" th:text="${cartitem.quantity}"></a>
-                        </li>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
+document.getElementById('fetch-cart-btn').addEventListener('click', function() {
+    const memberId = document.getElementById('memberId').value; // 입력 필드의 값을 가져옴
+
+    // 서버에 fetch 요청을 보냄
+    fetch(`/cc/cart/${memberId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('카트 정보를 불러오지 못했습니다.');
+            }
+            return response.json(); // 서버 응답을 JSON으로 변환
         })
-        .catch(error => console.error('Error fetching cart items:', error));
-}
-
-function fetchProducts() {
-    fetch('/cc/product/list')
-        .then(response => response.json())
         .then(data => {
-            console.log(data);
-            const div = document.getElementById('product-list');
-            div.innerHTML = ''; // 기존 내용을 비움
-            data.forEach((item, index) => {
-                const productDiv = document.createElement('div');
-                productDiv.setAttribute('onclick', `getProduct(${item.productId})`); // getProduct 함수 호출시 id 전달
-
-                const productImg = document.createElement('img');
-                productImg.src = `/images/${item.image}`; // 서버에서 제공한 이미지 경로
-                productImg.alt = '이미지 없음';
-
-                productImg.onerror = function() {
-                    this.src = `/images/image01.png`
-                }
-
-                const productName = document.createElement('p');
-                productName.textContent = `${item.pname}`; // 서버에서 가져온 상품 이름
-
-                const hr = document.createElement('hr');
-
-                const productPrice = document.createElement('p');
-                productPrice.textContent = `${item.price}원`; // 서버에서 가져온 상품 가격
-                productDiv.appendChild(productImg);
-                productDiv.appendChild(productName);
-                productDiv.appendChild(hr);
-                productDiv.appendChild(productPrice);
-
-                div.appendChild(productDiv);
-
-            });
+            // 데이터를 화면에 표시
+            console.log('데이터 가져오기')
+            displayCartData(data);
         })
-        .catch(error => console.error('Error fetching products:', error));
-}
+        .catch(error => {
+            console.error('Error fetching cart:', error);
+            alert('카트 정보를 불러오는 중 오류가 발생했습니다.');
+        });
+});
 
-function getProduct() {
-    window.location.href="/app"
-}
+
+
