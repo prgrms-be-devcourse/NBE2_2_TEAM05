@@ -6,7 +6,7 @@ public enum ProductException {
     NOT_UPDATED("Product Not Updated", 400),
     NOT_DELETED("Product Not Deleted", 400),
 //    NOT_FETCHED("Product Not Fetched", 400),
-//    NO_IMAGE("No Product Image", 400),
+    IMAGE_NOT_FOUND("No Product Image", 400),
     CREATE_ERR("No Authenticated user", 403);
 
     private ProductTaskException productTaskException;
