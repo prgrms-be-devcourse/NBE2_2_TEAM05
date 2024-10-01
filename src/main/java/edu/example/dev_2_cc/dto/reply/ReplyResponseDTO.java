@@ -24,4 +24,6 @@ public class ReplyResponseDTO {
         this.createdAt = reply.getCreatedAt();
         this.updatedAt = reply.getUpdatedAt();
     }
+
 }
+

@@ -8,4 +8,6 @@ import lombok.Getter;
 public class ReplyTaskException extends RuntimeException {
     private String message;
     private int code;
+
 }
+

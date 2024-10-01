@@ -12,4 +12,6 @@ public enum ReplyException {
     ReplyException(String message,int code){replyTaskException = new ReplyTaskException(message,code);}
 
     public ReplyTaskException get(){return replyTaskException;}
+
 }
+

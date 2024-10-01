@@ -1,5 +1,6 @@
 package edu.example.dev_2_cc.api_controller;
 
+import edu.example.dev_2_cc.dto.reply.ReplyRequestDTO;
 import edu.example.dev_2_cc.dto.reply.ReplyResponseDTO;
 import edu.example.dev_2_cc.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +10,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cc/reply")
 @Log4j2
 public class ReplyController {
     private final ReplyService replyService;
+  
+    @PostMapping
+    public ResponseEntity<ReplyResponseDTO> createReply(@RequestBody ReplyRequestDTO replyRequestDTO) {
+        return ResponseEntity.ok(replyService.createReply(replyRequestDTO));
+    }
+
 
     @GetMapping("/{replyId}")
     public ResponseEntity<ReplyResponseDTO> getReply(@PathVariable("replyId") Long replyId) {
@@ -26,4 +34,6 @@ public class ReplyController {
         replyService.delete(replyId);
         return ResponseEntity.ok(Map.of("message", "Reply deleted"));
     }
+
+    
 }
