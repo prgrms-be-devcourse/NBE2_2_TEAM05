@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.List;
 
 
@@ -34,6 +35,13 @@ public class BoardController {
         return ResponseEntity.ok(boardService.createBoard(boardRequestDTO));
     }
 
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Map<String, String>> deleteboard(@PathVariable("boardId") Long boardId) {
+        boardService.delete(boardId);
+        return ResponseEntity.ok(Map.of("message", "Board deleted"));
+
+
     @PutMapping("/{boardId}")
     public ResponseEntity<BoardResponseDTO> updateBoard(@PathVariable Long boardId, @RequestBody BoardUpdateDTO boardUpdateDTO) {
 
@@ -42,6 +50,7 @@ public class BoardController {
         }
 
         return ResponseEntity.ok(boardService.updateBoard(boardUpdateDTO));
+
     }
 
     @GetMapping
