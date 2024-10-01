@@ -12,8 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -95,4 +97,13 @@ public class ProductService {
         }
     }
 
+
+
+    //뷰제작용 임시
+    public List<ProductResponseDTO> findAll2() {
+        return productRepository.findAll().stream()
+                .map(ProductResponseDTO::new)
+                .collect(Collectors.toList());
+
+    }
 }

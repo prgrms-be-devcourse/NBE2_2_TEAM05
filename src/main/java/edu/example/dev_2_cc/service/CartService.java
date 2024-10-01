@@ -80,8 +80,9 @@ public class CartService {
     public CartResponseDTO read(String memberId) {
         Cart foundCart = cartRepository.findByMemberId(memberId)
                 .orElseThrow(CartException.NOT_FOUND::get);
+        Long totalPrice = cartRepository.totalPrice(foundCart.getCartId());
 
-        return new CartResponseDTO(foundCart);
+        return new CartResponseDTO(foundCart, totalPrice);
     }
 
     //전체 Cart 조회
