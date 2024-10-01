@@ -1,4 +1,4 @@
-package edu.example.dev_2_cc.dto.Review;
+package edu.example.dev_2_cc.dto.review;
 
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Product;
