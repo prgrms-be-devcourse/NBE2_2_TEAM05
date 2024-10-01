@@ -5,6 +5,7 @@ public enum ReviewException {
     NOT_FOUND("Review NOT_FOUND", 404),
     NOT_CREATED("Review Not Created", 400),
     NOT_UPDATED("Review Not Updated", 400),
+    NOT_FETCHED("Review Not Fetched", 400),
     NOT_DELETED("Review Not Deleted", 400);
 
     private ReviewTaskException reviewTaskException;
