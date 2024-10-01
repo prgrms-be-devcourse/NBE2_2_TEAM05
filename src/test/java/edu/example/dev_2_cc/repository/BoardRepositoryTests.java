@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,6 +29,30 @@ public class BoardRepositoryTests {
         Board board = Board.builder().title("테스트제목1").description("테스트설명1").category(Category.TIP).build();
         Board savedBoard =  boardRepository.save(board);
         assertNotNull(savedBoard);
+    }
+
+    @Test
+    @Commit
+    @Transactional
+    public void testUpdate(){
+        Long BoardId = 2L;
+        String title = "수정된제목";
+        String description = "수정된 설명";
+        Category category = Category.GENERAL;
+
+        Optional<Board> foundBoard = boardRepository.findById(BoardId);
+        assertTrue(foundBoard.isPresent());
+
+        Board board = foundBoard.get();
+
+        board.changeTitle(title);
+        board.changeDescription(description);
+        board.changeCategory(category);
+
+        foundBoard = boardRepository.findById(BoardId);
+        assertEquals(title, foundBoard.get().getTitle());
+        assertEquals(description, foundBoard.get().getDescription());
+        assertEquals(category, foundBoard.get().getCategory());
     }
 
 
