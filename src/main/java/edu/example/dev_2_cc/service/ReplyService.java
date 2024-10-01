@@ -44,6 +44,8 @@ public class ReplyService {
 
             log.error(e.getMessage());
             throw ReplyException.NOT_CREATED.get();
+        }
+    }
 
     public ReplyResponseDTO read(Long replyId) {
         try{
@@ -67,4 +69,5 @@ public class ReplyService {
             throw ReplyException.NOT_DELETED.get();
         }
     }
+
 }
