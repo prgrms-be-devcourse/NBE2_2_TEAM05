@@ -66,4 +66,5 @@ public class BoardService {
             log.error(e.getMessage());
             throw BoardException.NOT_FOUND.get();
         }
+    }
 }
