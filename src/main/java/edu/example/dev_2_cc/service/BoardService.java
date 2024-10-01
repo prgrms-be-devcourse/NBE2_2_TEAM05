@@ -4,7 +4,9 @@ import edu.example.dev_2_cc.dto.board.BoardRequestDTO;
 import edu.example.dev_2_cc.dto.board.BoardResponseDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
+import edu.example.dev_2_cc.entity.Review;
 import edu.example.dev_2_cc.exception.BoardException;
+import edu.example.dev_2_cc.exception.ReviewException;
 import edu.example.dev_2_cc.repository.BoardRepository;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
 
-        public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
+    public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
         try {
             String memberId = boardRequestDTO.getMemberId();
 
@@ -32,19 +34,33 @@ public class BoardService {
             Board savedBoard = boardRepository.save(board);
 
             return new BoardResponseDTO(savedBoard);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw BoardException.NOT_CREATED.get();
         }
     }
-  
-      public BoardResponseDTO read(Long boardId) {
-        try{
+
+    public BoardResponseDTO read(Long boardId) {
+        try {
             Optional<Board> foundBoard = boardRepository.findById(boardId);
             Board board = foundBoard.get();
             return new BoardResponseDTO(board);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw BoardException.NOT_FOUND.get();
         }
+    }
+
+    public void delete(Long boardId) {
+        Optional<Board> foundBoard = boardRepository.findById(boardId);
+        Board board = foundBoard.orElseThrow(BoardException.NOT_FOUND::get);
+
+        try{
+            boardRepository.delete(board);
+        }catch (Exception e){
+            log.error("--- " + e.getMessage());
+            throw ReviewException.NOT_DELETED.get();
+        }
+
+    }
 }
