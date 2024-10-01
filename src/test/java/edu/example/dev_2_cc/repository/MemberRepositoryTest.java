@@ -23,7 +23,7 @@ class MemberRepositoryTest {
     void testSaveMember() {
         // Given 멤버 생성
         Member member = Member.builder()
-                .memberId("member1")
+                .memberId("member2")
                 .email("test@example.com")
                 .name("John Doe")
                 .password("securepassword")
@@ -41,7 +41,7 @@ class MemberRepositoryTest {
 
         // Then 저장된 멤버가 존재하는지 검증
         assertThat(savedMember).isNotNull();
-        assertThat(savedMember.getMemberId()).isEqualTo("member1");
+        assertThat(savedMember.getMemberId()).isEqualTo("member2");
         assertThat(savedMember.getEmail()).isEqualTo("test@example.com");
 
         // 이미지 이름 검증

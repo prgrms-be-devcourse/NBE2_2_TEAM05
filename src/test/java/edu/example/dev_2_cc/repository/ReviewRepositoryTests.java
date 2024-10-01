@@ -36,7 +36,7 @@ public class ReviewRepositoryTests {
 
         Product product = productRepository.findById(1L).orElseThrow();
 
-        Member member = memberRepository.findById("member1").orElseThrow();
+        Member member = memberRepository.findById("member2").orElseThrow();
 
         Review review = Review.builder().product(product).member(member).content("이집 잘합니다").star(5).build();
 
