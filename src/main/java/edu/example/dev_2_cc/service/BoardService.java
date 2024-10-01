@@ -20,10 +20,10 @@ import java.util.Optional;
 @Transactional
 @Log4j2
 public class BoardService {
-    private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
-    public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
+        public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
         try {
             String memberId = boardRequestDTO.getMemberId();
 
@@ -37,6 +37,7 @@ public class BoardService {
             log.error(e.getMessage());
             throw BoardException.NOT_CREATED.get();
         }
+
     }
 
     public BoardResponseDTO updateBoard(BoardUpdateDTO boardUpdateDTO) {
@@ -53,5 +54,16 @@ public class BoardService {
             log.error(e.getMessage());
             throw BoardException.NOT_UPDATED.get();
         }
+
     }
+  
+      public BoardResponseDTO read(Long boardId) {
+        try{
+            Optional<Board> foundBoard = boardRepository.findById(boardId);
+            Board board = foundBoard.get();
+            return new BoardResponseDTO(board);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw BoardException.NOT_FOUND.get();
+        }
 }

@@ -27,5 +27,5 @@ public class BoardRequestDTO {
 
         return board;
     }
-
 }
+
