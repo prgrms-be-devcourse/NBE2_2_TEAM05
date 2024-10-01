@@ -1,21 +1,20 @@
 package edu.example.dev_2_cc.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class OrderItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,5 +28,13 @@ public class OrderItem {
     private int quantity;
 //    private Long eachPrice;
 
+    public OrderItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+        this.orders = orders;
+        if (orders != null) {
+            orders.addOrderItem(this); // 양방향 관계 설정
+        }
+    }
 
 }
