@@ -2,6 +2,7 @@ package edu.example.dev_2_cc.service;
 
 import edu.example.dev_2_cc.dto.board.BoardRequestDTO;
 import edu.example.dev_2_cc.dto.board.BoardResponseDTO;
+import edu.example.dev_2_cc.dto.board.BoardUpdateDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.exception.BoardException;
@@ -36,6 +37,24 @@ public class BoardService {
             log.error(e.getMessage());
             throw BoardException.NOT_CREATED.get();
         }
+
+    }
+
+    public BoardResponseDTO updateBoard(BoardUpdateDTO boardUpdateDTO) {
+        Optional<Board> foundBoard = boardRepository.findById(boardUpdateDTO.getBoardId());
+        Board board = foundBoard.orElseThrow(BoardException.NOT_FOUND::get);
+
+        try {
+            board.changeTitle(boardUpdateDTO.getTitle());
+            board.changeDescription(boardUpdateDTO.getDescription());
+            board.changeCategory(boardUpdateDTO.getCategory());
+
+            return new BoardResponseDTO(boardRepository.save(board));
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            throw BoardException.NOT_UPDATED.get();
+        }
+
     }
   
       public BoardResponseDTO read(Long boardId) {
