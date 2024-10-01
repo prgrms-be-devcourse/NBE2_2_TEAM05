@@ -28,5 +28,4 @@ public class BoardResponseDTO {
         this.updatedAt = board.getUpdatedAt();
 
     }
-
 }
