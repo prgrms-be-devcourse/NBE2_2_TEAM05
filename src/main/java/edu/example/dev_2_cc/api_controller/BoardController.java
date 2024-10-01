@@ -40,6 +40,7 @@ public class BoardController {
     public ResponseEntity<Map<String, String>> deleteboard(@PathVariable("boardId") Long boardId) {
         boardService.delete(boardId);
         return ResponseEntity.ok(Map.of("message", "Board deleted"));
+    }
 
 
     @PutMapping("/{boardId}")

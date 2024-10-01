@@ -32,4 +32,16 @@ public class ReplyService {
             throw ReplyException.NOT_FOUND.get();
         }
     }
+
+    public void delete(Long replyId) {
+        Optional<Reply> foundReply = replyRepository.findById(replyId);
+        Reply reply = foundReply.orElseThrow(ReplyException.NOT_FOUND::get);
+
+        try {
+            replyRepository.delete(reply);
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            throw ReplyException.NOT_DELETED.get();
+        }
+    }
 }
