@@ -15,6 +15,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -43,6 +45,14 @@ public class ReplyService {
             log.error(e.getMessage());
             throw ReplyException.NOT_CREATED.get();
 
+    public ReplyResponseDTO read(Long replyId) {
+        try{
+            Optional<Reply> foundReply = replyRepository.findById(replyId);
+            Reply reply=foundReply.get();
+            return new ReplyResponseDTO(reply);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw ReplyException.NOT_FOUND.get();
         }
     }
 }
