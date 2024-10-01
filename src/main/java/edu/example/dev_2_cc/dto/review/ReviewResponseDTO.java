@@ -1,8 +1,5 @@
 package edu.example.dev_2_cc.dto.review;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import edu.example.dev_2_cc.entity.Member;
-import edu.example.dev_2_cc.entity.Product;
 import edu.example.dev_2_cc.entity.Review;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

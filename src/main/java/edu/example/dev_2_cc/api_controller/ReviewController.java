@@ -1,13 +1,12 @@
 package edu.example.dev_2_cc.api_controller;
 
-import edu.example.dev_2_cc.dto.review.ReviewRequestDTO;
-import edu.example.dev_2_cc.dto.review.ReviewResponseDTO;
-import edu.example.dev_2_cc.dto.review.ReviewUpdateDTO;
+import edu.example.dev_2_cc.dto.review.*;
 import edu.example.dev_2_cc.dto.product.ProductResponseDTO;
 import edu.example.dev_2_cc.entity.Review;
 import edu.example.dev_2_cc.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +32,7 @@ public class ReviewController {
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long reviewId, @Validated @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
         return ResponseEntity.ok(reviewService.update(reviewUpdateDTO));
+    }
 
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDTO> getReview(@PathVariable("reviewId") Long reviewId) {
@@ -44,5 +44,10 @@ public class ReviewController {
         reviewService.delete(reviewId);
         return ResponseEntity.ok(Map.of("message", "Review deleted"));
 
+    }
+
+    @GetMapping("/member/{memberId}")
+    public Page<ReviewListDTO> getReviewListByMemberId(@PathVariable("memberId") String memberId, PageRequestDTO pageRequestDTO) {
+        return reviewService.getListByMemberId(memberId, pageRequestDTO);
     }
 }
