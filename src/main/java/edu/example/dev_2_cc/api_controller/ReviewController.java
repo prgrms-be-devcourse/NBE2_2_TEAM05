@@ -48,8 +48,10 @@ public class ReviewController {
     }
 
     @GetMapping("/member/{memberId}")
-    public Page<ReviewListDTO> getReviewListByMemberId(@PathVariable("memberId") String memberId, PageRequestDTO pageRequestDTO) {
-        return reviewService.getListByMemberId(memberId, pageRequestDTO);
+    public ResponseEntity<Page<ReviewListDTO>> getReviewListByMemberId(@PathVariable("memberId") String memberId, PageRequestDTO pageRequestDTO) {
+        Page<ReviewListDTO> reviewList = reviewService.getListByMemberId(memberId, pageRequestDTO);
+
+        return ResponseEntity.ok(reviewList);
     }
 
     // productId를 기반으로 리뷰 리스트를 반환하는 메서드
