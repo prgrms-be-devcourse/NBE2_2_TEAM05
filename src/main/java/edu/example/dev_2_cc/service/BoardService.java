@@ -7,7 +7,9 @@ import edu.example.dev_2_cc.dto.board.BoardUpdateDTO;
 import edu.example.dev_2_cc.dto.review.PageRequestDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
+import edu.example.dev_2_cc.entity.Review;
 import edu.example.dev_2_cc.exception.BoardException;
+import edu.example.dev_2_cc.exception.ReviewException;
 import edu.example.dev_2_cc.repository.BoardRepository;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import edu.example.dev_2_cc.repository.ProductRepository;
@@ -40,7 +42,7 @@ public class BoardService {
             Board savedBoard = boardRepository.save(board);
 
             return new BoardResponseDTO(savedBoard);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw BoardException.NOT_CREATED.get();
         }
@@ -88,4 +90,18 @@ public class BoardService {
             throw BoardException.NOT_FOUND.get();   //임시
         }
     }
+
+    public void delete(Long boardId) {
+        Optional<Board> foundBoard = boardRepository.findById(boardId);
+        Board board = foundBoard.orElseThrow(BoardException.NOT_FOUND::get);
+
+        try{
+            boardRepository.delete(board);
+        }catch (Exception e){
+            log.error("--- " + e.getMessage());
+            throw ReviewException.NOT_DELETED.get();
+        }
+
+    }
+
 }
