@@ -2,6 +2,7 @@ package edu.example.dev_2_cc.api_controller.advice;
 
 import edu.example.dev_2_cc.exception.CartTaskException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
+import edu.example.dev_2_cc.exception.OrderTaskException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,21 @@ public class APIControllerAdvice {
         return ResponseEntity
                 .status(e.getCode())   // 예외에서 가져온 상태 코드로 응답 설정
                 .body(errorResponse);  // 커스텀 응답 내용을 body에 담아 반환
+    }
+
+    // OrderTaskException 예외 처리
+    @ExceptionHandler(OrderTaskException.class)
+    public ResponseEntity<?> handleOrderTaskException(OrderTaskException e) {
+        log.info("--- OrderTaskException 발생 ---");
+        log.info("--- e.getClass().getName() : " + e.getClass().getName());
+        log.info("--- e.getMessage() : " + e.getMessage());
+
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error message", e.getMessage());
+        errorResponse.put("status", e.getCode());
+        errorResponse.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.status(e.getCode()).body(errorResponse);
     }
 
     // 유효성 어노테이션 예외 처리

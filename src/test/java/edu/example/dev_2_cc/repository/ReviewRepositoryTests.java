@@ -21,10 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @Log4j2
 public class ReviewRepositoryTests {
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -66,4 +63,5 @@ public class ReviewRepositoryTests {
         assertEquals(content, foundReview.get().getContent());
         assertEquals(star, foundReview.get().getStar());
     }
+
 }

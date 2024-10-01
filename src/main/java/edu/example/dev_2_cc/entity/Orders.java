@@ -1,8 +1,7 @@
 package edu.example.dev_2_cc.entity;
 
-import edu.example.dev_2_cc.entity.OrderStatus;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +11,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,11 +36,37 @@ public class Orders {
     @JoinColumn(name="member_id")
     private Member member;
 
+    @Email
+    private String email;
+    private String phoneNumber;
+    private String name;
+    private String address;
+
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<OrderItem> orderItems= new ArrayList<>();;
+
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+
 
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        orderItem.setOrders(this); // 이곳에서 OrderItem의 Orders를 설정
+    }
+
+    // 주문 항목 제거 메서드
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        if (orderItem != null) {
+            orderItem.setOrders(null); // 양방향 관계 설정 해제
+        }
+    }
 }

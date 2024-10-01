@@ -6,6 +6,7 @@ import edu.example.dev_2_cc.dto.cartItem.CartItemResponseDTO;
 import edu.example.dev_2_cc.dto.cartItem.CartItemUpdateDTO;
 import edu.example.dev_2_cc.service.CartService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cc/cart")
+@Log4j2
 public class CartController {
     private final CartService cartService;
 
@@ -44,6 +46,7 @@ public class CartController {
     public ResponseEntity<CartItemResponseDTO> update(
             @PathVariable("cartItemId") Long cartItemId,
             @Validated @RequestBody CartItemUpdateDTO cartItemUpdateDTO) {
+        log.info(cartItemUpdateDTO);
         return ResponseEntity.ok(cartService.update(cartItemUpdateDTO));
     }
 
@@ -51,6 +54,7 @@ public class CartController {
     @DeleteMapping("/cartItem/{cartItemId}")
     public ResponseEntity<Map<String, String>> delete(
             @PathVariable("cartItemId") Long cartItemId){
+
         cartService.delete(cartItemId);
         return ResponseEntity.ok(Map.of("result", "success"));
     }

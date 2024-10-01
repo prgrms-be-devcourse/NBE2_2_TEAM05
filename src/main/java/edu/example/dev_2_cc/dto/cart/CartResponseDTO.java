@@ -18,7 +18,7 @@ public class CartResponseDTO {
 
     private List<CartItemResponseDTO> cartItems;
 
-
+    private long totalPrice;
 
     public CartResponseDTO(Cart cart) {
         this.cartId = cart.getCartId();
@@ -34,6 +34,15 @@ public class CartResponseDTO {
         this.cartItems = savedCartItems.stream()
                 .map(cartItem -> new CartItemResponseDTO(cartItem))
                 .collect(Collectors.toList());
+    }
+
+    public CartResponseDTO(Cart cart, long totalPrice) {
+        this.cartId = cart.getCartId();
+        this.memberId = cart.getMember().getMemberId();
+        this.cartItems = cart.getCartItems().stream()
+                .map(CartItemResponseDTO::new)
+                .collect(Collectors.toList());
+        this.totalPrice = totalPrice;
     }
 
 

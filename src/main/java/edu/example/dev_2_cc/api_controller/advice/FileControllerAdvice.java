@@ -37,4 +37,15 @@ public class FileControllerAdvice {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    // default_avatar.png 삭제 시도 시 발생하는 예외
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<?> IllegalStateException(IllegalStateException e) {
+
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error", e.getMessage());
+        errorResponse.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
 }
