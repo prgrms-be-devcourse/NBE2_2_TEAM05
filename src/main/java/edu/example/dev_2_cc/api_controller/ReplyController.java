@@ -6,10 +6,10 @@ import edu.example.dev_2_cc.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 public class ReplyController {
     private final ReplyService replyService;
-
+  
     @PostMapping
     public ResponseEntity<ReplyResponseDTO> createReply(@RequestBody ReplyRequestDTO replyRequestDTO) {
         return ResponseEntity.ok(replyService.createReply(replyRequestDTO));
     }
+
+
+    @GetMapping("/{replyId}")
+    public ResponseEntity<ReplyResponseDTO> getReply(@PathVariable("replyId") Long replyId) {
+        return ResponseEntity.ok(replyService.read(replyId));
+    }
+
+    @DeleteMapping("/{replyId}")
+    public ResponseEntity<Map<String, String>> deleteReply(@PathVariable("replyId") Long replyId) {
+        replyService.delete(replyId);
+        return ResponseEntity.ok(Map.of("message", "Reply deleted"));
+    }
+
+    
 }
