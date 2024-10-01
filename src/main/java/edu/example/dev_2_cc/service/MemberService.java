@@ -66,6 +66,8 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> MemberException.NOT_FOUND.get());
 
+        log.info("---member : " + member);
+
         return toResponseDTO(member);
     }
 
@@ -78,6 +80,9 @@ public class MemberService {
         if (memberList.isEmpty()) {
             throw MemberException.NOT_FOUND.get();
         }
+
+        log.info("--- Member List ---");
+        memberList.forEach(member -> log.info(member.toString()));
 
         // 각 Member 엔티티를 MemberResponseDTO로 변환하여 리스트로 반환
         return memberList.stream()

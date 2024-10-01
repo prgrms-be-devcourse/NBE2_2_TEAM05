@@ -18,6 +18,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewSea
 
     @Query("SELECT r FROM Review r WHERE r.member.memberId = :memberId")
     Page<Review> findByMember_Id(String memberId, Pageable pageable);
+}
 
 
 
