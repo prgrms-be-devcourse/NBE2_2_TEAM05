@@ -102,11 +102,42 @@ public class ReviewService {
         try {
             Sort sort = Sort.by("createdAt").descending();
             Pageable pageable = pageRequestDTO.getPageable(sort);
+
             Page<Review> reviews = reviewRepository.findByMember_Id(memberId, pageable);
-            return reviewRepository.list(pageable);
+
+            return reviews.map(review -> new ReviewListDTO(
+                    review.getReviewId(),
+                    review.getContent(),
+                    review.getStar(),
+                    review.getMember().getMemberId(),
+                    review.getProduct().getProductId()
+            ));
         }catch (Exception e){
             log.error("--- " + e.getMessage());
             throw ReviewException.NOT_FETCHED.get();
+        }
+    }
+
+    public Page<ReviewListDTO> getListByProductId(Long productId, PageRequestDTO pageRequestDTO) {
+        try {
+            Sort sort = Sort.by("reviewId").descending();
+            Pageable pageable = pageRequestDTO.getPageable(sort);
+
+            // Review를 Page로 조회
+            Page<Review> reviews = reviewRepository.findReviewsByProductId(productId, pageable);
+
+            // Review를 ReviewListDTO로 변환
+            return reviews.map(review -> new ReviewListDTO(
+                    review.getReviewId(),
+                    review.getContent(),
+                    review.getStar(),
+                    review.getMember().getMemberId(),
+                    review.getProduct().getProductId()
+            ));
+
+        } catch(Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ReviewException.NOT_FOUND.get();
         }
     }
 }
