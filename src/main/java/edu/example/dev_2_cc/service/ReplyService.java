@@ -95,4 +95,13 @@ public class ReplyService {
                 .collect(Collectors.toList());
     }
 
+    // Member ID 로 Reply 리스트 조회
+    public List<ReplyListDTO> listByMemberId(Long memberId) {
+        List<Reply> replies = replyRepository.findAllByMember(memberId);
+
+        return replies.stream()
+                .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
+                .collect(Collectors.toList());
+    }
+
 }
