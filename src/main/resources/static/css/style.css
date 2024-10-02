@@ -354,3 +354,31 @@ footer {
     display: flex;
     justify-content: center;
 }
+
+
+/* 관리자 페이지 CSS */
+.admin_main_div {
+    display: flex;
+    justify-content: center;
+    background-color: orange;
+    height: 600px;
+}
+.admin_navbar {
+    width: 200px;
+    background-color: green;
+
+}
+
+.admin_content {
+    width: 800px;
+    background-color: red;
+}
+
+.admin_navbar div {
+    background-color: grey;
+    height: 40px;
+}
+.date-div {
+    display: flex;
+    justify-content: center;
+}

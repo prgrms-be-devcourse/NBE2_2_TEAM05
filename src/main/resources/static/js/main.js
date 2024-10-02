@@ -39,7 +39,7 @@ document.getElementById('fetch-cart-btn').addEventListener('click', function() {
         })
         .then(data => {
             // 데이터를 화면에 표시
-            console.log('데이터 가져오기')
+            console.log(data)
             displayCartData(data);
         })
         .catch(error => {

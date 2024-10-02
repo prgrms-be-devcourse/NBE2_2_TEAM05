@@ -28,12 +28,13 @@ public class CartResponseDTO {
                 .collect(Collectors.toList());
     }
 
-    public CartResponseDTO(Cart cart, List<CartItem> savedCartItems) {
+    public CartResponseDTO(Cart cart, List<CartItem> savedCartItems, Long totalPrice) {
         this.cartId = cart.getCartId();
         this.memberId = cart.getMember().getMemberId();
         this.cartItems = savedCartItems.stream()
                 .map(cartItem -> new CartItemResponseDTO(cartItem))
                 .collect(Collectors.toList());
+        this.totalPrice = totalPrice;
     }
 
     public CartResponseDTO(Cart cart, long totalPrice) {

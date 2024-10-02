@@ -51,16 +51,17 @@ export function displayCartData(cartData) {
     cartData.cartItems.forEach(item => {
         const row = document.createElement('tr');
         row.id = `cart-item-${item.cartItemId}`;
+        const product = item.product;
 
-        const price = item.productPrice.toLocaleString();
+        const price = product.price.toLocaleString();
         const quantity = item.quantity;
-        const totalPrice = (item.productPrice * quantity).toLocaleString();
+        const totalPrice = (product.price * quantity).toLocaleString();
 
         row.innerHTML = `
             <td><input type="checkbox" name="option1" value="Option1"></td>
-            <td><img src="/uploadPath/${item.filename}" alt="이미지 없음1" class="cart_img"
+            <td><img src="/uploadPath/${product.images[0]}" alt="이미지 없음1" class="cart_img"
                      onerror="this.onerror=null; this.src='/images/image01.png';"></td>
-            <td>${item.productName}</td>
+            <td>${product.pname}</td>
             <td>${price}원</td>
             <td>
                 <div class="change_quantity_div">
@@ -69,11 +70,11 @@ export function displayCartData(cartData) {
                         <div>
                             <button class="quantity2-button increase" >▲</button>
                             <button class="quantity2-button decrease" >▼</button>
-                        </div>   
+                        </div>
                     </div>
                     <button class="cart_change_button">변경</button>
                 </div>
-               
+
             </td>
             <td>${totalPrice}원</td>
             <td><button class="remove_button">제거</button></td>
@@ -166,7 +167,7 @@ function removeCartItem(id) {
         })
         .then(data => {
             alert("삭제 완료!!");
-            const cartItemRow = document.getElementById(`cart-item-${id}`); // 각 아이템을 구분할 ID 설정 필요
+            const cartItemRow = document.getElementById(`cart-item-${id}`);
             if (cartItemRow) {
                 cartItemRow.remove();
             }
