@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -45,7 +46,7 @@ public class Product {
 
     //Product 이미지 추가
     public void addImage(String filename){
-        ProductImage productImage =ProductImage.builder().filename(filename).ino(images.size()).build();
+        ProductImage productImage = ProductImage.builder().filename(filename).ino(images.size()).build();
         images.add(productImage);
     }
 
