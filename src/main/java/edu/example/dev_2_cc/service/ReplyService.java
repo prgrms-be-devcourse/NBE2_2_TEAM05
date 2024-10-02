@@ -2,6 +2,7 @@ package edu.example.dev_2_cc.service;
 
 import edu.example.dev_2_cc.dto.reply.ReplyRequestDTO;
 import edu.example.dev_2_cc.dto.reply.ReplyResponseDTO;
+import edu.example.dev_2_cc.dto.reply.ReplyUpdateDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Reply;
@@ -55,6 +56,19 @@ public class ReplyService {
         } catch (Exception e) {
             log.error(e.getMessage());
             throw ReplyException.NOT_FOUND.get();
+        }
+    }
+
+    public ReplyResponseDTO update(ReplyUpdateDTO replyUpdateDTO){
+        Optional<Reply> foundReply = replyRepository.findById(replyUpdateDTO.getReplyId());
+        Reply reply=foundReply.orElseThrow(ReplyException.NOT_FOUND::get);
+        try {
+            reply.changeContent(replyUpdateDTO.getContent());
+
+            return new ReplyResponseDTO(replyRepository.save(reply));
+        }catch (Exception e) {
+            log.error(e.getMessage());
+            throw ReplyException.NOT_UPDATED.get();
         }
     }
 
