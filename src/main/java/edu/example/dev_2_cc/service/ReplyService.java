@@ -1,5 +1,6 @@
 package edu.example.dev_2_cc.service;
 
+import edu.example.dev_2_cc.dto.reply.ReplyListDTO;
 import edu.example.dev_2_cc.dto.reply.ReplyRequestDTO;
 import edu.example.dev_2_cc.dto.reply.ReplyResponseDTO;
 import edu.example.dev_2_cc.dto.reply.ReplyUpdateDTO;
@@ -16,7 +17,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +85,14 @@ public class ReplyService {
             log.error(e.getMessage());
             throw ReplyException.NOT_DELETED.get();
         }
+    }
+
+    public List<ReplyListDTO> list(Long boardId){
+        List<Reply> replies = replyRepository.findAllByBoard(boardId);
+
+        return replies.stream()
+                .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
+                .collect(Collectors.toList());
     }
 
 }

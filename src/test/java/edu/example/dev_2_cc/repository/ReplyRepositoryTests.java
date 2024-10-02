@@ -33,7 +33,7 @@ public class ReplyRepositoryTests {
         Member member = memberRepository.findById("member1").orElseThrow();
         Board board = boardRepository.findById(1L).orElseThrow();
 
-        Reply reply = Reply.builder().content("꿀팁 너무 좋아용~").member(member).board(board).build();
+        Reply reply = Reply.builder().content("꿀팁").member(member).board(board).build();
         Reply savedReply = replyRepository.save(reply);
 
         assertNotNull(savedReply);
