@@ -51,6 +51,13 @@ public class ProductController {
         return ResponseEntity.ok(Map.of("message", "Product deleted"));
     }
 
+    //물품 이름 별로 조회
+    @GetMapping("/listByPName/{pName}")
+    public ResponseEntity<List<ProductListDTO>> listByPName(@PathVariable("pName") String pName) {
+        List<ProductListDTO> products = productService.getListByPname(pName);
+        return ResponseEntity.ok(products);
+    }
+
 
     //뷰제작용 임시
     @GetMapping("/list")

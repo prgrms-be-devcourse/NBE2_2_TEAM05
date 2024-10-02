@@ -38,7 +38,7 @@ public class ProductService {
 
     public ProductResponseDTO read(Long productId) {
         try{
-            Optional<Product> foundProduct = productRepository.findById(productId);
+            Optional<Product> foundProduct = productRepository.getProduct(productId);
             Product product = foundProduct.get();
             return new ProductResponseDTO(product);
         }catch (Exception e){
@@ -95,6 +95,13 @@ public class ProductService {
             log.error("--- " + e.getMessage());
             throw ProductException.NOT_FOUND.get(); //임시
         }
+    }
+
+    public List<ProductListDTO> getListByPname(String pName) {
+        List<Product> products = productRepository.findBypNameContaining(pName);
+
+        return products.stream().map(ProductListDTO::new).collect(Collectors.toList());
+
     }
 
 
