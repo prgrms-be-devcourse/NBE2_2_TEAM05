@@ -1,8 +1,6 @@
 package edu.example.dev_2_cc.service;
 
-import edu.example.dev_2_cc.dto.review.ReviewRequestDTO;
-import edu.example.dev_2_cc.dto.review.ReviewResponseDTO;
-import edu.example.dev_2_cc.dto.review.ReviewUpdateDTO;
+import edu.example.dev_2_cc.dto.review.*;
 import edu.example.dev_2_cc.dto.product.ProductResponseDTO;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Product;
@@ -15,6 +13,9 @@ import edu.example.dev_2_cc.repository.ProductRepository;
 import edu.example.dev_2_cc.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +57,6 @@ public class ReviewService {
         }
     }
 
-
     public ReviewResponseDTO update(ReviewUpdateDTO reviewUpdateDTO) {
         Optional<Review> foundReview = reviewRepository.findById(reviewUpdateDTO.getReviewId());
         Review review = foundReview.orElseThrow(ReviewException.NOT_FOUND::get);
@@ -95,5 +95,48 @@ public class ReviewService {
             throw ReviewException.NOT_DELETED.get();
         }
 
+    }
+
+    public Page<ReviewListDTO> getListByMemberId(String memberId, PageRequestDTO pageRequestDTO) {
+        try {
+            Sort sort = Sort.by("createdAt").descending();
+            Pageable pageable = pageRequestDTO.getPageable(sort);
+
+            Page<Review> reviews = reviewRepository.findByMember_Id(memberId, pageable);
+
+            return reviews.map(review -> new ReviewListDTO(
+                    review.getReviewId(),
+                    review.getContent(),
+                    review.getStar(),
+                    review.getMember().getMemberId(),
+                    review.getProduct().getProductId()
+            ));
+        }catch (Exception e){
+            log.error("--- " + e.getMessage());
+            throw ReviewException.NOT_FETCHED.get();
+        }
+    }
+
+    public Page<ReviewListDTO> getListByProductId(Long productId, PageRequestDTO pageRequestDTO) {
+        try {
+            Sort sort = Sort.by("reviewId").descending();
+            Pageable pageable = pageRequestDTO.getPageable(sort);
+
+            // Review를 Page로 조회
+            Page<Review> reviews = reviewRepository.findReviewsByProductId(productId, pageable);
+
+            // Review를 ReviewListDTO로 변환
+            return reviews.map(review -> new ReviewListDTO(
+                    review.getReviewId(),
+                    review.getContent(),
+                    review.getStar(),
+                    review.getMember().getMemberId(),
+                    review.getProduct().getProductId()
+            ));
+
+        } catch(Exception e) {
+            log.error("--- " + e.getMessage());
+            throw ReviewException.NOT_FOUND.get();
+        }
     }
 }

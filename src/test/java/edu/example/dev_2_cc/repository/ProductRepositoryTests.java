@@ -27,16 +27,20 @@ public class ProductRepositoryTests {
     @Test
     public void testCreate(){
         Product product = Product.builder()
-                .pName("테스트 상품5")
+                .pName("test2")
                 .price(9000L)
-                .description("테스트 상품5 설명")
-                .stock(6).build();
+                .description("test2 설명")
+                .stock(6)
+                .build();
 
         product.addImage("test.png");
         product.addImage("s_test.png");
 
         Product savedProduct = productRepository.save(product);
         assertNotNull(savedProduct);
+        assertNotNull(savedProduct.getImages());
+        assertTrue(savedProduct.getImages().contains("test.png"));
+        assertTrue(savedProduct.getImages().contains("s_test.png"));
     }
 
     @Test
@@ -54,7 +58,7 @@ public class ProductRepositoryTests {
     @Transactional
     public void testUpdate(){
         Long productId = 1L;
-        String pName = "수정테스트상품";
+        String pName = "test";
         Long price = 10000L;
         String description = "수정설명테스트";
         int stock = 15;
