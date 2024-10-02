@@ -10,6 +10,7 @@ import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,11 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     // 회원 생성
@@ -47,12 +50,13 @@ public class MemberService {
                 .email(memberRequestDTO.getEmail())
                 .phoneNumber(memberRequestDTO.getPhoneNumber())
                 .name(memberRequestDTO.getName())
-                .password(memberRequestDTO.getPassword())
+                .password(bCryptPasswordEncoder.encode(memberRequestDTO.getPassword()))
                 .sex(memberRequestDTO.getSex())
                 .address(memberRequestDTO.getAddress())
-                .role("USER") // 디폴트 role -> USER 설정
+                .role("ROLE_USER") // 디폴트 role -> USER 설정
                 .image(MemberImage.builder().filename(imageFilename).build()) // 단일 이미지 설정
                 .build();
+
 
         // 회원 정보 저장
         Member savedMember = memberRepository.save(member);
