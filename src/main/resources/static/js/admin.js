@@ -163,7 +163,7 @@ function detailProduct(id) {
                     <div>
                         <label></label>
                         <div class="d-p-d-i">
-                            <div><input type="file" id="update-image" multiple></div>
+                            <div><input type="file" id="update-image"></div>
                         </div>
                     </div><hr>
                     <div>
@@ -210,7 +210,7 @@ function detailProduct(id) {
                             // ino 정보가 필요함!!!!!!!
                             console.log('삭제할 이미지 갯수 : ', data.images.length);
                             for(let i = 0; i<data.images.length; i++){
-                                fetchDeleteProductImage(data.productId, i).then();
+                                fetchDeleteProductImage(data.productId, 0).then();
                             }
                         }
                         return Promise.resolve();
@@ -269,7 +269,7 @@ function createProduct() {
         </div><hr>
         <div>
             <label>이미지 등록</label>
-            <input type="file" id="productImage" multiple>
+            <input type="file" id="productImage">
         </div><hr>
         <div class="detail-product-buttonDiv">
             <button class="product-add-button">등록</button>
@@ -285,8 +285,7 @@ function createProduct() {
             pname: document.getElementById('productName').value,
             price: document.getElementById('productPrice').value,
             stock: document.getElementById('productStock').value,
-            description: document.getElementById('productDescription').value,
-            images: [ 'default_image.png' ]
+            description: document.getElementById('productDescription').value
         };
 
         const images = document.getElementById('productImage').files;
@@ -359,3 +358,9 @@ function clickProduct() {
     productMenu.click();
 }
 
+history.pushState(null, null, window.location.href);
+
+window.addEventListener('popstate', function(event) {
+    // 뒤로 가기를 했을 때 /admin 페이지로 리다이렉트
+    window.location.href = '/admin';
+});

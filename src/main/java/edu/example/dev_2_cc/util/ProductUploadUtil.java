@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.UUID;
 
 @Component
@@ -117,6 +118,34 @@ public class ProductUploadUtil {
         }
     }
 
+    //productId만 매개변수로 받고 해당 상품의 이미지를 전부 삭제 하는 메서드 추가
+    public void deleteAllFiles(Long productId) {
+        //Product 객체를 가지고옴
+        Product product = productRepository.findById(productId)
+                .orElseThrow(ProductException.NOT_FOUND::get);
 
+        //product 객체의 모든 이미지 가져오기
+        SortedSet<ProductImage> images = product.getImages();
 
+        if(images.isEmpty()) {
+            return;
+        }
+
+        images.forEach(image -> {
+            String filename = image.getFilename();
+
+            File file = new File(uploadPath + File.separator + filename);
+            File thumbFile = new File(uploadPath + File.separator + "s_" + filename);
+
+            try{
+                if (file.exists()) file.delete();
+                if (thumbFile.exists()) thumbFile.delete();
+            } catch (Exception e) {
+                log.error("파일 삭제 중 에러 발생: {}", e.getMessage());
+            }
+        });
+
+        images.clear();
+        productRepository.save(product);
+    }
 }
