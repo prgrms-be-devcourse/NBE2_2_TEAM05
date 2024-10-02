@@ -2,10 +2,12 @@ package edu.example.dev_2_cc.api_controller;
 
 import edu.example.dev_2_cc.dto.reply.ReplyRequestDTO;
 import edu.example.dev_2_cc.dto.reply.ReplyResponseDTO;
+import edu.example.dev_2_cc.dto.reply.ReplyUpdateDTO;
 import edu.example.dev_2_cc.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -23,6 +25,10 @@ public class ReplyController {
         return ResponseEntity.ok(replyService.createReply(replyRequestDTO));
     }
 
+    @PutMapping("/{replyId}")
+    public ResponseEntity<ReplyResponseDTO> updateReply(@PathVariable Long replyId,@Validated @RequestBody ReplyUpdateDTO replyUpdateDTO) {
+        return ResponseEntity.ok(replyService.update(replyUpdateDTO));
+    }
 
     @GetMapping("/{replyId}")
     public ResponseEntity<ReplyResponseDTO> getReply(@PathVariable("replyId") Long replyId) {

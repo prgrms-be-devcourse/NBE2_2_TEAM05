@@ -57,7 +57,6 @@ public class ReviewService {
         }
     }
 
-
     public ReviewResponseDTO update(ReviewUpdateDTO reviewUpdateDTO) {
         Optional<Review> foundReview = reviewRepository.findById(reviewUpdateDTO.getReviewId());
         Review review = foundReview.orElseThrow(ReviewException.NOT_FOUND::get);
