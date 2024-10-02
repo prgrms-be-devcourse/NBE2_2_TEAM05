@@ -40,9 +40,11 @@ public class ProductRequestDTO {
         Product product = Product.builder().pName(pName)
                 .price(price).description(description).stock(stock).build();
 
-        if(images != null || !images.isEmpty()){
+        if(images != null && !images.isEmpty()){
             images.forEach(product::addImage);
         }
+
+        product.addImage("default.jpg");
 
         return product;
     }
