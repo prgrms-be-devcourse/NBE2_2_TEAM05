@@ -83,6 +83,7 @@ public class OrderService {
                 .map(item -> {
                     Product product = productRepository.findById(item.getProductId())
                             .orElseThrow(()->new RuntimeException("Product Not Found"));// Product 조회
+                            //추후 OrderException으로 리팩토링 필요
 
                     OrderItem orderItem = new OrderItem(product, item.getQuantity());
                     orderItem.setOrders(null);

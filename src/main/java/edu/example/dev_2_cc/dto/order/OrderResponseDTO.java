@@ -36,5 +36,7 @@ public class OrderResponseDTO {
         this.orderItems = order.getOrderItems().stream()
                 .map(OrderItemResponseDTO::new) // 각 OrderItem을 OrderItemResponseDTO로 변환
                 .collect(Collectors.toList());
+        this.createdAt = order.getCreatedAt();
+        this.updatedAt = order.getUpdatedAt();
     }
 }
