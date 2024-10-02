@@ -1,0 +1,197 @@
+/* 관리자 페이지 CSS */
+:root {
+    --admin-text-color: #030066;
+    --admin-background-color: #EAEAEA;
+    --admin-nav-color : white;
+}
+
+body {
+    background-color: var(--admin-background-color);
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+hr {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    margin: 8px 0px 8px 0px;
+    user-select: none;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--admin-text-color);
+}
+
+li {
+    color: var(--admin-text-color);
+    user-select: none;
+}
+
+li:hover {
+    font-weight: bold;
+}
+.hover-active {
+    font-weight: bold;
+}
+
+.admin_main_div {
+    display: flex;
+    justify-content: center;
+    background-color: var(--admin-background-color);
+    height: 600px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.admin_navbar {
+    width: 200px;
+    background-color: var(--admin-nav-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 15px;
+    padding-top: 15px;
+    margin-right: 12px;
+}
+
+.admin_content {
+    width: 800px;
+    /*border: none;*/
+    /*border-radius: 15px;*/
+    /*background-color: var(--admin-nav-color);*/
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);*/
+
+}
+
+.admin_navbar div {
+    background-color: var(--admin-nav-color);
+    height: 40px;
+}
+.admin_navbar_logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px 10px 0px;
+    font-size: 120%;
+    color: var(--admin-text-color);
+}
+
+.admin_navbar_menu {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--admin-nav-color);
+
+}
+
+.admin_navbar_menu li {
+    background-color: var(--admin-nav-color);
+    text-align: left;
+    font-size: 120%;
+    width: 120px;
+    padding: 8px 4px 8px 4px;
+    margin-left: 20px;
+}
+
+/* 테이블 CSS 부분 */
+.table1 {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    overflow: hidden;
+}
+.table1 tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.table1 th, .table1 td {
+    padding: 15px;
+    text-align: left;
+}
+
+.table1 thead,.table1 tbody {
+    background-color: var(--admin-nav-color);
+}
+
+/* -------------- */
+
+.admin_product_div1 {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    background-color: var(--admin-nav-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.table1 button {
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: var(--admin-nav-color);
+    padding: 4px;
+}
+
+.table1 button:hover {
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.detail-product {
+    background-color: var(--admin-nav-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    border-radius: 15px;
+}
+.detail-product-hDiv {
+    padding-top: 12px;
+    padding-left: 20px;
+}
+
+.detail-product > div {
+    display: flex;
+
+}
+
+.detail-product div label {
+    width: 120px;
+    padding: 4px 12px 4px 12px;
+    text-align: right;
+    font-weight: 600;
+}
+
+
+.d-p-d-i > div {
+    margin-right: 12px;
+}
+
+.description-input {
+    width: 400px;
+    height: 200px;
+    padding-top: 2px;
+}
+.detail-product-buttonDiv {
+    display: flex;
+    justify-content: right;
+    padding-right: 20px;
+
+}
+.detail-product-buttonDiv button {
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: var(--admin-nav-color);
+    padding: 4px;
+    margin-left: 4px;
+    width: 60px;
+    font-size: 110%;
+}
+.detail-product-buttonDiv button:hover {
+    color: var(--admin-nav-color);
+    background-color: var(--admin-text-color);
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}

@@ -68,8 +68,9 @@ public class CartService {
 
                 savedCartItems.add(savedCartItem);
             }
+            Long totalPrice = cartRepository.totalPrice(savedCart.getCartId());
 
-            return new CartResponseDTO(savedCart, savedCartItems);
+            return new CartResponseDTO(savedCart, savedCartItems, totalPrice);
         } catch (Exception e) {
             log.error("예외 발생 코드 : " + e.getMessage());
             throw CartException.NOT_REGISTERED.get();
@@ -87,9 +88,18 @@ public class CartService {
 
     //전체 Cart 조회
     public List<CartResponseDTO> readAll() {
-        return cartRepository.findAll().stream()
-                .map(CartResponseDTO::new)
-                .collect(Collectors.toList());
+        List<Cart> carts = cartRepository.findAll();
+
+        List<CartResponseDTO> cartResponseList = new ArrayList<>();
+        for (Cart cart : carts) {
+            Long totalPrice = cartRepository.totalPrice(cart.getCartId());
+            cartResponseList.add(new CartResponseDTO(cart, totalPrice));
+        }
+
+        return cartResponseList;
+//        return cartRepository.findAll().stream()
+//                .map(CartResponseDTO::new)
+//                .collect(Collectors.toList());
     }
 
     //Cart 수정 - CartItem 의 수량 변경
