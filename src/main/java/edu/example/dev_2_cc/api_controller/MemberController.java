@@ -6,6 +6,7 @@ import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
 import edu.example.dev_2_cc.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cc/member")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     // 회원 생성
     @PostMapping

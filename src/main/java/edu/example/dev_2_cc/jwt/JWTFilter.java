@@ -6,21 +6,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
+@RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
-
-    public JWTFilter(JWTUtil jwtUtil) {
-
-        this.jwtUtil = jwtUtil;
-    }
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -52,11 +47,11 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        //토큰에서 username과 role 획득
+        //토큰에서 memberId와 role 획득
         String memberId = jwtUtil.getMemberId(token);
         String role = jwtUtil.getRole(token);
 
-        //userEntity를 생성하여 값 set
+        //Member를 생성하여 값 set
         Member member = new Member();
         member.setMemberId(memberId);
         member.setPassword("temppassword"); //임의로 지정해도 상관없다
@@ -65,11 +60,12 @@ public class JWTFilter extends OncePerRequestFilter {
         //UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(member);
 
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+        //사용자의 인증 정보 전달
+        Authentication userAuthentication = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        SecurityContextHolder.getContext().setAuthentication(userAuthentication);
 
+        //필터체인의 다음 필터로 요청 넘긴다
         filterChain.doFilter(request, response);
     }
 }

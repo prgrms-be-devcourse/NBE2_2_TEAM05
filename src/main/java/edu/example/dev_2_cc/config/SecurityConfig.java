@@ -37,6 +37,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+    //아래에 disabled된 설정들은 jwt에서 개별적으로 설정해줘야 되는 부분이기 때문에 작동해제 시킨다.
+
         //csrf disable
         http
                 .csrf((auth) -> auth.disable());

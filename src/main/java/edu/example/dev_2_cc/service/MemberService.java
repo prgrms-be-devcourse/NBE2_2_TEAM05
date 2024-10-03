@@ -50,7 +50,7 @@ public class MemberService {
                 .email(memberRequestDTO.getEmail())
                 .phoneNumber(memberRequestDTO.getPhoneNumber())
                 .name(memberRequestDTO.getName())
-                .password(bCryptPasswordEncoder.encode(memberRequestDTO.getPassword()))
+                .password(bCryptPasswordEncoder.encode(memberRequestDTO.getPassword())) //비밀번호는 암호화하여 전달 필수
                 .sex(memberRequestDTO.getSex())
                 .address(memberRequestDTO.getAddress())
                 .role("ROLE_USER") // 디폴트 role -> USER 설정
