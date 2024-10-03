@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -20,10 +21,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class OrderRequestDTO {
 
-    private String email;           // 사용자 이메일
-    private String name;            // 사용자 이름
-    private String address;         // 배송 주소
-    private String phoneNumber;     // 전화번호
+    private String memberId;
+
+    private Optional<String> email = Optional.empty();           // 사용자 이메일
+    private Optional<String> name = Optional.empty();           // 사용자 이름
+    private Optional<String> address = Optional.empty();           // 배송 주소
+    private Optional<String> phoneNumber = Optional.empty();           // 전화 번호
     private List<OrderItemRequestDTO> orderItems; // 주문 항목 리스트
 
 

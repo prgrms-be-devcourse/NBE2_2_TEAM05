@@ -46,11 +46,18 @@ public class Orders {
     @Builder.Default
     private List<OrderItem> orderItems= new ArrayList<>();;
 
-
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
 
+    public Orders( Member member, String email, String phoneNumber, String name, String address, List<OrderItem> orderItems) {
+        this.member = member;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+        this.address = address;
+        this.orderItems = orderItems;
+    }
 
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
