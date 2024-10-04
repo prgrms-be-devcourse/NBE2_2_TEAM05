@@ -15,6 +15,7 @@ import java.util.TreeSet;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @ToString // 테스트에서 log로 찍을 때, 보기 쉽게 출력하기 위해서 추가
 @EntityListeners(AuditingEntityListener.class)

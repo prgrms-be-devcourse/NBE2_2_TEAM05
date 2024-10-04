@@ -6,8 +6,10 @@ import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
 import edu.example.dev_2_cc.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cc/member")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     // 회원 생성
     @PostMapping
@@ -44,6 +43,7 @@ public class MemberController {
     ) {
         return ResponseEntity.ok(memberService.readMember(memberId));
     }
+
 
     // 마이페이지 내에서 회원의 직접 정보 수정
     @PutMapping("/{memberId}")
@@ -72,6 +72,13 @@ public class MemberController {
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(("Error deleting member"));
         }
+    }
+
+    //인가 설정이 잘 되었는지 확인하는 임시 api
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/user")
+    public String userP(){
+        return "user";
     }
 
 }
