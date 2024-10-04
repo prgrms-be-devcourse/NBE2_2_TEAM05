@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -31,7 +32,10 @@ public class BoardController {
     }
   
     @PostMapping
-    public ResponseEntity<BoardResponseDTO> createBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
+    public ResponseEntity<BoardResponseDTO> createBoard(@Validated @RequestBody BoardRequestDTO boardRequestDTO) {
+        log.info("=============================");
+        log.info(boardRequestDTO);
+
         return ResponseEntity.ok(boardService.createBoard(boardRequestDTO));
     }
 

@@ -3,8 +3,12 @@ package edu.example.dev_2_cc.dto.board;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Category;
 import edu.example.dev_2_cc.entity.Member;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +17,8 @@ public class BoardRequestDTO {
     private String memberId;
     private String title;
     private String description;
+
+    @NotNull(message = "null이 될 수 없다.")
     private Category category;
 
     public BoardRequestDTO(Board board) {

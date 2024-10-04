@@ -35,7 +35,15 @@ public class BoardService {
     public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
         try {
             String memberId = boardRequestDTO.getMemberId();
-
+            if (boardRequestDTO.getTitle() == null || boardRequestDTO.getTitle().isEmpty()) {
+                throw BoardException.INVALID_TITLE.get();
+            }
+            if(boardRequestDTO.getDescription() == null || boardRequestDTO.getDescription().isEmpty()) {
+                throw BoardException.INVALID_DESCRIPTION.get();
+            }
+            if(boardRequestDTO.getCategory() == null) {
+                throw BoardException.INVALID_CATEGORY.get();
+            }
             Member member = memberRepository.findById(memberId).orElseThrow();
 
             Board board = boardRequestDTO.toEntity(member);
@@ -55,6 +63,12 @@ public class BoardService {
         Board board = foundBoard.orElseThrow(BoardException.NOT_FOUND::get);
 
         try {
+            if (boardUpdateDTO.getTitle() == null || boardUpdateDTO.getTitle().isEmpty()) {
+                throw BoardException.INVALID_TITLE.get();
+            }
+            if(boardUpdateDTO.getDescription() == null || boardUpdateDTO.getDescription().isEmpty()) {
+                throw BoardException.INVALID_DESCRIPTION.get();
+            }
             board.changeTitle(boardUpdateDTO.getTitle());
             board.changeDescription(boardUpdateDTO.getDescription());
             board.changeCategory(boardUpdateDTO.getCategory());
@@ -103,5 +117,4 @@ public class BoardService {
         }
 
     }
-
 }

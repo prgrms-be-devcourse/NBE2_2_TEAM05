@@ -29,6 +29,8 @@ public class Board {
 
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
     private String fileName;
 
