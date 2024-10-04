@@ -49,5 +49,10 @@ public class ReplyController {
         return ResponseEntity.ok(replies);
     }
 
-    
+    // Member ID 로 Reply 리스트 조회
+    @GetMapping("/listByMember/{memberId}")
+    public ResponseEntity<List<ReplyListDTO>> listByMemberId(@PathVariable("memberId") Long memberId) {
+        List<ReplyListDTO> replies = replyService.listByMemberId(memberId);
+        return ResponseEntity.ok(replies);
+    }
 }
