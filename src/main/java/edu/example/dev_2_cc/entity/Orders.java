@@ -43,8 +43,9 @@ public class Orders {
     private String address;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
-    private List<OrderItem> orderItems= new ArrayList<>();;
+    private List<OrderItem> orderItems= new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

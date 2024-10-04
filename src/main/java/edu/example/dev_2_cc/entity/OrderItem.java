@@ -37,4 +37,10 @@ public class OrderItem {
         }
     }
 
+    public OrderItem(Product product, int quantity, Orders orders) {
+        this.product = product;
+        this.quantity = quantity;
+        this.orders = orders; // Orders 참조 초기화
+    }
+
 }

@@ -1,5 +1,6 @@
 package edu.example.dev_2_cc.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.example.dev_2_cc.entity.Product;
 import edu.example.dev_2_cc.entity.ProductImage;
 import jakarta.validation.constraints.Min;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ProductRequestDTO {
 
+    @JsonProperty("pName")
     private String pName;
 
     @Min(0)
