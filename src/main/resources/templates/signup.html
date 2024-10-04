@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script th:src="@{/js/main.js}" defer></script>
     <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
     <title>회원가입</title>
 </head>
@@ -50,7 +49,7 @@
                     <div>
                         <label for="inputImage">이미지</label>
                         <input type="file" id="inputImage">
-                    </div>
+                    </div><hr>
                     <div>
                         <label></label>
                         <button class="signup-btn">회원 가입</button>
@@ -60,38 +59,62 @@
         </div>
     </main>
     <script>
-        const memberCreate = document.querySelector('.signup-btn');
-
-        memberCreate.addEventListener('click', () => {
-            const checkbox1 = document.getElementById("cb-male");
-            const checkbox2 = document.getElementById("cb-female");
-            let selectSex ="";
-            if (checkbox1.checked) {
-                selectSex = checkbox1.value;
-            } else if (checkbox2.checked) {
-                selectSex = checkbox2.value;
-            }
-
-            const member = {
-                memberId: document.getElementById('inputMemberId').value,
-                password: document.getElementById('inputMemberPw').value,
-                name: document.getElementById('inputName').value,
-                sex: selectSex,
-                email: document.getElementById('inputEmail').value,
-                address: document.getElementById('inputAddress').value,
-                phoneNumber: document.getElementById('inputPhone').value
-            }
-
-            alert(member);
-            console.log(member);
-        });
-
         function onlyOneCheckbox(checkbox) {
             const checkboxes = document.querySelectorAll('input[name="sex"]');
             checkboxes.forEach((cb) => {
-                if (cb !== checkbox) cb.checked = false;  // 선택한 체크박스를 제외한 나머지 체크박스는 해제
+                if (cb !== checkbox) cb.checked = false;
             });
         }
+
+        const memberCreate = document.querySelector('.signup-btn');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            memberCreate.addEventListener('click', () => {
+                const checkbox1 = document.getElementById("cb-male");
+                const checkbox2 = document.getElementById("cb-female");
+                let selectSex ="";
+                if (checkbox1.checked) {
+                    selectSex = checkbox1.value;
+                } else if (checkbox2.checked) {
+                    selectSex = checkbox2.value;
+                }
+
+                const member = {
+                    memberId: document.getElementById('inputMemberId').value,
+                    password: document.getElementById('inputMemberPw').value,
+                    name: document.getElementById('inputName').value,
+                    sex: selectSex,
+                    email: document.getElementById('inputEmail').value,
+                    address: document.getElementById('inputAddress').value,
+                    phoneNumber: document.getElementById('inputPhone').value
+                }
+                console.info(member);
+                fetchCreateMember(member);
+
+                window.location.href = '/login';
+            });
+        });
+
+        function fetchCreateMember(member) {
+            fetch(`/cc/member`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(member)
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('에러발생!!');
+                }
+                return response.json();
+            }).then(responseData => {
+                console.log('responseData: ', responseData);
+                return responseData;
+            }).catch(error => {
+                console.error('Fetch error :', error);
+            });
+        }
+
     </script>
 </body>
 </html>

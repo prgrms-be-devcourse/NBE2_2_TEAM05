@@ -40,7 +40,15 @@
 
 
 export function fetchProducts() {
-    fetch('/cc/product/list')
+    const jwtToken = localStorage.getItem('jwtToken');
+    console.log(jwtToken);
+    fetch('/cc/product/list', {
+        method: 'GET',
+        headers: {
+            'Authorization' : `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        }
+    })
         .then(response => response.json())
         .then(data => {
             console.log(data);

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script th:src="@{/js/main.js}" defer></script>
     <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
     <title>로그인</title>
 </head>
@@ -28,11 +27,45 @@
                     </div>
                     <div>
                         <label></label>
-                        <button>로그인</button>
+                        <button id="login-btn">로그인</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <script>
+        // document.getElementById("login-btn").addEventListener("click", function() {
+        //     const formData = new FormData();
+        //     formData.append('memberId', document.getElementById('inputMemberId').value);
+        //     formData.append('password', document.getElementById('inputMemberPw').value);
+        //
+        //     fetch('/login', {
+        //         method: 'POST',
+        //         body: formData
+        //     }).then(response => {
+        //         if (!response.ok) {
+        //             return response.text().then(text => {
+        //                 throw new Error('로그인 실패: ' + text);
+        //             });
+        //         }
+        //         const token = response.headers.get('Authorization');
+        //
+        //         if (token) {
+        //             const jwtToken = token.startsWith('Bearer ') ? token.split(' ')[1] : token;
+        //             localStorage.setItem('jwtToken', jwtToken);  // JWT 토큰을 저장
+        //             alert("로그인 성공!!");
+        //
+        //             // 로그인 성공 후 /app 페이지로 이동
+        //             window.location.href = "/app";
+        //         } else {
+        //             throw new Error('Authorization 헤더에 토큰이 없습니다.');
+        //         }
+        //
+        //     }).catch(error => {
+        //         console.error('에러:', error);
+        //         alert("로그인 실패");
+        //     });
+        // });
+    </script>
 </body>
 </html>
