@@ -1,5 +1,6 @@
 import { fetchProduct, fetchProducts } from "./product.js";
 import { displayCartData } from "./cart.js";
+
 const toggleBtn = document.querySelector('.navbar__toogleBtn');
 const menu = document.querySelector('.navbar__menu');
 const icons = document.querySelector('.navbar__menu2');
@@ -8,6 +9,8 @@ toggleBtn.addEventListener('click', () => {
     menu.classList.toggle('active');
     icons.classList.toggle('active');
 });
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchProducts();

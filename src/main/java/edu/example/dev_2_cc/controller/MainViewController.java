@@ -21,4 +21,14 @@ public class MainViewController {
     public String adminProductPage() {
         return "admin_product";
     }
+
+    @GetMapping("/signup")
+    public String signupPage() {
+        return "signup";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
 }

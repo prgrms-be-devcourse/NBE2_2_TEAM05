@@ -46,7 +46,7 @@ public class ProductFileController {
         return ResponseEntity.ok(Map.of("message", "Product Image deleted"));
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/{productId}") //모든 파일을 삭제하는 경로
     public ResponseEntity<Map<String, String>> deleteAllFiles(@PathVariable Long productId) {
         productUploadUtil.deleteAllFiles(productId);
         return ResponseEntity.ok(Map.of("message", "Product Images deleted"));
