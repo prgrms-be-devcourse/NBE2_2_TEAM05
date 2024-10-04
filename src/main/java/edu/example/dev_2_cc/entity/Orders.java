@@ -48,7 +48,8 @@ public class Orders {
     private List<OrderItem> orderItems= new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    @Builder.Default
+    private OrderStatus orderStatus = OrderStatus.APPROVED;
 
 
     public Orders( Member member, String email, String phoneNumber, String name, String address, List<OrderItem> orderItems) {

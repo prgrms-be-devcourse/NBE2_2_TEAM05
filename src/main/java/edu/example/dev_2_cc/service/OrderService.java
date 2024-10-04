@@ -73,7 +73,15 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         // 오더 엔티티 생성
-        Orders order = new Orders(foundMember, email, name, address, phoneNumber, orderItems);
+//        Orders order = new Orders(foundMember, email, name, address, phoneNumber, orderItems);
+        Orders order = Orders.builder()
+                .member(foundMember)
+                .email(email)
+                .name(name)
+                .address(address)
+                .phoneNumber(phoneNumber)
+                .orderItems(orderItems) // orderItems는 리스트로 추가
+                .build();
         log.info("Order contains " + order.getOrderItems().size() + " items before saving.");
 
         //주문 저장
