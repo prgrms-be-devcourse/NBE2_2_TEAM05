@@ -1,6 +1,7 @@
 package edu.example.dev_2_cc.jwt;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,9 @@ import java.util.Date;
 public class JWTUtil {
     private SecretKey secretKey;
 
-    public JWTUtil(@Value("${spring.jwt.secret}")String secretKey) {
+    public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
 
-        this.secretKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }   //양방향 대칭키 방식 사용 : HS256
 
     //MemberId 확인 메서드
