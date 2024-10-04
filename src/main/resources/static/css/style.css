@@ -382,3 +382,32 @@ footer {
     display: flex;
     justify-content: center;
 }
+
+.signup-div {
+    /*background-color: red;*/
+    display: flex;
+    justify-content: center;
+}
+.signup-div-content {
+    background-color: white;
+    width: 400px;
+}
+.signup-div-content > div {
+    display: flex;
+    margin-bottom: 20px;
+}
+.signup-div-content label {
+    font-size: 110%;
+    width: 100px;
+    padding-right: 16px;
+    text-align: right;
+}
+
+.sd-input {
+    font-size: 110%;
+    width: 200px;
+    height: 20px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}

@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/app")
 public class MainViewController {
 
-    @GetMapping("/app")
+    @GetMapping
     public String homePage(){
         return "index";
     }
@@ -20,5 +21,15 @@ public class MainViewController {
     @GetMapping("/admin/product")
     public String adminProductPage() {
         return "admin_product";
+    }
+
+    @GetMapping("/signup")
+    public String signupPage() {
+        return "signup";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 }

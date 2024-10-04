@@ -100,10 +100,10 @@ export function  fetchUploadProductImage(id, images) {
         });
 }
 
-export function fetchDeleteProductImage(productId, ino) {
+export function fetchDeleteProductImage(productId) {
     console.log('삭제할 productId : ', productId);
-    console.log('삭제할 ino : ', ino);
-    return fetch(`/cc/productImage/${productId}/${ino}`, {
+    console.log('삭제할 ino : ');
+    return fetch(`/cc/productImage/${productId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -140,4 +140,8 @@ export function fetchDeleteProduct(id) {
     }).catch(error => {
         console.error('Fetch error', error);
     });
+}
+
+export function fetchCreateMember(member) {
+
 }

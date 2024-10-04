@@ -207,15 +207,15 @@ function detailProduct(id) {
                 fetchUpdateProduct(product)
                     .then(() => {
                         if(images.length > 0) {
-                            // ino 정보가 필요함!!!!!!!
-                            console.log('삭제할 이미지 갯수 : ', data.images.length);
-                            for(let i = 0; i<data.images.length; i++){
-                                fetchDeleteProductImage(data.productId, 0).then();
-                            }
+                            // console.log('삭제할 이미지 갯수 : ', data.images.length);
+                            // for(let i = 0; i<data.images.length; i++){
+                            //     fetchDeleteProductImage(data.productId).then();
+                            // }
+                            const deletePromises = data.images.map(() => fetchDeleteProductImage(data.productId));
+                            return Promise.all(deletePromises);
+                        } else{
+                            return Promise.resolve();
                         }
-                        return Promise.resolve();
-                        // const deleteRequests = data.images.map((_, i) => fetchDeleteProductImage(data.productId, i));
-                        // return Promise.all(deleteRequests);
                     })
                     .then(() => {
                         return fetchUploadProductImage(data.productId, images);
@@ -293,7 +293,7 @@ function createProduct() {
         fetchCreateProduct(product).then(data => {
             console.log('data : ', data);
             if (images.length > 0) {
-                return fetchDeleteProductImage(data.productId, 0) // 이미지 삭제
+                return fetchDeleteProductImage(data.productId) // 이미지 삭제
                     .then(() => {
                         // 삭제가 완료된 후 업로드 진행
                         return fetchUploadProductImage(data.productId, images);
