@@ -4,12 +4,13 @@ import edu.example.dev_2_cc.dto.order.OrderRequestDTO;
 import edu.example.dev_2_cc.dto.order.OrderResponseDTO;
 import edu.example.dev_2_cc.dto.order.OrderUpdateDTO;
 import edu.example.dev_2_cc.dto.orderItem.OrderItemResponseDTO;
-import edu.example.dev_2_cc.entity.OrderItem;
-import edu.example.dev_2_cc.entity.Orders;
-import edu.example.dev_2_cc.entity.Product;
+import edu.example.dev_2_cc.entity.*;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.OrderException;
 import edu.example.dev_2_cc.exception.OrderTaskException;
+import edu.example.dev_2_cc.exception.ProductException;
+import edu.example.dev_2_cc.repository.MemberRepository;
+import edu.example.dev_2_cc.repository.OrderItemRepository;
 import edu.example.dev_2_cc.repository.OrderRepository;
 import edu.example.dev_2_cc.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,18 +29,69 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final MemberRepository memberRepository;
+    private final OrderItemRepository orderItemRepository;
 
     // 주문 생성
     public Orders createOrder(OrderRequestDTO orderRequestDTO) {
-        // OrderRequestDTO를 Orders 엔티티로 변환
-        Orders order = toEntity(orderRequestDTO);
-        // 주문을 DB에 저장 (저장 후 ID가 생성됨)
-        Orders savedOrder = orderRepository.save(order);
 
-        // OrderItem과 Orders 객체 연결
-        savedOrder.getOrderItems().forEach(item -> item.setOrders(savedOrder));
+        //member 테이블에 있는지 없는지 확인 -> 없으면 예외
+        Member foundMember = memberRepository.findById(orderRequestDTO.getMemberId()).orElseThrow(MemberException.NOT_FOUND::get);
+
+        //각각 requestBody에 썼으면 그걸로, 비어 있으면 member에 저장되어 있는 정보들로
+        String email = orderRequestDTO.getEmail().orElse(foundMember.getEmail());
+        String name = orderRequestDTO.getName().orElse(foundMember.getName());
+        String address = orderRequestDTO.getAddress().orElse(foundMember.getAddress());
+        String phoneNumber = orderRequestDTO.getPhoneNumber().orElse(foundMember.getPhoneNumber());
+
+        // 각 상품에 대한 재고 확인 (forEach 사용)
+        orderRequestDTO.getOrderItems().forEach(orderItemDTO -> {
+            Product foundProduct = productRepository.findById(orderItemDTO.getProductId())
+                    .orElseThrow(ProductException.NOT_FOUND::get);
+
+            // 재고 부족 시 예외 발생
+            if (foundProduct.getStock() < orderItemDTO.getQuantity()) {
+                throw OrderException.NOT_ENOUGH_STOCK.get();
+            }
+
+            foundProduct.changeStock(foundProduct.getStock() - orderItemDTO.getQuantity());
+            productRepository.save(foundProduct);
+
+        });
+
+        // orderItem 리스트 생성
+        List<OrderItem> orderItems = orderRequestDTO.getOrderItems().stream()
+                .map(orderItemDTO -> {
+                    // 상품을 다시 조회
+                    Product foundProduct = productRepository.findById(orderItemDTO.getProductId())
+                            .orElseThrow(ProductException.NOT_FOUND::get);
+
+                    OrderItem orderItem = new OrderItem(foundProduct, orderItemDTO.getQuantity(), null);
+
+                    return orderItem;
+                })
+                .collect(Collectors.toList());
+
+        // 오더 엔티티 생성
+//        Orders order = new Orders(foundMember, email, name, address, phoneNumber, orderItems);
+        Orders order = Orders.builder()
+                .member(foundMember)
+                .email(email)
+                .name(name)
+                .address(address)
+                .phoneNumber(phoneNumber)
+                .orderItems(orderItems) // orderItems는 리스트로 추가
+                .build();
+        log.info("Order contains " + order.getOrderItems().size() + " items before saving.");
+
+        //주문 저장
+        Orders savedOrder = orderRepository.save(order);
+        log.info("Order saved with ID: " + savedOrder.getOrderId());
+
+        savedOrder.getOrderItems().forEach(orderItem -> orderItem.setOrders(savedOrder));
 
         return savedOrder;
+
     }
 
     // 전체 주문 조회
@@ -69,9 +121,26 @@ public class OrderService {
         Orders order = orderRepository.findById(orderId)
                 .orElseThrow(() -> OrderException.NOT_FOUND.get());
 
+        log.info("Order ID: " + order.getOrderId() + " has " + order.getOrderItems().size() + " items.");
+
+        if(order.getOrderStatus() == OrderStatus.DELIVERED) {
+            throw OrderException.ALREADY_DELIVERED.get();
+        }
+
+        order.getOrderItems().forEach(orderItem -> {
+            log.info("productId : " + orderItem.getProduct().getProductId() + " quantity : " + orderItem.getQuantity() );
+            Product product = orderItem.getProduct();
+            product.changeStock(product.getStock() + orderItem.getQuantity());
+
+            productRepository.save(product);
+        });
+
+        // 주문 항목 삭제
+        order.getOrderItems().forEach(orderItem -> {
+            orderItemRepository.delete(orderItem); // orderItemRepository를 사용해 삭제
+        });
+
         orderRepository.delete(order);
-
-
     }
 
     // toEntity 메서드
@@ -92,10 +161,10 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         Orders order = Orders.builder()
-                .email(orderRequestDTO.getEmail())
-                .name(orderRequestDTO.getName())
-                .address(orderRequestDTO.getAddress())
-                .phoneNumber(orderRequestDTO.getPhoneNumber())
+                .email(orderRequestDTO.getEmail().orElseThrow())
+                .name(orderRequestDTO.getName().orElseThrow())
+                .address(orderRequestDTO.getAddress().orElseThrow())
+                .phoneNumber(orderRequestDTO.getPhoneNumber().orElseThrow())
                 .orderItems(items)
                 .build();
 

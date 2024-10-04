@@ -43,14 +43,23 @@ public class Orders {
     private String address;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
-    private List<OrderItem> orderItems= new ArrayList<>();;
-
+    private List<OrderItem> orderItems= new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    @Builder.Default
+    private OrderStatus orderStatus = OrderStatus.APPROVED;
 
 
+    public Orders( Member member, String email, String phoneNumber, String name, String address, List<OrderItem> orderItems) {
+        this.member = member;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+        this.address = address;
+        this.orderItems = orderItems;
+    }
 
     public void changeOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;

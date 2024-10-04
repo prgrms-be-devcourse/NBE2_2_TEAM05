@@ -1,5 +1,6 @@
 package edu.example.dev_2_cc.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+
+    @JsonProperty("pName")
+    @Column(name = "p_name")
     private String pName;
     private Long price;
     private String description;

@@ -7,6 +7,8 @@ public enum OrderException {
     NOT_REMOVED("NOT_REMOVED", 400),
     DUPLICATE("DUPLICATE", 409),
     INVALID("INVALID", 400),
+    NOT_ENOUGH_STOCK("NOT_ENOUGH_STOCK", 400),
+    ALREADY_DELIVERED("ALREADY_DELIVERED", 400),
     BAD_CREDENTIALS("BAD_CREDENTIALS", 401);
 
     private OrderTaskException orderTaskException;
