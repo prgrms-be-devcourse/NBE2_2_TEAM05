@@ -46,6 +46,12 @@ public class ProductFileController {
         return ResponseEntity.ok(Map.of("message", "Product Image deleted"));
     }
 
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Map<String, String>> deleteAllFiles(@PathVariable Long productId) {
+        productUploadUtil.deleteAllFiles(productId);
+        return ResponseEntity.ok(Map.of("message", "Product Images deleted"));
+    }
+
     //업로드 파일 확장자 체크
     public void checkFileExt(String filename) throws UploadNotSupportedException {
         String ext = filename.substring(filename.lastIndexOf("." )+ 1); //이미지 파일 확장자
