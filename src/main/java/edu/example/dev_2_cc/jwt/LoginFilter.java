@@ -58,11 +58,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        //받아온 내용으로 token 생성
-        String token = jwtUtil.createJwt(memberId, role, 60*60*10L);
+        //받아온 내용으로 Access Token과 Refresh Token 생성
+        String accessToken = jwtUtil.createAccessToken(memberId, role, 1000*(60*60*10L)); //10시간 유효
+        String refreshToken = jwtUtil.createRefreshToken(1000 * (60 * 60 * 24 * 7L));  // 7일 유효
 
         //응답의 헤더부분에 표시
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Authorization", "Bearer " + accessToken);
+        response.addHeader("RefreshToken", refreshToken);
     }
 
     //로그인 실패시 실행하는 메서드
