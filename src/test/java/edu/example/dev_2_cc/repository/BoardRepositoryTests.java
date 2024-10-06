@@ -44,7 +44,7 @@ public class BoardRepositoryTests {
                 .title("테스트제목1")
                 .description("테스트설명1")
                 .category(Category.TIP)
-                .fileName("1234")
+//                .fileName("1234")
                 .build();
         Board savedBoard = boardRepository.save(board);
 
