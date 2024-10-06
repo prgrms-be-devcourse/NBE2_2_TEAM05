@@ -20,4 +20,5 @@ public class ReplyListDTO {
         this.memberId = reply.getMember().getMemberId();
         this.boardId = reply.getBoard().getBoardId();
     }
+
 }

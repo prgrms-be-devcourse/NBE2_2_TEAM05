@@ -30,14 +30,13 @@ public class ReplyRepositoryTests {
 
     @Test
     public void testCreate(){
-        Member member = memberRepository.findById("member1").orElseThrow();
+        Member member = memberRepository.findById("lego").orElseThrow();
         Board board = boardRepository.findById(1L).orElseThrow();
 
         Reply reply = Reply.builder().content("꿀팁").member(member).board(board).build();
         Reply savedReply = replyRepository.save(reply);
 
         assertNotNull(savedReply);
-
     }
 
 }

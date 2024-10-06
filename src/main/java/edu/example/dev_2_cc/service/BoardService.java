@@ -4,11 +4,14 @@ import edu.example.dev_2_cc.dto.board.BoardListDTO;
 import edu.example.dev_2_cc.dto.board.BoardRequestDTO;
 import edu.example.dev_2_cc.dto.board.BoardResponseDTO;
 import edu.example.dev_2_cc.dto.board.BoardUpdateDTO;
+import edu.example.dev_2_cc.dto.reply.ReplyListDTO;
 import edu.example.dev_2_cc.dto.review.PageRequestDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
+import edu.example.dev_2_cc.entity.Reply;
 import edu.example.dev_2_cc.entity.Review;
 import edu.example.dev_2_cc.exception.BoardException;
+import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.ReviewException;
 import edu.example.dev_2_cc.repository.BoardRepository;
 import edu.example.dev_2_cc.repository.MemberRepository;
@@ -21,7 +24,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,20 +35,11 @@ import java.util.Optional;
 public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-    private final ProductRepository productRepository;
 
     public BoardResponseDTO createBoard(BoardRequestDTO boardRequestDTO) {
         try {
             String memberId = boardRequestDTO.getMemberId();
-            if (boardRequestDTO.getTitle() == null || boardRequestDTO.getTitle().isEmpty()) {
-                throw BoardException.INVALID_TITLE.get();
-            }
-            if(boardRequestDTO.getDescription() == null || boardRequestDTO.getDescription().isEmpty()) {
-                throw BoardException.INVALID_DESCRIPTION.get();
-            }
-            if(boardRequestDTO.getCategory() == null) {
-                throw BoardException.INVALID_CATEGORY.get();
-            }
+
             Member member = memberRepository.findById(memberId).orElseThrow();
 
             Board board = boardRequestDTO.toEntity(member);
@@ -54,21 +50,13 @@ public class BoardService {
             log.error(e.getMessage());
             throw BoardException.NOT_CREATED.get();
         }
-
     }
-
 
     public BoardResponseDTO updateBoard(BoardUpdateDTO boardUpdateDTO) {
         Optional<Board> foundBoard = boardRepository.findById(boardUpdateDTO.getBoardId());
         Board board = foundBoard.orElseThrow(BoardException.NOT_FOUND::get);
 
         try {
-            if (boardUpdateDTO.getTitle() == null || boardUpdateDTO.getTitle().isEmpty()) {
-                throw BoardException.INVALID_TITLE.get();
-            }
-            if(boardUpdateDTO.getDescription() == null || boardUpdateDTO.getDescription().isEmpty()) {
-                throw BoardException.INVALID_DESCRIPTION.get();
-            }
             board.changeTitle(boardUpdateDTO.getTitle());
             board.changeDescription(boardUpdateDTO.getDescription());
             board.changeCategory(boardUpdateDTO.getCategory());
@@ -78,19 +66,17 @@ public class BoardService {
             log.error(e.getMessage());
             throw BoardException.NOT_UPDATED.get();
         }
-
     }
 
-  
     public BoardResponseDTO read(Long boardId) {
-          try {
-              Optional<Board> foundBoard = boardRepository.findById(boardId);
-              Board board = foundBoard.get();
-              return new BoardResponseDTO(board);
-          } catch (Exception e) {
-              log.error(e.getMessage());
-              throw BoardException.NOT_FOUND.get();
-          }
+        try {
+            Optional<Board> foundBoard = boardRepository.findById(boardId);
+            Board board = foundBoard.get();
+            return new BoardResponseDTO(board);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw BoardException.NOT_FOUND.get();
+        }
     }
 
     public Page<BoardListDTO> getList(PageRequestDTO pageRequestDTO) {
@@ -115,6 +101,19 @@ public class BoardService {
             log.error("--- " + e.getMessage());
             throw ReviewException.NOT_DELETED.get();
         }
-
     }
+
+    // Member ID 로 Reply 리스트 조회
+    public List<BoardListDTO> listByMemberId(String memberId) {
+        List<Board> boards = boardRepository.findAllByMember(memberId);
+
+        if (boards.isEmpty()) {
+            throw MemberException.NOT_FOUND.get();
+        }
+
+        return boards.stream()
+                .map(BoardListDTO::new)
+                .collect(Collectors.toList());
+    }
+
 }
