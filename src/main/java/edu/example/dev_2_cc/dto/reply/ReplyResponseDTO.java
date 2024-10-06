@@ -23,6 +23,7 @@ public class ReplyResponseDTO {
         this.memberId = reply.getMember().getMemberId();
         this.content = reply.getContent();
 
+        // 해당 멤버의 "s_"로 시작하는 썸네일 이미지 지정
         this.thumbnail = "s_" + reply.getMember().getImage().getFilename();
 
         this.createdAt = reply.getCreatedAt();

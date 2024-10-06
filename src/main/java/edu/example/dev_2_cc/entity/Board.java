@@ -34,7 +34,11 @@ public class Board {
 
     @Enumerated(EnumType.STRING)
     private Category category;
-    private String fileName;
+
+    // Board 이미지 목록 필드
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<BoardImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("createdAt ASC") // 댓글을 생성일 순으로 조회
@@ -62,8 +66,16 @@ public class Board {
         this.category = category;
     }
 
-    public void changeFileName(String fileName) {
-        this.fileName = fileName;
+    // 이미지 추가
+    public void addImage(BoardImage image) {
+        images.add(image);
+        image.setBoard(this); // 양방향 연관관계 설정
+    }
+
+    // 이미지 삭제
+    public void removeImage(BoardImage image) {
+        images.remove(image);
+        image.setBoard(null); // 양방향 연관관계 해제
     }
 
 }
