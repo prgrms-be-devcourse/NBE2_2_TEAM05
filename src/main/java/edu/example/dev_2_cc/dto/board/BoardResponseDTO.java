@@ -15,6 +15,7 @@ public class BoardResponseDTO {
     private String description;
     private Category category;
     private String memberId;
+    private String thumbnail; // 썸네일 필드 추가
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -24,8 +25,12 @@ public class BoardResponseDTO {
         this.description = board.getDescription();
         this.category = board.getCategory();
         this.memberId = board.getMember().getMemberId();
+
+        this.thumbnail = "s_" + board.getMember().getImage().getFilename();
+        // 해당 멤버의 "s_"로 시작하는 썸네일 이미지 지정
+
         this.createdAt = board.getCreatedAt();
         this.updatedAt = board.getUpdatedAt();
-
     }
+
 }

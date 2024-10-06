@@ -17,16 +17,15 @@ public class BoardRequestDTO {
     private String memberId;
     private String title;
     private String description;
-
-    @NotNull(message = "null이 될 수 없다.")
     private Category category;
 
-    public BoardRequestDTO(Board board) {
-        this.memberId = board.getMember().getMemberId();
-        this.title = board.getTitle();
-        this.description = board.getDescription();
-        this.category = board.getCategory();
-    }
+    // 사용하지 않아서 일단 주석처리 했습니다.
+//    public BoardRequestDTO(Board board) {
+//        this.memberId = board.getMember().getMemberId();
+//        this.title = board.getTitle();
+//        this.description = board.getDescription();
+//        this.category = board.getCategory();
+//    }
 
     public Board toEntity(Member member){
         Board board = Board.builder().member(member).title(this.title).description(this.description).category(this.category).build();
