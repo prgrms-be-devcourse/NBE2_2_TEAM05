@@ -24,6 +24,7 @@ public class MemberController {
 
     // 회원 생성
     @PostMapping
+    @PreAuthorize("isAnonymous()")
     public ResponseEntity<MemberResponseDTO> createMember(
             @Validated @RequestBody MemberRequestDTO memberRequestDTO) {
         return ResponseEntity.ok(memberService.create(memberRequestDTO));
