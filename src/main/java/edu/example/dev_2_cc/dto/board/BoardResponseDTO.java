@@ -1,11 +1,15 @@
 package edu.example.dev_2_cc.dto.board;
 
+import edu.example.dev_2_cc.dto.reply.ReplyListDTO;
+import edu.example.dev_2_cc.dto.reply.ReplyResponseDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +22,7 @@ public class BoardResponseDTO {
     private String thumbnail; // 썸네일 필드 추가
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<ReplyResponseDTO> replies; // 댓글 리스트 필드 추가
 
     public BoardResponseDTO(Board board) {
         this.boardId = board.getBoardId();
@@ -31,6 +36,11 @@ public class BoardResponseDTO {
 
         this.createdAt = board.getCreatedAt();
         this.updatedAt = board.getUpdatedAt();
+
+        // 댓글 리스트를 ReplyListDTO로 변환하여 추가
+        this.replies = board.getReplies().stream()
+                .map(ReplyResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
 }

@@ -10,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +36,13 @@ public class Board {
     private Category category;
     private String fileName;
 
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("createdAt ASC") // 댓글을 생성일 순으로 조회
+    @Builder.Default
+    private List<Reply> replies = new ArrayList<>();
+    // 빈 리스트로 먼저 초기화 -> 하지 않으면 null에러로 board 생성 불가
+    // builder를 사용할 때도 기본 값으로 빈 리스트를 제공 -> 하지 않으면 null에러 board 생성 불가
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -56,6 +65,5 @@ public class Board {
     public void changeFileName(String fileName) {
         this.fileName = fileName;
     }
-
 
 }
