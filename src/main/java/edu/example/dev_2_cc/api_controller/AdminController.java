@@ -1,10 +1,12 @@
 package edu.example.dev_2_cc.api_controller;
 
+import edu.example.dev_2_cc.dto.cart.CartResponseDTO;
 import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
 import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.dto.order.OrderResponseDTO;
 import edu.example.dev_2_cc.dto.order.OrderUpdateDTO;
 import edu.example.dev_2_cc.entity.Orders;
+import edu.example.dev_2_cc.service.CartService;
 import edu.example.dev_2_cc.service.MemberService;
 import edu.example.dev_2_cc.service.OrderService;
 import org.springframework.validation.annotation.Validated;
@@ -31,8 +33,10 @@ public class AdminController {
     private final ProductService productService;
     private final MemberService memberService;
     private final OrderService orderService;
-  
-    // 회원 관리
+    private final CartService cartService;
+
+    //-----------------------------------------회원 관리-----------------------------------------------------
+
     // 관리자의 회원 전체 조회
     @GetMapping("/memberlist")
     public ResponseEntity<List<MemberResponseDTO>> getAllMembers() {
@@ -63,8 +67,8 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    //------------------------------------------------상품 관리---------------------------------------------------
 
-    //상품 관리
     @PostMapping("/product")
     public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
         return ResponseEntity.ok(productService.create(productRequestDTO));
@@ -83,8 +87,16 @@ public class AdminController {
         productService.delete(productId);
         return ResponseEntity.ok(Map.of("message", "Product deleted"));
     }
+    //-----------------------------------------------장바구니----------------------------------------------------
 
-    //주문 관리
+    //Cart 전체 조회
+    @GetMapping("/cart")
+    public ResponseEntity<List<CartResponseDTO>> readAll() {
+        return ResponseEntity.ok(cartService.readAll());
+    }
+
+    //------------------------------------------------주문 관리--------------------------------------------------
+
     //주문 전체 조회
     @GetMapping("/order")
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
