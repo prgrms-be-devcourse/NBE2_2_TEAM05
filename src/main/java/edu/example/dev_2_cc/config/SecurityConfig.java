@@ -57,8 +57,10 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/login", "/","/cc/member").permitAll().requestMatchers("/cc/board/**").hasRole("USER")
-                    //.requestMatchers("/admin").hasRole("ADMIN")
+                    .requestMatchers("/login", "/","/cc/member").permitAll()
+                        .requestMatchers("/cc/board/**").hasRole("USER")
+                        .requestMatchers("/cc/product/**").permitAll()
+                    .requestMatchers("/cc/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated());
 
         //JWTFilter는 로그인 된 사용자에 대한 토큰 검증 필터이다
