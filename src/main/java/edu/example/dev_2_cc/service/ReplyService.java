@@ -7,10 +7,11 @@ import edu.example.dev_2_cc.dto.reply.ReplyUpdateDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Reply;
+import edu.example.dev_2_cc.exception.BoardException;
+import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.ReplyException;
 import edu.example.dev_2_cc.repository.BoardRepository;
 import edu.example.dev_2_cc.repository.MemberRepository;
-import edu.example.dev_2_cc.repository.ProductRepository;
 import edu.example.dev_2_cc.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -87,8 +88,13 @@ public class ReplyService {
         }
     }
 
+    // Board ID 로 Reply 리스트 조회
     public List<ReplyListDTO> list(Long boardId){
         List<Reply> replies = replyRepository.findAllByBoard(boardId);
+
+        if (replies.isEmpty()) {
+            throw BoardException.NOT_FOUND.get();
+        }
 
         return replies.stream()
                 .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
@@ -96,8 +102,12 @@ public class ReplyService {
     }
 
     // Member ID 로 Reply 리스트 조회
-    public List<ReplyListDTO> listByMemberId(Long memberId) {
+    public List<ReplyListDTO> listByMemberId(String memberId) {
         List<Reply> replies = replyRepository.findAllByMember(memberId);
+
+        if (replies.isEmpty()) {
+            throw MemberException.NOT_FOUND.get();
+        }
 
         return replies.stream()
                 .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
