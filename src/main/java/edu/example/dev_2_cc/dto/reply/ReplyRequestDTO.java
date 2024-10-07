@@ -3,6 +3,7 @@ package edu.example.dev_2_cc.dto.reply;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Reply;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.Getter;
@@ -14,12 +15,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReplyRequestDTO {
+
     private String content;
-
-    @NotEmpty
     private String memberId;
-
-    @NotEmpty
     private Long boardId;
 
     public Reply toEntity(Board board, Member member){

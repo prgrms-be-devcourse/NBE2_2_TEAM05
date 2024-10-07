@@ -63,7 +63,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.updateBoard(boardUpdateDTO));
     }
 
-    // Board 멤버 별로 조회 -> ADMIN/해당USER -> AdminController/MypageController
+    // Board 멤버 별로 조회 -> ADMIN/USER
     @GetMapping("/listByMember/{memberId}") // Member ID로 board 리스트 조회
     public ResponseEntity<List<BoardListDTO>> listByMemberId(@Validated @PathVariable("memberId") String memberId) {
         List<BoardListDTO> boards = boardService.listByMemberId(memberId);

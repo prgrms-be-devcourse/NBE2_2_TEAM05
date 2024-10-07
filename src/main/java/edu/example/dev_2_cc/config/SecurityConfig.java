@@ -62,6 +62,7 @@ public class SecurityConfig {
                                          "/cc/product/**",
                                          "/cc/review/**",
                                          "/cc/board",
+                                         "/cc/board/{boardId}", // 보드 단일 조회를 위해서 따로 추가
                                          "cc/reply").permitAll()
                         .requestMatchers("/cc/mypage/**").hasRole("USER")
                         .requestMatchers("/cc/admin/**").hasRole("ADMIN")
