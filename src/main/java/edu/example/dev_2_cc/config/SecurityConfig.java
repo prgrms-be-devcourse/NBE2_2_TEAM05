@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    //아래에 disabled된 설정들은 jwt에서 개별적으로 설정해줘야 되는 부분이기 때문에 작동해제 시킨다.
+        //아래에 disabled된 설정들은 jwt에서 개별적으로 설정해줘야 되는 부분이기 때문에 작동해제 시킨다.
 
         //csrf disable
         http
@@ -54,13 +54,21 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        //경로별 인가 작업
+        //경로별 인가 작업 -> 로그인 유무만 따짐 -> 회원 별 식별은 따로 구현 해야함
         http
                 .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/login", "/","/cc/member", "/cc/product/**", "/cc/review/**").permitAll()
+                        .requestMatchers("/login", "/",
+                                "/cc/member",
+                                "/cc/product/**",
+                                "/cc/review/**",
+                                "/cc/board",
+                                "/cc/board/{boardId}", // 보드 단일 조회를 위해서 따로 추가
+                                "cc/reply").permitAll()
                         .requestMatchers("/cc/mypage/**").hasRole("USER")
                         .requestMatchers("/cc/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated());
+                        // 컨트롤러에서 인가 처리 할때 에러 발생 -> "ROLE_ADMIN" -> "ADMIN"으로 변경
+                        // hasRole 메서드 자체가 "ROLE_"을 붙여준다고 함
+                        .anyRequest().authenticated());
 
         //JWTFilter는 로그인 된 사용자에 대한 토큰 검증 필터이다
         //LoginFilter 앞에서 동작하게 배치하여 JWTFilter가 정상적으로 작동할 경우 로그인이 되어있는 것으로 처리
@@ -76,10 +84,9 @@ public class SecurityConfig {
         //세션 설정
         http
                 .sessionManagement((session) -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
-
 
 }

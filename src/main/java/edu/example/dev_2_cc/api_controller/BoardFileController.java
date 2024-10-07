@@ -15,7 +15,7 @@ import java.util.Map;
 @Log4j2
 @RequestMapping("/cc/boardImage")
 public class BoardFileController {
-    
+
     private final BoardUploadUtil boardUploadUtil;
 
     // 다중 이미지 업로드
