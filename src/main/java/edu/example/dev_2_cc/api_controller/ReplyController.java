@@ -21,17 +21,19 @@ import java.util.Map;
 @Log4j2
 public class ReplyController {
     private final ReplyService replyService;
-  
+
     @PostMapping
     public ResponseEntity<ReplyResponseDTO> createReply(@RequestBody ReplyRequestDTO replyRequestDTO) {
         return ResponseEntity.ok(replyService.createReply(replyRequestDTO));
     }
 
     @PutMapping("/{replyId}")
-    public ResponseEntity<ReplyResponseDTO> updateReply(@PathVariable Long replyId,@Validated @RequestBody ReplyUpdateDTO replyUpdateDTO) {
+    public ResponseEntity<ReplyResponseDTO> updateReply(@PathVariable Long replyId,
+                                                        @Validated @RequestBody ReplyUpdateDTO replyUpdateDTO) {
         return ResponseEntity.ok(replyService.update(replyUpdateDTO));
     }
 
+    // 댓글번호로 조회 기능은 사용하지 않을 확률이 있음
     @GetMapping("/{replyId}")
     public ResponseEntity<ReplyResponseDTO> getReply(@PathVariable("replyId") Long replyId) {
         return ResponseEntity.ok(replyService.read(replyId));
@@ -44,15 +46,16 @@ public class ReplyController {
     }
 
     @GetMapping("/listByBoard/{boardId}")
-    public ResponseEntity<List<ReplyListDTO>> listByBoardId(@PathVariable("boardId") Long boardId) {
+    public ResponseEntity<List<ReplyListDTO>> listByBoardId(@Validated @PathVariable("boardId") Long boardId) {
         List<ReplyListDTO> replies = replyService.list(boardId);
         return ResponseEntity.ok(replies);
     }
 
     // Member ID 로 Reply 리스트 조회
     @GetMapping("/listByMember/{memberId}")
-    public ResponseEntity<List<ReplyListDTO>> listByMemberId(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity<List<ReplyListDTO>> listByMemberId(@Validated @PathVariable("memberId") String memberId) {
         List<ReplyListDTO> replies = replyService.listByMemberId(memberId);
         return ResponseEntity.ok(replies);
     }
+
 }

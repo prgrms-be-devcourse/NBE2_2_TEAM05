@@ -2,6 +2,7 @@ package edu.example.dev_2_cc.repository;
 
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Category;
+import edu.example.dev_2_cc.entity.Member;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.PrivateKey;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,10 +26,28 @@ public class BoardRepositoryTests {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     @Test
     public void testCreate(){
-        Board board = Board.builder().title("테스트제목1").description("테스트설명1").category(Category.TIP).build();
-        Board savedBoard =  boardRepository.save(board);
+        // Given: 새로운 Member 객체 생성 및 저장 -> 회원가입
+        Member newMember = Member.builder()
+                .memberId("test")
+                .email("test@example.com")
+                .name("Test User")
+                .password("password")
+                .build();
+        memberRepository.save(newMember);
+
+        Board board = Board.builder().member(newMember)
+                .title("테스트제목1")
+                .description("테스트설명1")
+                .category(Category.TIP)
+//                .fileName("1234")
+                .build();
+        Board savedBoard = boardRepository.save(board);
+
         assertNotNull(savedBoard);
     }
 
@@ -35,7 +55,7 @@ public class BoardRepositoryTests {
     @Commit
     @Transactional
     public void testUpdate(){
-        Long BoardId = 2L;
+        Long BoardId = 1L;
         String title = "수정된제목";
         String description = "수정된 설명";
         Category category = Category.GENERAL;
@@ -54,6 +74,5 @@ public class BoardRepositoryTests {
         assertEquals(description, foundBoard.get().getDescription());
         assertEquals(category, foundBoard.get().getCategory());
     }
-
 
 }

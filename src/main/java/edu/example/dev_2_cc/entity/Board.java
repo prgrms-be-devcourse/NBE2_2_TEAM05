@@ -10,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,8 +31,21 @@ public class Board {
 
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
-    private String fileName;
+
+    // Board 이미지 목록 필드
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<BoardImage> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("createdAt ASC") // 댓글을 생성일 순으로 조회
+    @Builder.Default
+    private List<Reply> replies = new ArrayList<>();
+    // 빈 리스트로 먼저 초기화 -> 하지 않으면 null에러로 board 생성 불가
+    // builder를 사용할 때도 기본 값으로 빈 리스트를 제공 -> 하지 않으면 null에러 board 생성 불가
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -51,9 +66,16 @@ public class Board {
         this.category = category;
     }
 
-    public void changeFileName(String fileName) {
-        this.fileName = fileName;
+    // 이미지 추가
+    public void addImage(BoardImage image) {
+        images.add(image);
+        image.setBoard(this); // 양방향 연관관계 설정
     }
 
+    // 이미지 삭제
+    public void removeImage(BoardImage image) {
+        images.remove(image);
+        image.setBoard(null); // 양방향 연관관계 해제
+    }
 
 }
