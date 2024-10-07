@@ -36,7 +36,8 @@ public class MemberUpdateDTO {
     @NotEmpty(message = "역할은 빈 문자열일 수 없습니다.")
     private String role;
 
-    private String image;
+    // 이미지 등록 관련해서는 따로 구현
+//    private String image;
 }
 
 // 클라이언트가 Update 할 때 필요한 바꾸고 싶은 부분만 입력받고,

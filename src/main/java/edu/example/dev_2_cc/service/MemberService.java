@@ -121,10 +121,10 @@ public class MemberService {
             if (updateRequestDTO.getAddress() != null) {
                 member.changeAddress(updateRequestDTO.getAddress());
             }
-            // 회원 사진 변경
-            if (updateRequestDTO.getImage() != null) {
-                member.addImage(updateRequestDTO.getImage());
-            }
+//            // 회원 사진 변경
+//            if (updateRequestDTO.getImage() != null) {
+//                member.addImage(updateRequestDTO.getImage());
+//            }
             // role 변경
             if (updateRequestDTO.getRole() != null) {
                 member.changeRole(updateRequestDTO.getRole());

@@ -40,7 +40,7 @@ public class CustomUserDetails implements UserDetails {
         return member.getPassword();
     }
 
-    //사용자명 반환
+    // 사용자명 반환 (로그인에 사용할 고유 식별자를 반환해야 함)
     @Override
     public String getUsername() {
         return member.getName();

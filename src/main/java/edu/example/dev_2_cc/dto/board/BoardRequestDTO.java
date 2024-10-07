@@ -14,9 +14,15 @@ import java.util.Optional;
 @NoArgsConstructor
 public class BoardRequestDTO {
 
-    private String memberId;
+    // Security로 식별하기 때문에 Body에 넣을 필요가 없음
+//    private String memberId;
+
+    @NotBlank(message = "제목은 필수 입니다")
     private String title;
+
+    @NotBlank(message = "내용은 필수 입니다")
     private String description;
+
     private Category category;
 
     // 사용하지 않아서 일단 주석처리 했습니다.

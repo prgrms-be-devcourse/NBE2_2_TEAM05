@@ -27,6 +27,7 @@ public class BoardUploadUtil {
     private String uploadPath;
 
     private final BoardRepository boardRepository;
+    private final SecurityUtil securityUtil;
 
     @PostConstruct
     public void init() {
@@ -114,6 +115,5 @@ public class BoardUploadUtil {
             log.error("파일 삭제 중 에러 발생: {}", e.getMessage());
         }
     }
-
 
 }

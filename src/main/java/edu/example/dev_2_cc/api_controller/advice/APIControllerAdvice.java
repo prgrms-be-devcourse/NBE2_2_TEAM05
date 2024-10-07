@@ -33,6 +33,7 @@ public class APIControllerAdvice {
                 .status(e.getCode())   // 예외에서 가져온 상태 코드로 응답 설정
                 .body(errorResponse);  // 커스텀 응답 내용을 body에 담아 반환
     }
+
     @ExceptionHandler(CartTaskException.class)
     public ResponseEntity<?> handleCartException(CartTaskException e) {
         log.info("--- CartTaskException 발생 ---");
@@ -107,4 +108,22 @@ public class APIControllerAdvice {
                 .status(e.getCode())   // 예외에서 가져온 상태 코드로 응답 설정
                 .body(errorResponse);  // 커스텀 응답 내용을 body에 담아 반환
     }
+
+    // 인가 전역 예외 처리
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<?> handleAuthorizationException(AuthorizationException e) {
+        log.info("--- AuthorizationException 발생 ---");
+        log.info("--- e.getClass().getName() : " + e.getClass().getName());
+        log.info("--- e.getMessage() : " + e.getMessage());
+
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("error message", e.getMessage());
+        errorResponse.put("status", HttpStatus.FORBIDDEN.value()); // 403 Forbidden
+        errorResponse.put("timestamp", LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(errorResponse);
+    }
+
 }
