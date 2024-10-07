@@ -36,7 +36,8 @@ public class OrderService {
     public Orders createOrder(OrderRequestDTO orderRequestDTO) {
 
         //member 테이블에 있는지 없는지 확인 -> 없으면 예외
-        Member foundMember = memberRepository.findById(orderRequestDTO.getMemberId()).orElseThrow(MemberException.NOT_FOUND::get);
+        Member foundMember =
+                memberRepository.findById(orderRequestDTO.getMemberId()).orElseThrow(MemberException.NOT_FOUND::get);
 
         //각각 requestBody에 썼으면 그걸로, 비어 있으면 member에 저장되어 있는 정보들로
         String email = orderRequestDTO.getEmail().orElse(foundMember.getEmail());
