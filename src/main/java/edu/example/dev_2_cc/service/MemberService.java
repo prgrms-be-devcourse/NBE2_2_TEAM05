@@ -104,6 +104,52 @@ public class MemberService {
         Member member = memberRepository.findById(updateRequestDTO.getMemberId())
                 .orElseThrow(() -> MemberException.NOT_FOUND.get());
 
+
+        try {
+            // 비밀번호 수정
+            if (updateRequestDTO.getPassword() != null) {
+                member.changePassword(updateRequestDTO.getPassword());
+            }
+            // 회원 이메일 수정
+            if (updateRequestDTO.getEmail() != null) {
+                member.changeEmail(updateRequestDTO.getEmail());
+            }
+            // 회원 이름 수정
+            if (updateRequestDTO.getName() != null) {
+                member.changeName(updateRequestDTO.getName());
+            }
+            // 회원 주소 수정
+            if (updateRequestDTO.getAddress() != null) {
+                member.changeAddress(updateRequestDTO.getAddress());
+            }
+            // 회원 사진 변경
+            if (updateRequestDTO.getImage() != null) {
+                member.addImage(updateRequestDTO.getImage());
+            }
+
+
+            // 수정한 회원 정보 저장
+            Member modifiedMember = memberRepository.save(member);
+
+            // 엔티티를 dto로 변환
+            return toResponseDTO(modifiedMember);
+
+        } catch (Exception e) {
+            log.error("Error modifying member : " + e.getMessage());
+            throw MemberException.NOT_MODIFIED.get();
+        }
+    }
+
+    // 회원 정보 수정
+    @Transactional
+    public MemberResponseDTO modifyAdmin(String memberId, MemberUpdateDTO updateRequestDTO) {
+        // 컨트롤러에서 받아온 memberId값을 MemberUpdateDTO에 지정
+        updateRequestDTO.setMemberId(memberId);
+
+        // 수정하려는 멤버를 데이터베이스에서 조회
+        Member member = memberRepository.findById(updateRequestDTO.getMemberId())
+                .orElseThrow(() -> MemberException.NOT_FOUND.get());
+
         try {
             // 비밀번호 수정
             if (updateRequestDTO.getPassword() != null) {

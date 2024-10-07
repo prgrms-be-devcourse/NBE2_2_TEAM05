@@ -57,10 +57,8 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/login", "/","/cc/member").permitAll()
-                        .requestMatchers("/cc/product/**").permitAll()
-                        .requestMatchers("/cc/review/**").permitAll()
-                        .requestMatchers("/cc/board/**").hasRole("USER")
+                    .requestMatchers("/login", "/","/cc/member", "/cc/product/**", "/cc/review/**").permitAll()
+                        .requestMatchers("/cc/mypage/**").hasRole("USER")
                         .requestMatchers("/cc/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated());
 
