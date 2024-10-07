@@ -26,7 +26,7 @@ public class ReplyController {
     //-----------------------------------------------댓글----------------------------------------------------
 
     // Reply 등록 -> ADMIN/USER
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<ReplyResponseDTO> createReply(@RequestBody ReplyRequestDTO replyRequestDTO) {
         return ResponseEntity.ok(replyService.createReply(replyRequestDTO));
     }
