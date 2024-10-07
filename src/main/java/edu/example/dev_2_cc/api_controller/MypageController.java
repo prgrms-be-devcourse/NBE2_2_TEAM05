@@ -1,6 +1,9 @@
 package edu.example.dev_2_cc.api_controller;
 
 
+import edu.example.dev_2_cc.dto.cart.CartResponseDTO;
+import edu.example.dev_2_cc.dto.cartItem.CartItemResponseDTO;
+import edu.example.dev_2_cc.dto.cartItem.CartItemUpdateDTO;
 import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
 import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.dto.order.OrderRequestDTO;
@@ -8,6 +11,7 @@ import edu.example.dev_2_cc.dto.order.OrderResponseDTO;
 import edu.example.dev_2_cc.entity.Orders;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
+import edu.example.dev_2_cc.service.CartService;
 import edu.example.dev_2_cc.service.MemberService;
 import edu.example.dev_2_cc.service.OrderService;
 import org.springframework.http.HttpStatus;
@@ -32,8 +36,10 @@ public class MypageController {
     private final MemberService memberService;
     private final ReviewService reviewService;
     private final OrderService orderService;
+    private final CartService cartService;
 
-    // 회원 정보 수정
+    //-----------------------------------------회원 정보 수정-------------------------------------------------
+
     // 마이페이지 내에서 회원의 직접 정보 수정 (권한 수정 미포함)
     @PutMapping("/{memberId}")
     public ResponseEntity<MemberResponseDTO> updateMember(
@@ -62,9 +68,44 @@ public class MypageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(("Error deleting member"));
         }
     }
+    //-----------------------------------------------장바구니----------------------------------------------------
 
-    //주문
-    //주문 생성
+    //Cart 조회
+    @GetMapping("/cart/{memberId}") //이후 검색 조건에 따라 수정 필요
+    public ResponseEntity<CartResponseDTO> read(
+            @PathVariable("memberId") String memberId) {
+        return ResponseEntity.ok(cartService.read(memberId));
+    }
+
+    //CartItem 수량 수정
+    @PutMapping("/cart/{cartItemId}")
+    public ResponseEntity<CartItemResponseDTO> update(
+            @PathVariable("cartItemId") Long cartItemId,
+            @Validated @RequestBody CartItemUpdateDTO cartItemUpdateDTO) {
+        log.info(cartItemUpdateDTO);
+        return ResponseEntity.ok(cartService.update(cartItemUpdateDTO));
+    }
+
+    //CartItem 삭제(단일 상품 지우기)
+    @DeleteMapping("/cartitem/{cartItemId}")
+    public ResponseEntity<Map<String, String>> delete(
+            @PathVariable("cartItemId") Long cartItemId){
+
+        cartService.delete(cartItemId);
+        return ResponseEntity.ok(Map.of("result", "success"));
+    }
+
+    //Cart 삭제(장바구니 비우기)
+    @DeleteMapping("/cart/{cartId}")
+    public ResponseEntity<Map<String, String>> deleteCart(
+            @PathVariable("cartId") Long cartId){
+        cartService.deleteCart(cartId);
+        return ResponseEntity.ok(Map.of("result", "success"));
+    }
+
+
+    //------------------------------------------------주문------------------------------------------------------
+
     @PostMapping("/order")
     public ResponseEntity<OrderResponseDTO> createOrder(
             @RequestBody OrderRequestDTO orderRequestDTO) {
@@ -97,7 +138,9 @@ public class MypageController {
         return ResponseEntity.ok(response); // 200 OK와 함께 응답 본문 반환
     }
 
-    //리뷰
+    //----------------------------------------------------리뷰----------------------------------------------------
+
+
     @PostMapping("/review")
     public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody ReviewRequestDTO reviewRequestDTO) {
         return ResponseEntity.ok(reviewService.create(reviewRequestDTO));
