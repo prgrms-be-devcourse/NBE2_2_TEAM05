@@ -21,11 +21,11 @@ import java.util.Map;
 public class ProductController {
     private final ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
-        return ResponseEntity.ok(productService.create(productRequestDTO));
-
-    }
+//    @PostMapping
+//    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+//        return ResponseEntity.ok(productService.create(productRequestDTO));
+//
+//    }
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable("productId") Long productId) {
@@ -33,24 +33,24 @@ public class ProductController {
 
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductUpdateDTO productUpdateDTO) {
-
-        if(!productId.equals(productUpdateDTO.getProductId())) {
-            throw ProductException.NOT_FOUND.get();
-        }
-
-        return ResponseEntity.ok(productService.update(productUpdateDTO));
-    }
-
-    @DeleteMapping("/{productId}")
-    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable("productId") Long productId) {
-        // ADMIN role인지 아닌지 확인하는 코드? 여기다가 넣는 것 같습니다
-
-        productService.delete(productId);
-
-        return ResponseEntity.ok(Map.of("message", "Product deleted"));
-    }
+//    @PutMapping("/{productId}")
+//    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductUpdateDTO productUpdateDTO) {
+//
+//        if(!productId.equals(productUpdateDTO.getProductId())) {
+//            throw ProductException.NOT_FOUND.get();
+//        }
+//
+//        return ResponseEntity.ok(productService.update(productUpdateDTO));
+//    }
+//
+//    @DeleteMapping("/{productId}")
+//    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable("productId") Long productId) {
+//        // ADMIN role인지 아닌지 확인하는 코드? 여기다가 넣는 것 같습니다
+//
+//        productService.delete(productId);
+//
+//        return ResponseEntity.ok(Map.of("message", "Product deleted"));
+//    }
 
     //물품 이름 별로 조회
     @GetMapping("/listByPName/{pName}")
