@@ -54,7 +54,8 @@ public class MypageController {
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(("Error deleting member"));
         }
-      
+    }
+
     //리뷰
     @PostMapping("/review")
     public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody ReviewRequestDTO reviewRequestDTO) {
@@ -72,3 +73,4 @@ public class MypageController {
         return ResponseEntity.ok(Map.of("message", "Review deleted"));
     }
 }
+
