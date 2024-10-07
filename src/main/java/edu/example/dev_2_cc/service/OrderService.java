@@ -13,6 +13,7 @@ import edu.example.dev_2_cc.repository.MemberRepository;
 import edu.example.dev_2_cc.repository.OrderItemRepository;
 import edu.example.dev_2_cc.repository.OrderRepository;
 import edu.example.dev_2_cc.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -106,6 +107,17 @@ public class OrderService {
     public Orders findOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> OrderException.NOT_FOUND.get());
+    }
+
+    // 주문 조회(List) memberId
+    public List<OrderResponseDTO> findOrderByMemberId(String memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        List<Orders> orders = orderRepository.findByMember(member);
+        return orders.stream()
+                .map(OrderResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     // 주문 상태 수정

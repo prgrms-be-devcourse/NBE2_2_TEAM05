@@ -12,12 +12,17 @@ public class MainViewController {
         return "index";
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/app/mypage")
+    public String myPage(){
+        return "my-page";
+    }
+
+    @GetMapping("/app/admin")
     public String adminPage() {
         return "admin";
     }
 
-    @GetMapping("/admin/product")
+    @GetMapping("/app/admin/product")
     public String adminProductPage() {
         return "admin_product";
     }

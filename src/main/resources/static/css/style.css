@@ -87,12 +87,22 @@ header {
     list-style: none;
     color: skyblue;
     padding-left: 0;
-
+}
+.navbar__menu3 {
+    display: flex;
+    list-style: none;
+    color: skyblue;
+    padding-left: 0;
 }
 
 .navbar__menu2 li {
-    padding: 8px 12px;
+    padding-right: 12px;
 }
+
+.navbar__menu3 li {
+    padding-right: 12px;
+}
+
 
 .navbar__toogleBtn {
     display: none;
@@ -127,12 +137,17 @@ header {
         width: 100%;
         display: none;
     }
+    .navbar__menu3 {
+        justify-content: center;
+        width: 100%;
+        display: none;
+    }
 
     .navbar__toogleBtn {
         display: block;
     }
 
-    .navbar__menu.active, .navbar__menu2.active {
+    .navbar__menu.active, .navbar__menu2.active, .navbar__menu3.active {
         display: flex;
     }
 }
@@ -410,4 +425,55 @@ footer {
     outline: none;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#my-page-div {
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+}
+#my-page-menu {
+    background-color: #EAEAEA;
+}
+#my-page-menu > div {
+    padding: 12px;
+    font-weight: bold;
+}
+#my-page-content {
+    height: 900px;
+    padding: 12px;
+    margin-left: 60px;
+}
+.mp-menu-btn {
+    user-select: none;
+}
+.mp-menu-btn:hover {
+    background-color: var(--text-color);
+}
+.mp-menu-btn.active {
+    background-color: var(--text-color);
+}
+
+.order-div {
+    width: 600px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+.order-header {
+    display: flex;
+}
+.order-header > div {
+    margin-right: 40px;
+}
+
+.order-item-products {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    display: flex;
+}
+.order-item-products > div {
+    width: 100px;
+    padding-right: 20px;
 }

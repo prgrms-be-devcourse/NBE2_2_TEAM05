@@ -1,5 +1,38 @@
 import { fetchDeleteProduct, fetchDeleteProductImage, fetchUploadProductImage, fetchCreateProduct, fetchReadProduct, fetchReadProducts, fetchUpdateProduct } from './fetch.js';
 
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+let tokenMemberId;
+
+document.addEventListener("DOMContentLoaded", function() {
+    const jwtToken = localStorage.getItem("jwtToken");
+
+    if (jwtToken) {
+        const decodedToken = parseJwt(jwtToken);
+        tokenMemberId = decodedToken.memberId;
+        const role = decodedToken.role;
+
+        console.log("Member ID:", tokenMemberId);
+        console.log("Roles:", role);
+
+        if (!role.includes("ROLE_ADMIN")) {
+            alert("관리자가 아닙니다.");
+            window.location.href = "/app";
+        }
+    } else {
+        window.location.href = "/login";
+    }
+});
+
+
 const dashboardMenu = document.querySelector('#nav_dashboard');
 const memberMenu = document.querySelector('#nav_member');
 const productMenu = document.querySelector('#nav_product');
@@ -109,7 +142,7 @@ function addProduct(data) {
         row.id = `product-${product.productId}`;
         row.innerHTML =`
                 <td>${product.productId}</td>
-                <td>${product.pname}</td>
+                <td>${product.pName}</td>
                 <td>${product.price}</td>
                 <td>${product.stock}</td>
                 <td>
@@ -142,7 +175,7 @@ function detailProduct(id) {
                     </div><hr>
                     <div>
                         <label>상품명</label>
-                        <input type="text" id="productName" value="${data.pname}">
+                        <input type="text" id="productName" value="${data.pName}">
                     </div><hr>
                     <div>
                         <label>가격</label>
@@ -198,7 +231,7 @@ function detailProduct(id) {
                 const images = document.getElementById('update-image').files;
                 const product = {
                     productId: data.productId,
-                    pname: document.getElementById('productName').value,
+                    pName: document.getElementById('productName').value,
                     price: document.getElementById('productPrice').value,
                     stock: document.getElementById('productStock').value,
                     description: document.getElementById('productDescription').value
@@ -282,7 +315,7 @@ function createProduct() {
 
     productCreate.addEventListener('click', () => {
         const product = {
-            pname: document.getElementById('productName').value,
+            pName: document.getElementById('productName').value,
             price: document.getElementById('productPrice').value,
             stock: document.getElementById('productStock').value,
             description: document.getElementById('productDescription').value
