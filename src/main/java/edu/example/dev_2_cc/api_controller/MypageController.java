@@ -1,22 +1,32 @@
 package edu.example.dev_2_cc.api_controller;
 
+
 import edu.example.dev_2_cc.dto.member.MemberResponseDTO;
 import edu.example.dev_2_cc.dto.member.MemberUpdateDTO;
 import edu.example.dev_2_cc.exception.MemberException;
 import edu.example.dev_2_cc.exception.MemberTaskException;
 import edu.example.dev_2_cc.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import edu.example.dev_2_cc.dto.review.ReviewRequestDTO;
+import edu.example.dev_2_cc.dto.review.ReviewResponseDTO;
+import edu.example.dev_2_cc.dto.review.ReviewUpdateDTO;
+import edu.example.dev_2_cc.service.ReviewService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cc/mypage")
+@Log4j2
 @RequiredArgsConstructor
 public class MypageController {
     private final MemberService memberService;
+    private final ReviewService reviewService;
 
+    // 회원 정보 수정
     // 마이페이지 내에서 회원의 직접 정보 수정 (권한 수정 미포함)
     @PutMapping("/{memberId}")
     public ResponseEntity<MemberResponseDTO> updateMember(
@@ -44,5 +54,21 @@ public class MypageController {
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(("Error deleting member"));
         }
+      
+    //리뷰
+    @PostMapping("/review")
+    public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody ReviewRequestDTO reviewRequestDTO) {
+        return ResponseEntity.ok(reviewService.create(reviewRequestDTO));
+    }
+
+    @PutMapping("/review/{reviewId}")
+    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long reviewId, @Validated @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
+        return ResponseEntity.ok(reviewService.update(reviewUpdateDTO));
+    }
+
+    @DeleteMapping("/review/{reviewId}")
+    public ResponseEntity<Map<String, String>> deleteReview(@PathVariable("reviewId") Long reviewId) {
+        reviewService.delete(reviewId);
+        return ResponseEntity.ok(Map.of("message", "Review deleted"));
     }
 }

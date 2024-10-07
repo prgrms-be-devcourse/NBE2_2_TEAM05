@@ -24,15 +24,15 @@ import java.util.Map;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @PostMapping
-    public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody ReviewRequestDTO reviewRequestDTO) {
-        return ResponseEntity.ok(reviewService.create(reviewRequestDTO));
-    }
-
-    @PutMapping("/{reviewId}")
-    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long reviewId, @Validated @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
-        return ResponseEntity.ok(reviewService.update(reviewUpdateDTO));
-    }
+//    @PostMapping
+//    public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody ReviewRequestDTO reviewRequestDTO) {
+//        return ResponseEntity.ok(reviewService.create(reviewRequestDTO));
+//    }
+//
+//    @PutMapping("/{reviewId}")
+//    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long reviewId, @Validated @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
+//        return ResponseEntity.ok(reviewService.update(reviewUpdateDTO));
+//    }
 
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDTO> getReview(@PathVariable("reviewId") Long reviewId) {
@@ -40,12 +40,11 @@ public class ReviewController {
     }
 
 
-    @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Map<String, String>> deleteReview(@PathVariable("reviewId") Long reviewId) {
-        reviewService.delete(reviewId);
-        return ResponseEntity.ok(Map.of("message", "Review deleted"));
-
-    }
+//    @DeleteMapping("/{reviewId}")
+//    public ResponseEntity<Map<String, String>> deleteReview(@PathVariable("reviewId") Long reviewId) {
+//        reviewService.delete(reviewId);
+//        return ResponseEntity.ok(Map.of("message", "Review deleted"));
+//    }
 
     @GetMapping("/member/{memberId}")
     public ResponseEntity<Page<ReviewListDTO>> getReviewListByMemberId(@PathVariable("memberId") String memberId, PageRequestDTO pageRequestDTO) {
