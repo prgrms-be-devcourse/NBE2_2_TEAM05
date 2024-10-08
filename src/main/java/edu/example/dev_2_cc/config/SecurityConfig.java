@@ -64,8 +64,8 @@ public class SecurityConfig {
                                 "/cc/board",
                                 "/cc/board/{boardId}", // 보드 단일 조회를 위해서 따로 추가
                                 "cc/reply").permitAll()
-                        .requestMatchers("/cc/mypage/**").hasRole("USER")
-                        .requestMatchers("/cc/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/cc/mypage/**", "cc/memberIamge/**").hasRole("USER")
+                        .requestMatchers("/cc/admin/**","cc/productImage/**").hasRole("ADMIN")
                         // 컨트롤러에서 인가 처리 할때 에러 발생 -> "ROLE_ADMIN" -> "ADMIN"으로 변경
                         // hasRole 메서드 자체가 "ROLE_"을 붙여준다고 함
                         .anyRequest().authenticated());

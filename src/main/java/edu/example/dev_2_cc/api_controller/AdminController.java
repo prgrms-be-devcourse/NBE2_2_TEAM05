@@ -82,7 +82,7 @@ public class AdminController {
         return ResponseEntity.ok(productService.update(productUpdateDTO));
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("/product/{productId}")
     public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable("productId") Long productId) {
         productService.delete(productId);
         return ResponseEntity.ok(Map.of("message", "Product deleted"));
