@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class CartRequestDTO {
-    private String memberId;
     private List<CartItemRequestDTO> cartItems;
 
 
