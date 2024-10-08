@@ -321,8 +321,18 @@ function updateBoard(data) {
     if(data.imageFilenames.length > 0 ) {
         data.imageFilenames.forEach(image => {
             const imgDiv = document.createElement('div');
+
             imgDiv.textContent = image;
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'X';
+            removeBtn.addEventListener('click', ()=>{
+                fetchDlBoardImage(data.boardId, image);
+                alert('이미지 삭제 완료');
+                imageContainer.removeChild(imgDiv);
+            });
+            imgDiv.appendChild(removeBtn);
             imageContainer.appendChild(imgDiv);
+
         });
     }
     const updateBtn = row.querySelector('#update-btn');

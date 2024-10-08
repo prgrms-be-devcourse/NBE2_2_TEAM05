@@ -108,7 +108,7 @@ public class MemberService {
         try {
             // 비밀번호 수정
             if (updateRequestDTO.getPassword() != null) {
-                member.changePassword(updateRequestDTO.getPassword());
+                member.changePassword(bCryptPasswordEncoder.encode(updateRequestDTO.getPassword()));
             }
             // 회원 이메일 수정
             if (updateRequestDTO.getEmail() != null) {

@@ -11,7 +11,7 @@ import {
     fetchReadProduct,
     fetchReadProductPage,
     fetchUpdateProduct,
-    fetchUpBoardImage, fetchReadBoard, fetchDeleteBoard, fetchReadBoards
+    fetchUpBoardImage, fetchReadBoard, fetchDeleteBoard, fetchReadBoards, fetchReadImage
 } from './fetch.js';
 
 function parseJwt(token) {
@@ -708,6 +708,10 @@ function detailBoard(id){
                         <label>수정 일자</label>
                         <div class="d-p-d-d">${data.updatedAt}</div>
                     </div><hr>
+                    <div>
+                        <label>댓글</label>
+                        <div id="reply-div"></div>
+                    </div><hr>
                     <div class="detail-board-buttonDiv">
                         <button class="board-update-button">수정</button>
                         <button class="board-update-cancel">취소</button>
@@ -716,12 +720,30 @@ function detailBoard(id){
 
             adminContent.appendChild(row);
 
+            const replyContainer = document.getElementById('reply-div');
+            if(data.replies.length) {
+                data.replies.forEach(reply=>{
+                    const replyContent = document.createElement('div');
+                    replyContent.innerHTML = `${reply.memberId} - ${reply.content}`;
+                    replyContainer.appendChild(replyContent);
+                });
+            } else {
+                replyContainer.innerHTML = "<label></label><div>댓글 없음</div>";
+            }
             const imageContainer = document.getElementById(`imageContainer-${data.boardId}`);
 
             if(data.imageFilenames.length > 0 ) {
                 data.imageFilenames.forEach(image => {
                     const imgDiv = document.createElement('div');
                     imgDiv.textContent = image;
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = 'X';
+                    removeBtn.addEventListener('click', ()=>{
+                        fetchDlBoardImage(data.boardId, image);
+                        alert('이미지 삭제 완료');
+                        imageContainer.removeChild(imgDiv);
+                    });
+                    imgDiv.appendChild(removeBtn);
                     imageContainer.appendChild(imgDiv);
                 });
             }
