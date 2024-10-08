@@ -7,12 +7,11 @@ import edu.example.dev_2_cc.dto.reply.ReplyUpdateDTO;
 import edu.example.dev_2_cc.entity.Board;
 import edu.example.dev_2_cc.entity.Member;
 import edu.example.dev_2_cc.entity.Reply;
-import edu.example.dev_2_cc.exception.BoardException;
-import edu.example.dev_2_cc.exception.MemberException;
-import edu.example.dev_2_cc.exception.ReplyException;
+import edu.example.dev_2_cc.exception.*;
 import edu.example.dev_2_cc.repository.BoardRepository;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import edu.example.dev_2_cc.repository.ReplyRepository;
+import edu.example.dev_2_cc.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,7 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final SecurityUtil securityUtil;
 
     public ReplyResponseDTO createReply(ReplyRequestDTO replyRequestDTO) {
         try {
@@ -49,17 +49,6 @@ public class ReplyService {
 
             log.error(e.getMessage());
             throw ReplyException.NOT_CREATED.get();
-        }
-    }
-
-    public ReplyResponseDTO read(Long replyId) {
-        try{
-            Optional<Reply> foundReply = replyRepository.findById(replyId);
-            Reply reply=foundReply.get();
-            return new ReplyResponseDTO(reply);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw ReplyException.NOT_FOUND.get();
         }
     }
 
@@ -88,19 +77,6 @@ public class ReplyService {
         }
     }
 
-    // Board ID 로 Reply 리스트 조회
-    public List<ReplyListDTO> list(Long boardId){
-        List<Reply> replies = replyRepository.findAllByBoard(boardId);
-
-        if (replies.isEmpty()) {
-            throw BoardException.NOT_FOUND.get();
-        }
-
-        return replies.stream()
-                .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
-                .collect(Collectors.toList());
-    }
-
     // Member ID 로 Reply 리스트 조회
     public List<ReplyListDTO> listByMemberId(String memberId) {
         List<Reply> replies = replyRepository.findAllByMember(memberId);
@@ -113,5 +89,49 @@ public class ReplyService {
                 .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
                 .collect(Collectors.toList());
     }
+
+    public boolean checkDeleteReplyAuthorization(Long replyId) {
+        try {
+            Reply reply = replyRepository.findById(replyId).orElseThrow(ReplyException.NOT_FOUND::get);
+            Member currentUser = securityUtil.getCurrentUser();
+
+            // 관리자이거나, 댓글 작성자이거나, 해당 댓글이 달린 게시판의 작성자인지 확인
+            if (currentUser.getMemberId().equals(reply.getMember().getMemberId()) ||
+                    currentUser.getMemberId().equals(reply.getBoard().getMember().getMemberId()) ||
+                    "ROLE_ADMIN".equals(securityUtil.getCurrentUserRole())) {
+                return true;
+            }
+
+            // 권한이 없는 경우 예외 발생
+            throw new AccessDeniedException();
+        } catch (AuthorizationException e) {
+            // 예외가 발생하면 false 반환
+            return false;
+        }
+    }
+
+    //    public ReplyResponseDTO read(Long replyId) {
+//        try{
+//            Optional<Reply> foundReply = replyRepository.findById(replyId);
+//            Reply reply=foundReply.get();
+//            return new ReplyResponseDTO(reply);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            throw ReplyException.NOT_FOUND.get();
+//        }
+//    }
+
+    //    // Board ID 로 Reply 리스트 조회
+//    public List<ReplyListDTO> listByBoard(Long boardId){
+//        List<Reply> replies = replyRepository.findAllByBoard(boardId);
+//
+//        if (replies.isEmpty()) {
+//            throw BoardException.NOT_FOUND.get();
+//        }
+//
+//        return replies.stream()
+//                .map(ReplyListDTO::new) // ReplyListDTO(Reply reply) 생성자 사용
+//                .collect(Collectors.toList());
+//    }
 
 }
