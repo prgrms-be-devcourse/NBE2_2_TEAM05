@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReplyUpdateDTO {
 
-    private Long replyId;
-
     private String content;
+    private Long replyId;
+    private String memberId; // 작성자,관리자 등 식별을 위한 필드 추가
 
-    public Reply toEntity(){
-        Reply reply = Reply.builder().replyId(replyId).content(content).build();
-
-        return reply;
+    public Reply toEntity() {
+        return Reply.builder()
+                .replyId(replyId)
+                .content(content)
+                .build();
     }
 
 }
-
