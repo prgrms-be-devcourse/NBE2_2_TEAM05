@@ -751,7 +751,11 @@ table th:nth-child(5), table td:nth-child(5) {
 }
 
 .image-td {
-    display: flex;
+    /*display: flex;*/
     align-items: center;
+}
+.image-td > div {
+    display: flex;
+    justify-content: center;
 }
 

@@ -66,7 +66,7 @@ public class SecurityConfig {
                                 "cc/reply").permitAll()
                         .requestMatchers("/cc/mypage/**", "/cc/memberIamge/**").hasRole("USER")
                         .requestMatchers("/cc/admin/**","/cc/productImage/**").hasRole("ADMIN")
-                        .requestMatchers("/cc/memberImage/**","/signup", "/css/**", "/js/**", "/images/**","/app/**", "/uploadPath/**").permitAll()
+                        .requestMatchers("/signup", "/css/**", "/js/**", "/images/**","/app/**", "/uploadPath/**").permitAll()
                         // 컨트롤러에서 인가 처리 할때 에러 발생 -> "ROLE_ADMIN" -> "ADMIN"으로 변경
                         // hasRole 메서드 자체가 "ROLE_"을 붙여준다고 함
                         .anyRequest().authenticated());

@@ -80,7 +80,7 @@ function boardTable(boards, category) {
             fetchReadImage(board.memberId)
                 .then(imgTag => {
                     const memberCell = row.querySelector(`#member-${board.memberId}`);
-                    memberCell.innerHTML = `${imgTag} ${board.memberId}`;
+                    memberCell.innerHTML = `<div>${imgTag} ${board.memberId}</div>`;
                 })
                 .catch(error => {
                     console.error('Error loading image:', error);
