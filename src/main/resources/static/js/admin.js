@@ -1,4 +1,18 @@
-import { fetchDeleteProduct, fetchDeleteProductImage, fetchUploadProductImage, fetchCreateProduct, fetchReadProduct, fetchReadProducts, fetchUpdateProduct } from './fetch.js';
+import {
+    fetchUpdateOrder,
+    fetchReadOrders,
+    fetchCreateBoard,
+    fetchUpdateBoard,
+    fetchDlBoardImage,
+    fetchDeleteProduct,
+    fetchDeleteProductImage,
+    fetchUploadProductImage,
+    fetchCreateProduct,
+    fetchReadProduct,
+    fetchReadProductPage,
+    fetchUpdateProduct,
+    fetchUpBoardImage, fetchReadBoard, fetchDeleteBoard, fetchReadBoards
+} from './fetch.js';
 
 function parseJwt(token) {
     const base64Url = token.split('.')[1];
@@ -31,6 +45,12 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = "/login";
     }
 });
+const logoutBtn = document.getElementById('logout-btn');
+logoutBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    localStorage.removeItem('jwtToken');
+    window.location.href ='/login';
+});
 
 
 const dashboardMenu = document.querySelector('#nav_dashboard');
@@ -43,22 +63,26 @@ dashboardMenu.addEventListener('click', () => {
     addDashboard();
 });
 
-memberMenu.addEventListener('click', () => {
-    addMember();
-});
+// memberMenu.addEventListener('click', () => {
+//     addMember();
+// });
 
 productMenu.addEventListener('click', () => {
-    fetchReadProducts().then(data => {
+    fetchReadProductPage().then(data => {
         addProduct(data);
     });
 });
 
 orderMenu.addEventListener('click', () => {
-    addOrder();
+    fetchReadOrders().then(data => {
+        addOrder(data);
+    })
 });
 
 boardMenu.addEventListener('click', () => {
-    addBoard();
+    fetchReadBoards().then(data => {
+        addBoard(data);
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -77,8 +101,13 @@ function addDashboard() {
     navDashboard.classList.add('hover-active');
 
     adminContent.innerHTML = `
-        <h3>Dashboard</h3>
-        <div>대시보드가 들어갈 예정 입니다!!</div>
+        <div class="admin_board_div1">
+            <h3>Dashboard</h3>
+        </div>
+        <div class="admin_dashboard">
+            <div>대시보드가 들어갈 예정입니다...</div>
+            
+        </div>
     `;
 }
 
@@ -120,6 +149,7 @@ function addProduct(data) {
             <tbody id="admin-product-tbody">
             </tbody>
         </table>
+        <div id="pagination"></div>
     `;
     const thead = document.getElementById('admin-product-thead');
     thead.innerHTML = '';
@@ -137,7 +167,7 @@ function addProduct(data) {
 
     const tbody= document.getElementById('admin-product-tbody');
     tbody.innerHTML = '';
-    data.forEach(product => {
+    data.content.forEach(product => {
         const row = document.createElement('tr');
         row.id = `product-${product.productId}`;
         row.innerHTML =`
@@ -157,6 +187,7 @@ function addProduct(data) {
 
         tbody.appendChild(row);
     });
+    renderPaginationProduct(data);
 }
 
 function detailProduct(id) {
@@ -240,10 +271,6 @@ function detailProduct(id) {
                 fetchUpdateProduct(product)
                     .then(() => {
                         if(images.length > 0) {
-                            // console.log('삭제할 이미지 갯수 : ', data.images.length);
-                            // for(let i = 0; i<data.images.length; i++){
-                            //     fetchDeleteProductImage(data.productId).then();
-                            // }
                             const deletePromises = data.images.map(() => fetchDeleteProductImage(data.productId));
                             return Promise.all(deletePromises);
                         } else{
@@ -251,10 +278,12 @@ function detailProduct(id) {
                         }
                     })
                     .then(() => {
-                        return fetchUploadProductImage(data.productId, images);
+                        if(images.length>0){
+                            return fetchUploadProductImage(data.productId, images);
+                        }
                     })
                     .then(()=> {
-                        return fetchReadProducts();
+                        return fetchReadProductPage();
                     })
                     .then(updatedData => {
                         addProduct(updatedData);
@@ -323,20 +352,21 @@ function createProduct() {
 
         const images = document.getElementById('productImage').files;
 
+
         fetchCreateProduct(product).then(data => {
             console.log('data : ', data);
             if (images.length > 0) {
                 return fetchDeleteProductImage(data.productId) // 이미지 삭제
                     .then(() => {
-                        // 삭제가 완료된 후 업로드 진행
                         return fetchUploadProductImage(data.productId, images);
                     });
             }
-            return Promise.resolve(); // 이미지가 없으면 빈 Promise 반환
+            return Promise.resolve();
         }).then(() => {
             // 모든 작업이 완료된 후 제품 목록을 다시 읽습니다.
-            return fetchReadProducts();
+            return fetchReadProductPage();
         }).then(updatedData => {
+            alert('상품등록 완료');
             addProduct(updatedData);
         }).catch(error => {
             console.error('Error calling fetchCreateProduct:', error);
@@ -352,7 +382,7 @@ function createProduct() {
     adminContent.appendChild(row);
 }
 
-function addOrder() {
+function addOrder(data) {
     const adminContent = document.getElementById('admin_content');
     const activeMenu = document.getElementsByClassName('hover-active');
     const navOrder = document.getElementById('nav_order');
@@ -364,12 +394,77 @@ function addOrder() {
     navOrder.classList.add('hover-active');
 
     adminContent.innerHTML = `
-        <h3>주문관리</h3>
-        <div>주문관리가 들어갈 예정 입니다!!</div>
+        <div class="admin_board_div1">
+            <h3>주문 관리</h3>
+        </div>
+        <table class="table1">
+            <thead id="admin-order-thead">
+            </thead>
+            <tbody id="admin-order-tbody">
+            </tbody>
+        </table>
     `;
+    const thead = document.getElementById('admin-order-thead');
+    thead.innerHTML = '';
+    const row2 = document.createElement('tr');
+    row2.innerHTML = `
+        <th>주문번호</th>
+        <th>이름</th>
+        <th>배송지</th>
+        <th>주문일자</th>
+        <th>주문상태</th>
+        <th></th>
+    `;
+    thead.appendChild(row2);
+
+    const tbody= document.getElementById('admin-order-tbody');
+    tbody.innerHTML = '';
+    data.forEach(order => {
+        const row = document.createElement('tr');
+        row.id = `order-${order.orderId}`;
+        const createdAt = formatLocalDateTime(order.createdAt);
+        row.innerHTML = `
+                <td>${order.orderId}</td>
+                <td>${order.name}</td>
+                <td>${order.address}</td>
+                <td>${createdAt}</td>
+                <td>${order.status}</td>
+                <td>
+                    <select id="status-select">
+                        <option value="" disabled selected hidden>주문 상태 선택</option>
+                        <option value="APROVED">APROVED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                        <option value="SHIPPED">SHIPPED</option>
+                    </select>
+                    <button id="change-status-btn">변경</button>
+                </td>
+        `;
+        const changeStBtn = row.querySelector('#change-status-btn');
+        changeStBtn.addEventListener('click', () => {
+            const selectElement = row.querySelector('#status-select');
+            const selectedStatus = selectElement.value;
+            if (selectedStatus !== "") {
+                const changeData = {
+                    orderId: order.orderId,
+                    orderStatus: selectedStatus
+                };
+                console.log(changeData);
+                fetchUpdateOrder(changeData).then( () => {
+                    alert('수정 완료');
+                    orderMenu.click();
+                });
+            } else {
+                alert('주문 상태를 선택해 주세요.');
+            }
+
+        });
+
+        tbody.appendChild(row);
+    });
 }
 
-function addBoard() {
+function addBoard(data) {
     const adminContent = document.getElementById('admin_content');
     const activeMenu = document.getElementsByClassName('hover-active');
     const navBoard = document.getElementById('nav_board');
@@ -381,9 +476,292 @@ function addBoard() {
     navBoard.classList.add('hover-active');
 
     adminContent.innerHTML = `
-        <h3>게시판 관리</h3>
-        <div>게시판 관리가 들어갈 예정 입니다!!</div>
+        <div class="admin_board_div1">
+            <h3>게시판 관리</h3>
+        </div>
+        <table class="table1">
+            <thead id="admin-board-thead">
+            </thead>
+            <tbody id="admin-board-tbody">
+            </tbody>
+        </table>
+        <div id="pagination"></div>
     `;
+    const thead = document.getElementById('admin-board-thead');
+    thead.innerHTML = '';
+    const row2 = document.createElement('tr');
+    row2.innerHTML = `
+        <th>번호</th>
+        <th>카테고리</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th id=""><button class="add-board-button">게시글 추가</button></th>
+    `;
+    const addBoardBtn = row2.querySelector('.add-board-button');
+    addBoardBtn.addEventListener('click', () => createBoard());
+    thead.appendChild(row2);
+
+    const tbody= document.getElementById('admin-board-tbody');
+    tbody.innerHTML = '';
+    data.content.forEach(board => {
+        const row = document.createElement('tr');
+        row.id = `board-${board.boardId}`;
+        row.innerHTML =`
+                <td>${board.boardId}</td>
+                <td>${board.category}</td>
+                <td>${board.title}</td>
+                <td>${board.memberId}</td>
+                <td>
+                    <button class="detail-button">상세</button>
+                    <button class="delete-board-btn">삭제</button>
+                </td>
+        `;
+        const detailButton = row.querySelector('.detail-button');
+        const deleteBoardBtn = row.querySelector('.delete-board-btn');
+        detailButton.addEventListener('click', () => detailBoard(board.boardId));
+        deleteBoardBtn.addEventListener('click', () => {
+            fetchDeleteBoard(board.boardId).then(()=>{
+                return fetchReadBoards();
+            }).then(updatedData => {
+                alert('삭제완료');
+                addBoard(updatedData);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        tbody.appendChild(row);
+    });
+    renderPaginationBoard(data);
+}
+
+function renderPaginationBoard(data) {
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.innerHTML = '';
+
+    const currentPage = data.number + 1;
+    const totalPages = data.totalPages;
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        if (i === currentPage) {
+            pageButton.disabled = true;
+        }
+        pageButton.addEventListener('click', () => {
+            fetchReadBoards(i).then(data => {
+                addBoard(data);
+                renderPaginationBoard(data);
+            });
+        });
+        paginationDiv.appendChild(pageButton);
+    }
+}
+
+function renderPaginationProduct(data) {
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.innerHTML = '';
+
+    const currentPage = data.number + 1;
+    const totalPages = data.totalPages;
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        if (i === currentPage) {
+            pageButton.disabled = true;
+        }
+        pageButton.addEventListener('click', () => {
+            fetchReadProductPage(i).then(data => {
+                addProduct(data);
+                renderPaginationProduct(data);
+            });
+        });
+        paginationDiv.appendChild(pageButton);
+    }
+}
+
+function createBoard(){
+    const adminContent = document.getElementById('admin_content');
+    adminContent.innerHTML='';
+
+    const row = document.createElement('div');
+    row.className = 'detail-board';
+
+    row.innerHTML=`
+        <div >
+            <div><h3>게시글 등록</h3></div>
+            <div class="detail-product-hDiv"></div>
+        </div><hr>
+        <div>
+            <label>카테고리</label>
+            <select id="boardCategory">
+                <option value="TIP">TIP</option>
+                <option value="NOTICE">NOTICE</option>
+            </select>
+        </div><hr>
+        <div>
+            <label>제목</label>
+            <input type="text" id="boardTitle">
+        </div><hr>
+        <div>
+            <label>내용</label>
+            <textarea id="boardDescription" class="description-input"></textarea>
+        </div><hr>
+        <div>
+            <label>이미지 등록</label>
+            <input type="file" id="boardImage" multiple>
+        </div><hr>
+        <div class="detail-board-buttonDiv">
+            <button class="board-add-button">등록</button>
+            <button class="board-add-cancel">취소</button>
+        </div>
+    `;
+
+    const boardCreate = row.querySelector('.board-add-button');
+    const createCancel = row.querySelector('.board-add-cancel');
+
+    boardCreate.addEventListener('click', () => {
+        const board = {
+            memberId: tokenMemberId,
+            title: document.getElementById('boardTitle').value,
+            description: document.getElementById('boardDescription').value,
+            category: document.getElementById('boardCategory').value
+
+        };
+
+        const images = document.getElementById('boardImage').files;
+
+        fetchCreateBoard(board).then( data=> {
+            if (images.length > 0) {
+                return fetchUpBoardImage(data.boardId, images);
+            }
+            return Promise.resolve();
+        }).then(()=>{
+            return fetchReadBoards();
+        }).then(updatedData => {
+            addBoard(updatedData);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+
+
+    });
+
+    createCancel.addEventListener('click', () => {
+        const boardButton = document.querySelector('#nav_board');
+        boardButton.click();
+    });
+
+    adminContent.appendChild(row);
+}
+
+function detailBoard(id){
+    fetchReadBoard(id)
+        .then(data =>{
+            const adminContent = document.getElementById('admin_content');
+            adminContent.innerHTML='';
+
+            const row = document.createElement('div');
+            row.className = 'detail-board';
+
+            row.innerHTML = `                
+                    <div >
+                        <div><h3>게시글 상세 보기</h3></div>
+                        <div class="detail-board-hDiv">boardId: ${data.boardId}</div>
+                    </div><hr>
+                    <div>
+                        <label>작성자</label>
+                        <div>${data.memberId}</div>
+                    </div><hr>
+                    <div>
+                        <label>카테고리</label>
+                        <div>${data.category}</div>
+                    </div><hr>
+                    <div>
+                        <label>제목</label>
+                        <input type="text" id="boardTitle" value="${data.title}">
+                    </div><hr>
+                    <div>
+                        <label>설명</label>
+                        <textarea id="boardDescription" class="description-input">${data.description}</textarea>
+                    </div><hr>
+                    <div>
+                        <label>이미지</label>
+                        <div class="d-p-d-i" id="imageContainer-${data.boardId}"></div>
+                    </div>
+                    <div>
+                        <label></label>
+                        <div class="d-p-d-i">
+                            <div><input type="file" id="update-image" multiple></div>
+                        </div>
+                    </div><hr>
+                    <div>
+                        <label>작성 일자</label>
+                        <div class="d-p-d-d">${data.createdAt}</div>
+                    </div><hr>
+                    <div>
+                        <label>수정 일자</label>
+                        <div class="d-p-d-d">${data.updatedAt}</div>
+                    </div><hr>
+                    <div class="detail-board-buttonDiv">
+                        <button class="board-update-button">수정</button>
+                        <button class="board-update-cancel">취소</button>
+                    </div>
+            `;
+
+            adminContent.appendChild(row);
+
+            const imageContainer = document.getElementById(`imageContainer-${data.boardId}`);
+
+            if(data.imageFilenames.length > 0 ) {
+                data.imageFilenames.forEach(image => {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.textContent = image;
+                    imageContainer.appendChild(imgDiv);
+                });
+            }
+
+            const boardUpdate = row.querySelector('.board-update-button');
+            const updateCancel = row.querySelector('.board-update-cancel');
+
+            boardUpdate.addEventListener('click', () => {
+                const images = document.getElementById('update-image').files;
+                const board = {
+                    boardId: data.boardId,
+                    title: document.getElementById('boardTitle').value,
+                    description: document.getElementById('boardDescription').value,
+                    category: data.category
+                };
+                console.log(data);
+                fetchUpdateBoard(board).then(() => {
+                        if(images.length > 0) {
+                            const deletePromises = data.imageFilenames.map((filename)=> fetchDlBoardImage(data.boardId,filename));
+                            return Promise.all(deletePromises);
+                        } else{
+                            return Promise.resolve();
+                        }
+                    })
+                    .then(() => {
+                        if(images.length > 0) {
+                            return fetchUpBoardImage(data.boardId, images);
+                        }
+                    })
+                    .then(()=> {
+                        alert('수정완료');
+                        const boardButton = document.querySelector('#nav_board');
+                        boardButton.click();
+                    });
+            });
+
+            updateCancel.addEventListener('click', () => {
+                const boardButton = document.querySelector('#nav_board');
+                boardButton.click();
+            });
+
+
+        })
+        .catch(error => error);
 }
 
 
@@ -391,9 +769,25 @@ function clickProduct() {
     productMenu.click();
 }
 
+function formatLocalDateTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+}
+
+
 history.pushState(null, null, window.location.href);
 
 window.addEventListener('popstate', function(event) {
     // 뒤로 가기를 했을 때 /admin 페이지로 리다이렉트
-    window.location.href = '/admin';
+    window.location.href = '/app/admin';
 });
+

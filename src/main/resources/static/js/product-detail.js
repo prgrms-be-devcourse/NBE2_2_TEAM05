@@ -1,4 +1,4 @@
-import { fetchReadProduct, fetchCreateCart } from './fetch.js';
+import { fetchReadProduct, fetchCreateCart,fetchReadReview } from './fetch.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     const pathArray = window.location.pathname.split('/');
@@ -31,18 +31,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
          
                 </div>
-                <div class="product_description">${data.description}</div>
+                <div class="product_description">${data.description}</div><hr>
+                <div class="review-div"></div>
             `;
             const increaseButton = div.querySelector('.quantity-button.increase');
             const decreaseButton = div.querySelector('.quantity-button.decrease');
             const addCartButton =  div.querySelector('.add_cart_button');
+            const reviewContainer = div.querySelector('.review-div');
 
             increaseButton.addEventListener('click', () => changeQuantity(1));
             decreaseButton.addEventListener('click', () => changeQuantity(-1));
             addCartButton.addEventListener('click', () => {
                 const quantity = document.getElementById('quantity').value;
                 fetchCreateCart(tokenMemberId,productId, quantity);
+
             })
+            fetchReadReview(data.productId).then(data => {
+                data.content.forEach(review => {
+                    const row = document.createElement('div');
+                    row.innerHTML = `
+                        <div>
+                            <div>${review.memberId} - ${review.star}점</div>
+                        </div>
+                        <div>
+                            <div>${review.content}</div>
+                        </div>
+                    `;
+                    reviewContainer.appendChild(row);
+                });
+            });
+
         });
     }
 });

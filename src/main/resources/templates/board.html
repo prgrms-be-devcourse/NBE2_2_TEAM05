@@ -6,10 +6,13 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script th:src="@{/js/main.js}" defer></script>
     <script th:src="@{/js/navbar.js}" defer></script>
+    <script type="module" th:src="@{/js/board.js}" defer></script>
     <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
-    <title></title>
+    <title>게시판</title>
 </head>
     <body>
+    <div class="background"></div>
+
     <!-- 네비게이션 바 -->
     <header>
         <div th:replace="~{navbar :: navbar}"></div>
@@ -19,7 +22,40 @@
             <div class="content_url">
                 Home > 게시판
             </div><hr>
-            <h1>게시판 화면 입니다!</h1>
+            <div class="board-main">
+                <div class="board-head">
+                    <div class="board-menu">
+                        <div id="board-category-all" class="category-btn">전체</div>
+                        <div id="board-category-notice" class="category-btn">공지사항</div>
+                        <div id="board-category-tip" class="category-btn">팁</div>
+                        <div id="board-category-general" class="category-btn">자유</div>
+                    </div>
+                    <div>
+                        <button id="add-board-btn">작성</button>
+                    </div>
+                </div>
+
+                <div class="board-content">
+                    <div>
+                        <table id="board-table">
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>카테고리</th>
+                                <th>제목</th>
+                                <th>작성자</th>
+                                <th>작성일자</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div id="pagination">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>

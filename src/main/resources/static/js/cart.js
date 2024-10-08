@@ -74,9 +74,11 @@ function displayCartData(cartData) {
                 cartItemId : quantityInputId,
                 quantity: quantity
             };
-            fetchUpdateCart(changeCartData).then();
+            fetchUpdateCart(changeCartData).then(() =>{
+               window.location.href="/app/cart";
+            });
         })
-        removeCartButton.addEventListener('click', () => fetchRemoveCartItem(quantityInputId));
+        removeCartButton.addEventListener('click', () => fetchRemoveCartItem(quantityInputId).then(()=>window.location.href="/app/cart"));
 
 
         cartTable.appendChild(row);
@@ -137,7 +139,8 @@ function cartToOrder(memberId, cartItems) {
             const removePromises = cartItems.map(item => fetchRemoveCartItem(item.cartItemId));
 
             Promise.all(removePromises).then(() => {
-                window.location.href = "/app/cart";
+                alert('주문완료');
+                window.location.href = "/app/mypage";
             });
         });
     });

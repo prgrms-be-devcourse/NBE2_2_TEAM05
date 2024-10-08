@@ -58,7 +58,6 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                     .requestMatchers("/login", "/signup", "/","/cc/member").permitAll()
-                    .requestMatchers("/cc/board/**").hasRole("USER")
                     .requestMatchers("/css/**", "/js/**", "/images/**","/app/**", "/uploadPath/**").permitAll() //뷰 제작용 리소스 허용
                         //.requestMatchers("/admin").hasRole("ADMIN")
                     .anyRequest().authenticated());
