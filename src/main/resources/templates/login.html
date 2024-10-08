@@ -44,6 +44,13 @@
             }
         });
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const existingToken = localStorage.getItem('jwtToken');
+            if (existingToken) {
+                window.location.href = "/app";
+            }
+        });
+
         document.getElementById("login-btn").addEventListener("click", function() {
             const formData = new FormData();
             formData.append('memberId', document.getElementById('inputMemberId').value);

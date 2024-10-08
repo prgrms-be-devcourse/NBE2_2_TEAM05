@@ -14,6 +14,7 @@ import edu.example.dev_2_cc.repository.CartItemRepository;
 import edu.example.dev_2_cc.repository.CartRepository;
 import edu.example.dev_2_cc.repository.MemberRepository;
 import edu.example.dev_2_cc.repository.ProductRepository;
+import edu.example.dev_2_cc.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -32,15 +33,18 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
+    private final SecurityUtil securityUtil;
 
     //Cart 등록
     public CartResponseDTO create(CartRequestDTO cartRequestDTO) {
         // 사용자의 Cart 가 있는지 확인
-        Member member = memberRepository.findById(cartRequestDTO.getMemberId())
+//        Member member = memberRepository.findById(cartRequestDTO.getMemberId())
+//                .orElseThrow(CartException.NOT_FOUND::get);
+        Member member = memberRepository.findById(securityUtil.getCurrentUser().getMemberId())
                 .orElseThrow(CartException.NOT_FOUND::get);
 
         try {
-            Cart savedCart = cartRepository.findByMemberId(cartRequestDTO.getMemberId())
+            Cart savedCart = cartRepository.findByMemberId(member.getMemberId())
                     .orElseGet(() -> {
                         Cart cart = Cart.builder().member(member).build();
                         return cartRepository.save(cart);
