@@ -1,4 +1,4 @@
-//상품(List) 반환하는 함수
+//수정완료
 export function fetchReadProducts() {
     const jwtToken = localStorage.getItem('jwtToken');
     return fetch(`/cc/product/list`, {
@@ -20,7 +20,7 @@ export function fetchReadProducts() {
         })
         .catch(error => console.error('Error fetching products:', error));
 }
-
+//수정완료
 export function fetchReadProductPage(pageNumber = 1) {
     const jwtToken = localStorage.getItem('jwtToken');
     return fetch(`/cc/product?page=${pageNumber}`, {
@@ -43,7 +43,7 @@ export function fetchReadProductPage(pageNumber = 1) {
         .catch(error => console.error('Error fetching products:', error));
 
 }
-
+//수정완료
 export function fetchReadProductSearch(name){
     const jwtToken = localStorage.getItem('jwtToken');
     return fetch(`/cc/product/listByPName/${name}`, {
@@ -65,7 +65,7 @@ export function fetchReadProductSearch(name){
         })
         .catch(error => console.error('Error fetching products:', error));
 }
-
+//수정완료
 export function fetchReadProduct(id) {
     const jwtToken = localStorage.getItem('jwtToken');
 
@@ -88,11 +88,11 @@ export function fetchReadProduct(id) {
         })
         .catch(error => console.error('Error fetching product:', error))
 }
-
+//수정완료(관리자)
 export function fetchUpdateProduct(product) {
     const jwtToken = localStorage.getItem('jwtToken');
     console.log(product);
-    return fetch(`/cc/product/${product.productId}`, {
+    return fetch(`/cc/admin/product/${product.productId}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -114,11 +114,11 @@ export function fetchUpdateProduct(product) {
             console.error('Fetch error:', error);
         });
 }
-
+//수정완료(관리자)
 export function fetchCreateProduct(product) {
     const jwtToken = localStorage.getItem('jwtToken');
     console.log('product : ', product);
-    return fetch(`/cc/product`, {
+    return fetch(`/cc/admin/product`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -140,7 +140,7 @@ export function fetchCreateProduct(product) {
             console.error('Fetch error :', error);
         });
 }
-
+//수정완료
 export function  fetchUploadProductImage(id, images) {
     const jwtToken = localStorage.getItem('jwtToken');
     const formData = new FormData();
@@ -167,11 +167,10 @@ export function  fetchUploadProductImage(id, images) {
             console.error('Fetch error:', error);
         });
 }
-
+//수정완료
 export function fetchDeleteProductImage(productId) {
     const jwtToken = localStorage.getItem('jwtToken');
-    console.log('삭제할 productId : ', productId);
-    console.log('삭제할 ino : ');
+
     return fetch(`/cc/productImage/${productId}`, {
         method: 'DELETE',
         headers: {
@@ -189,10 +188,10 @@ export function fetchDeleteProductImage(productId) {
         console.error('Fetch error :', error);
     });
 }
-
+//수정완료(관리자)
 export function fetchDeleteProduct(id) {
     const jwtToken = localStorage.getItem('jwtToken');
-    fetch(`/cc/product/${id}`, {
+    fetch(`/cc/admin/product/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -213,10 +212,10 @@ export function fetchDeleteProduct(id) {
         console.error('Fetch error', error);
     });
 }
-
+//수정완료
 export function fetchCreateReview(data) {
     const jwtToken = localStorage.getItem('jwtToken');
-    return fetch(`/cc/review`, {
+    return fetch(`/cc/mypage/review`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -235,7 +234,7 @@ export function fetchCreateReview(data) {
         console.error('Fetch error :', error);
     });
 }
-
+//수정완료
 export function fetchReadReview(id) {
     const jwtToken = localStorage.getItem('jwtToken');
 
@@ -258,7 +257,7 @@ export function fetchReadReview(id) {
         })
         .catch(error => console.error('Error fetching product:', error))
 }
-
+//
 export function fetchCreateMember(member) {
     const jwtToken = localStorage.getItem('jwtToken');
     fetch(`/cc/member`, {
@@ -280,11 +279,11 @@ export function fetchCreateMember(member) {
             console.error('Fetch error :', error);
     });
 }
-
+//수정완료
 export function fetchReadMember(memberId){
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/member/${memberId}`, {
+    return fetch(`/cc/mypage/member/${memberId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -302,7 +301,7 @@ export function fetchReadMember(memberId){
         console.error('Error fetching member:', error)
     )
 }
-
+//수정완료
 export function fetchCreateCart(memberId, productId, quantity){
     const jwtToken = localStorage.getItem('jwtToken');
 
@@ -333,11 +332,11 @@ export function fetchCreateCart(memberId, productId, quantity){
             alert(`에러발생 : ${error.message}`);
     });
 }
-
+//수정완료
 export function fetchReadCart(memberId) {
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/cart/${memberId}`, {
+    return fetch(`/cc/mypage/cart/${memberId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -355,11 +354,11 @@ export function fetchReadCart(memberId) {
         console.error('Error fetching product:', error)
     )
 }
-
+//수정완료
 export function fetchUpdateCart(data) {
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/cart/${data.cartItemId}`, {
+    return fetch(`/cc/mypage/cart/${data.cartItemId}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -377,11 +376,11 @@ export function fetchUpdateCart(data) {
         console.error('Error updating cart:', error);
     });
 }
-
+//수정완료
 export function fetchRemoveCartItem(id) {
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/cart/cartItem/${id}`, {
+    return fetch(`/cc/mypage/cartitem/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -401,11 +400,11 @@ export function fetchRemoveCartItem(id) {
             console.error('Error removing cart item:', error);
     });
 }
-
+//수정완료
 export function fetchCreateOrder(data){
     const jwtToken = localStorage.getItem('jwtToken');
     console.log('order 데이터 : ', data);
-    return fetch(`/cc/order`, {
+    return fetch(`/cc/mypage/order`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -424,11 +423,11 @@ export function fetchCreateOrder(data){
             console.error('Fetch error :', error);
     });
 }
-
+//수정완료
 export function fetchReadOrderMember(id) {
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/order/list/${id}`,{
+    return fetch(`/cc/mypage/order/list/${id}`,{
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,  // JWT 토큰 추가
@@ -449,10 +448,10 @@ export function fetchReadOrderMember(id) {
             console.error('Error fetching product:', error)
         );
 }
-
+//수정완료
 export function fetchReadOrders() {
     const jwtToken = localStorage.getItem('jwtToken');
-    return fetch(`/cc/order`, {
+    return fetch(`/cc/admin/order`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,  // JWT 토큰 추가
@@ -472,11 +471,11 @@ export function fetchReadOrders() {
         .catch(error => console.error('Error fetching products:', error));
 
 }
-
+//수정완료
 export function fetchUpdateOrder(data) {
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/order/${data.orderId}`, {
+    return fetch(`/cc/admin/order/${data.orderId}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -503,7 +502,7 @@ export function fetchUpdateOrder(data) {
 export function fetchCreateBoard(board) {
     const jwtToken = localStorage.getItem('jwtToken');
     console.log(board);
-    return fetch(`/cc/board`, {
+    return fetch(`/cc/board/`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -679,7 +678,7 @@ export function fetchDlBoardImage(id, filename) {
 export function fetchCreateReply(reply) {
     const jwtToken = localStorage.getItem('jwtToken');
 
-    return fetch(`/cc/reply`, {
+    return fetch(`/cc/reply/`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -728,4 +727,26 @@ export function fetchReadReply(boardId) {
         });
 }
 
+export function fetchReadImage(memberId){
+    const jwtToken = localStorage.getItem('jwtToken');
 
+    return fetch(`/cc/mypage/member/${memberId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if(!response.ok) {
+            throw new Error('회원 정보를 불러오지 못했습니다!')
+        }
+        return response.json();
+    }).then(data => {
+        const image = data.image;
+        return `
+            <img class="thum-img" src="/uploadPath/${data.image}" alt="이미지 없음1" onerror="this.onerror=null; this.src='/images/image01.png';">
+        `;
+    }).catch(error =>
+        console.error('Error fetching member:', error)
+    )
+}

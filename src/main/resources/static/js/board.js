@@ -1,4 +1,5 @@
 import {
+    fetchReadImage,
     fetchUpBoardImage,
     fetchDlBoardImage,
     fetchDeleteBoard,
@@ -73,9 +74,20 @@ function boardTable(boards, category) {
                 <td>${board.boardId}</td>
                 <td>${board.category}</td>
                 <td>${board.title}</td>
-                <td>${board.memberId}</td>
+                <td id="member-${board.memberId}" class="image-td">${board.memberId}</td>
                 <td>${createdAt}</td>
             `;
+            fetchReadImage(board.memberId)
+                .then(imgTag => {
+                    const memberCell = row.querySelector(`#member-${board.memberId}`);
+                    memberCell.innerHTML = `${imgTag} ${board.memberId}`;
+                })
+                .catch(error => {
+                    console.error('Error loading image:', error);
+                });
+
+
+
             row.addEventListener('click', () => {
                 detailBoard(board.boardId);
             });
@@ -89,9 +101,19 @@ function boardTable(boards, category) {
                 <td>${board.boardId}</td>
                 <td>${board.category}</td>
                 <td>${board.title}</td>
-                <td>${board.memberId}</td>
+                <td id="member-${board.memberId}" class="image-td">${board.memberId}</td>
                 <td>${createdAt}</td>
                 `;
+                fetchReadImage(board.memberId)
+                    .then(imgTag => {
+                        const memberCell = row.querySelector(`#member-${board.memberId}`);
+                        memberCell.innerHTML = `${imgTag} ${board.memberId}`;
+                    })
+                    .catch(error => {
+                        console.error('Error loading image:', error);
+                    });
+
+
                 row.addEventListener('click', () => {
                     detailBoard(board.boardId);
                 });
@@ -156,7 +178,7 @@ function detailBoard(id) {
                     <div>${data.title}</div>
                 </div>
                 <div>
-                    <div>${data.memberId}</div>
+                    <div id="member-${data.memberId}" class="image-td">${data.memberId}</div>
                     <div>${createdAt}</div>
                 </div>
                 <div class="board-detail-desc">
@@ -183,6 +205,15 @@ function detailBoard(id) {
                 <button class="reply-create-btn">작성</button>
             </div>
         `;
+        fetchReadImage(data.memberId)
+            .then(imgTag => {
+                const memberCell = row.querySelector(`#member-${data.memberId}`);
+                memberCell.innerHTML = `${imgTag} ${data.memberId}`;
+            })
+            .catch(error => {
+                console.error('Error loading image:', error);
+            });
+
         if (data.memberId === tokenMemberId) {
             const updateBtn = row.querySelector('.board-update-btn');
             const deleteBtn = row.querySelector('.board-delete-btn');
@@ -197,22 +228,45 @@ function detailBoard(id) {
                 });
             });
         }
-        fetchReadReply(data.boardId).then(data => {
+        if(data.replies.length > 0) {
             const replyDiv = row.querySelector('#reply-div');
+            const totalReplyDiv = row.querySelector('#totalReply');
+            totalReplyDiv.innerHTML = `댓글 [${data.replies.length}]개`;
 
-            if (Array.isArray(data) && data.length > 0) {
-                const totalReplyDiv = row.querySelector('#totalReply');
-                totalReplyDiv.innerHTML = `댓글 [${data.length}]개`
-                data.forEach(reply => {
-                    const replyContent = document.createElement('div');
-                    replyContent.innerHTML = `
-                        <div>${reply.memberId}</div>
-                        <div>${reply.content}</div>
-                    `;
-                    replyDiv.appendChild(replyContent);
-                });
-            }
-        }).catch();
+            data.replies.forEach(reply => {
+                const replyContent = document.createElement('div');
+                replyContent.innerHTML = `
+                    <div id="reply-${reply.memberId}" class="image-td">${reply.memberId}</div>
+                    <div>${reply.content}</div>
+                `;
+
+                fetchReadImage(reply.memberId)
+                    .then(imgTag => {
+                        const memberCell = row.querySelector(`#reply-${reply.memberId}`);
+                        memberCell.innerHTML = `${imgTag} ${reply.memberId}`;
+                    })
+                    .catch(error => {
+                        console.error('Error loading image:', error);
+                    });
+                replyDiv.appendChild(replyContent);
+            });
+        }
+        // fetchReadReply(data.boardId).then(data => {
+        //     const replyDiv = row.querySelector('#reply-div');
+        //
+        //     if (Array.isArray(data) && data.length > 0) {
+        //         const totalReplyDiv = row.querySelector('#totalReply');
+        //         totalReplyDiv.innerHTML = `댓글 [${data.length}]개`
+        //         data.forEach(reply => {
+        //             const replyContent = document.createElement('div');
+        //             replyContent.innerHTML = `
+        //                 <div>${reply.memberId}</div>
+        //                 <div>${reply.content}</div>
+        //             `;
+        //             replyDiv.appendChild(replyContent);
+        //         });
+        //     }
+        // }).catch();
 
         const replyCreate = row.querySelector('.reply-create-btn');
         replyCreate.addEventListener('click', () => {
@@ -284,7 +338,7 @@ function updateBoard(data) {
         }
         fetchUpdateBoard(updateData).then(() => {
             if(images.length > 0) {
-                const deletePromises = data.imagesFilenames.map((filename) => fetchDlBoardImage(data.boardId,filename));
+                const deletePromises = data.imageFilenames.map((filename) => fetchDlBoardImage(data.boardId,filename));
                 return Promise.all(deletePromises);
             } else{
                 return Promise.resolve();

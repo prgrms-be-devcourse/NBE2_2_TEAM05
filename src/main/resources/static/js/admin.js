@@ -283,10 +283,12 @@ function detailProduct(id) {
                         }
                     })
                     .then(()=> {
-                        return fetchReadProductPage();
+                        const productButton = document.querySelector('#nav_product');
+                        // productButton.click();
+                        // return fetchReadProductPage();
                     })
                     .then(updatedData => {
-                        addProduct(updatedData);
+                        // addProduct(updatedData);
                     });
             });
 

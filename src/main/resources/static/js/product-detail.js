@@ -1,4 +1,4 @@
-import { fetchReadProduct, fetchCreateCart,fetchReadReview } from './fetch.js';
+import {fetchReadProduct, fetchCreateCart, fetchReadReview, fetchReadImage} from './fetch.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     const pathArray = window.location.pathname.split('/');
@@ -51,12 +51,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     const row = document.createElement('div');
                     row.innerHTML = `
                         <div>
-                            <div>${review.memberId} - ${review.star}점</div>
+                            <div id="review-${review.memberId}" class="image-td">${review.memberId} - ${review.star}점</div>
                         </div>
                         <div>
                             <div>${review.content}</div>
                         </div>
                     `;
+                    fetchReadImage(review.memberId)
+                        .then(imgTag => {
+                            const memberCell = row.querySelector(`#review-${review.memberId}`);
+                            memberCell.innerHTML = `${imgTag} ${review.memberId} - ${review.star}점`;
+                        })
+                        .catch(error => {
+                            console.error('Error loading image:', error);
+                        });
                     reviewContainer.appendChild(row);
                 });
             });

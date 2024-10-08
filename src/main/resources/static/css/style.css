@@ -664,7 +664,7 @@ table th:nth-child(5), table td:nth-child(5) {
     padding: 4px 8px 4px 8px;
     margin: 2px;
 }
-.board-main button:hover. #my-page-div button:hover {
+.board-main button:hover, #my-page-div button:hover, .category-btn:hover {
     font-weight: bold;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
@@ -740,3 +740,18 @@ table th:nth-child(5), table td:nth-child(5) {
     font-size: 140%;
     text-align: center;
 }
+
+.thum-img {
+    display: flex;
+    justify-content: center;
+    width : 20px;
+    height: 20px;
+    /*overflow: hidden;*/
+    margin-right: 4px;
+}
+
+.image-td {
+    display: flex;
+    align-items: center;
+}
+

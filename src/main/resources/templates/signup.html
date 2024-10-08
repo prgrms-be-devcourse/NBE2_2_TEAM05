@@ -94,7 +94,6 @@
                 console.info(member);
                 fetchCreateMember(member);
 
-                window.location.href = '/login';
             });
         });
 
@@ -112,10 +111,40 @@
                 return response.json();
             }).then(responseData => {
                 console.log('responseData: ', responseData);
-                return responseData;
-            }).catch(error => {
+                const inputFile = document.getElementById('inputImage');
+                if (inputFile.files.length > 0) {
+                    const file = inputFile.files[0];
+                    fetchUpload(responseData.memberId, file).then(() => {
+                        window.location.href = '/login';
+                    });
+                } else {
+                    window.location.href = '/login';
+                }
+
+            })
+                .catch(error => {
                 console.error('Fetch error :', error);
             });
+        }
+        function fetchUpload(memberId, file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            return fetch(`/cc/memberImage/upload/${memberId}`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('에러발생!!');
+                    }
+                })
+                .then(responseData => {
+                    console.log(responseData);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
         }
 
     </script>
