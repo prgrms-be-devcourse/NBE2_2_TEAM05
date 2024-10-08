@@ -132,7 +132,7 @@ function myOrder() {
                     row2.className = 'order-item-products';
                     row2.innerHTML = `
                         <div>${orderItemData.product.pName}</div>
-                        <div>${orderItemData.product.stock}개</div>
+                        <div>${orderItemData.quantity}개</div>
                         <div><button class="add-review-btn">리뷰작성</button></div>
                     `;
                     totalPrice += orderItemData.product.price * orderItemData.product.stock;

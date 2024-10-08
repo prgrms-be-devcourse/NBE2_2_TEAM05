@@ -240,7 +240,7 @@ function detailProduct(id) {
                     </div><hr>
                     <div class="detail-product-buttonDiv">
                         <button class="product-update-button">수정</button>
-                        <button class="update-cancel">취소</button>
+                        <button class="update-cancel">뒤로</button>
                     </div>
             `;
 
@@ -283,12 +283,12 @@ function detailProduct(id) {
                         }
                     })
                     .then(()=> {
-                        const productButton = document.querySelector('#nav_product');
-                        // productButton.click();
-                        // return fetchReadProductPage();
+                        return fetchReadProductPage();
                     })
                     .then(updatedData => {
-                        // addProduct(updatedData);
+                        // const productButton = document.querySelector('#nav_product');
+                        // productButton.click();
+                        // // addProduct(updatedData);
                     });
             });
 
@@ -365,11 +365,12 @@ function createProduct() {
             }
             return Promise.resolve();
         }).then(() => {
-            // 모든 작업이 완료된 후 제품 목록을 다시 읽습니다.
             return fetchReadProductPage();
         }).then(updatedData => {
             alert('상품등록 완료');
-            addProduct(updatedData);
+            const productButton = document.querySelector('#nav_product');
+            productButton.click();
+            // addProduct(updatedData);
         }).catch(error => {
             console.error('Error calling fetchCreateProduct:', error);
         });
@@ -600,6 +601,7 @@ function createBoard(){
             <select id="boardCategory">
                 <option value="TIP">TIP</option>
                 <option value="NOTICE">NOTICE</option>
+                <option value="GENERAL">GENERAL</option>
             </select>
         </div><hr>
         <div>

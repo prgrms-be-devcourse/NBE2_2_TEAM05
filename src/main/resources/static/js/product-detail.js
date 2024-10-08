@@ -43,8 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
             decreaseButton.addEventListener('click', () => changeQuantity(-1));
             addCartButton.addEventListener('click', () => {
                 const quantity = document.getElementById('quantity').value;
-                fetchCreateCart(tokenMemberId,productId, quantity);
-
+                if(quantity > data.stock) {
+                    alert('재고 부족!!');
+                    window.location.href = `/app/product/${productId}`;
+                } else {
+                    fetchCreateCart(tokenMemberId,productId, quantity);
+                }
             })
             fetchReadReview(data.productId).then(data => {
                 data.content.forEach(review => {
