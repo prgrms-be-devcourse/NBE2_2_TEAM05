@@ -80,4 +80,11 @@ public class OrderController {
 //
 //        return ResponseEntity.ok(response); // 200 OK와 함께 응답 본문 반환
 //    }
+//    //주문 전체 조회 memberId
+//    @GetMapping("/list/{memberId}")
+//    public ResponseEntity<List<OrderResponseDTO>> getOrdersMember(
+//            @PathVariable String memberId) {
+//        List<OrderResponseDTO> orderList = orderService.findOrderByMemberId(memberId);
+//        return ResponseEntity.ok(orderList);
+//    }
 }

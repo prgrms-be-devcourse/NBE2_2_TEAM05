@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/navbar.js}" defer></script>
+    <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
+    <title>회원가입</title>
+</head>
+<body>
+<div class="background"></div>
+
+    <!-- 네비게이션 바 -->
+    <header>
+        <div th:replace="~{navbar :: navbar}"></div>
+    </header>
+    <main>
+        <div class="content_1">
+            <div class="signup-div">
+                <div class="signup-div-content">
+                    <div><h3>회원가입</h3></div>
+                    <div>
+                        <label for="inputMemberId">아이디</label>
+                        <input type="text" id="inputMemberId" class="sd-input">
+                    </div>
+                    <div>
+                        <label for="inputMemberPw">패스워드</label>
+                        <input type="password" id="inputMemberPw" class="sd-input">
+                    </div>
+                    <div>
+                        <label for="inputName">이름</label>
+                        <input type="text" id="inputName" class="sd-input">
+                    </div>
+                    <div>
+                        <label>성별</label>
+                        <input type='checkbox' id ="cb-male" name='sex' value='male' onclick="onlyOneCheckbox(this)" />남성
+                        <input type='checkbox' id ="cb-female" name='sex' value='female' onclick="onlyOneCheckbox(this)" />여성
+                    </div>
+                    <div>
+                        <label for="inputPhone">전화번호</label>
+                        <input type="text" id="inputPhone" class="sd-input">
+                    </div>
+                    <div>
+                        <label for="inputEmail">이메일</label>
+                        <input type="text" id="inputEmail" class="sd-input">
+                    </div>
+                    <div>
+                        <label for="inputAddress">주소</label>
+                        <input type="text" id="inputAddress" class="sd-input">
+                    </div>
+                    <div>
+                        <label for="inputImage">이미지</label>
+                        <input type="file" id="inputImage">
+                    </div><hr>
+                    <div>
+                        <label></label>
+                        <button class="signup-btn">회원 가입</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function onlyOneCheckbox(checkbox) {
+            const checkboxes = document.querySelectorAll('input[name="sex"]');
+            checkboxes.forEach((cb) => {
+                if (cb !== checkbox) cb.checked = false;
+            });
+        }
+
+        const memberCreate = document.querySelector('.signup-btn');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            memberCreate.addEventListener('click', () => {
+                const checkbox1 = document.getElementById("cb-male");
+                const checkbox2 = document.getElementById("cb-female");
+                let selectSex ="";
+                if (checkbox1.checked) {
+                    selectSex = checkbox1.value;
+                } else if (checkbox2.checked) {
+                    selectSex = checkbox2.value;
+                }
+
+                const member = {
+                    memberId: document.getElementById('inputMemberId').value,
+                    password: document.getElementById('inputMemberPw').value,
+                    name: document.getElementById('inputName').value,
+                    sex: selectSex,
+                    email: document.getElementById('inputEmail').value,
+                    address: document.getElementById('inputAddress').value,
+                    phoneNumber: document.getElementById('inputPhone').value
+                }
+                console.info(member);
+                fetchCreateMember(member);
+
+            });
+        });
+
+        function fetchCreateMember(member) {
+            fetch(`/cc/member`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(member)
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('에러발생!!');
+                }
+                return response.json();
+            }).then(responseData => {
+                console.log('responseData: ', responseData);
+                const inputFile = document.getElementById('inputImage');
+                if (inputFile.files.length > 0) {
+                    const file = inputFile.files[0];
+                    fetchUpload(responseData.memberId, file).then(() => {
+                        window.location.href = '/login';
+                    });
+                } else {
+                    window.location.href = '/login';
+                }
+
+            })
+                .catch(error => {
+                console.error('Fetch error :', error);
+            });
+        }
+        function fetchUpload(memberId, file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            return fetch(`/cc/memberImage/upload/${memberId}`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('에러발생!!');
+                    }
+                })
+                .then(responseData => {
+                    console.log(responseData);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+        }
+
+    </script>
+</body>
+</html>

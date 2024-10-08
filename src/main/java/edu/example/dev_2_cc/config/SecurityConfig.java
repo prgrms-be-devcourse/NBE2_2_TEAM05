@@ -57,18 +57,14 @@ public class SecurityConfig {
         //경로별 인가 작업 -> 로그인 유무만 따짐 -> 회원 별 식별은 따로 구현 해야함
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/",
-                                "/cc/member",
-                                "/cc/product/**",
-                                "/cc/review/**",
-                                "/cc/board",
-                                "/cc/board/{boardId}", // 보드 단일 조회를 위해서 따로 추가
-                                "cc/reply").permitAll()
+                        .requestMatchers("/login", "/", "/cc/member","/cc/product/**","/cc/review/**","/cc/board","/cc/board/{boardId}", // 보드 단일 조회를 위해서 따로 추가
+                                "cc/reply", "/signup", "/css/**", "/js/**", "/images/**","/app/**", "/uploadPath/**").permitAll()
                         .requestMatchers("/cc/mypage/**", "cc/memberIamge/**").hasRole("USER")
                         .requestMatchers("/cc/admin/**","cc/productImage/**").hasRole("ADMIN")
                         // 컨트롤러에서 인가 처리 할때 에러 발생 -> "ROLE_ADMIN" -> "ADMIN"으로 변경
                         // hasRole 메서드 자체가 "ROLE_"을 붙여준다고 함
                         .anyRequest().authenticated());
+
 
         //JWTFilter는 로그인 된 사용자에 대한 토큰 검증 필터이다
         //LoginFilter 앞에서 동작하게 배치하여 JWTFilter가 정상적으로 작동할 경우 로그인이 되어있는 것으로 처리
@@ -88,5 +84,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 
 }

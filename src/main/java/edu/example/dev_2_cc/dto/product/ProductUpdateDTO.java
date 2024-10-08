@@ -1,5 +1,6 @@
 package edu.example.dev_2_cc.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.example.dev_2_cc.entity.Product;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,6 +19,7 @@ public class ProductUpdateDTO {
     private Long productId;
 
     @NotEmpty
+    @JsonProperty("pName")
     private String pName;
 
     @Min(0)

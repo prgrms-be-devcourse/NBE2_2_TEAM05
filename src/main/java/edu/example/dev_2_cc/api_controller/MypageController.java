@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,6 +41,13 @@ public class MypageController {
 
     //-----------------------------------------회원 정보 수정-------------------------------------------------
 
+    //마이페이지 내에서 자신의 회원 정보 조회
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<MemberResponseDTO> getMember(
+            @PathVariable String memberId
+    ) {
+        return ResponseEntity.ok(memberService.readMember(memberId));
+    }
     // 마이페이지 내에서 회원의 직접 정보 수정 (권한 수정 미포함)
     @PutMapping("/{memberId}")
     public ResponseEntity<MemberResponseDTO> updateMember(
@@ -136,6 +144,13 @@ public class MypageController {
         response.put("message", "주문이 성공적으로 삭제되었습니다.");
 
         return ResponseEntity.ok(response); // 200 OK와 함께 응답 본문 반환
+    }
+    //자신의 주문 상태를 조회할 컨트롤러가 필요함
+    @GetMapping("/order/list/{memberId}")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersMember(
+            @PathVariable String memberId) {
+        List<OrderResponseDTO> orderList = orderService.findOrderByMemberId(memberId);
+        return ResponseEntity.ok(orderList);
     }
 
     //----------------------------------------------------리뷰----------------------------------------------------
