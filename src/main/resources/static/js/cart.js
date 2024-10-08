@@ -1,30 +1,11 @@
-// export function fetchCartItems() {
-//     fetch('/cc/cart')
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log(data);
-//             const tbody = document.getElementById('cart-list');
-//             tbody.innerHTML = '';
-//             data.forEach((item, index) => {
-//                 const row = document.createElement('tr');
-//
-//                 row.innerHTML = `
-//                     <td>${item.cartId}</td>
-//                     <td>${item.memberId}</td>
-//                     <td>
-//                         <li th:each="cartitem : ${item.cartItems}">
-//                             <a href="" th:text="${cartitem.productId}"></a>
-//                             <a href="" th:text="${cartitem.quantity}"></a>
-//                         </li>
-//                     </td>
-//                 `;
-//                 tbody.appendChild(row);
-//             });
-//         })
-//         .catch(error => console.error('Error fetching cart items:', error));
-// }
+import { fetchCreateOrder, fetchRemoveCartItem, fetchReadCart, fetchUpdateCart, fetchReadMember} from './fetch.js';
 
-export function displayCartData(cartData) {
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetchReadCart(tokenMemberId).then(data => { displayCartData(data)});
+})
+
+function displayCartData(cartData) {
     const cartContainer = document.getElementById('cart-container');
     cartContainer.innerHTML = '';
 
@@ -61,7 +42,7 @@ export function displayCartData(cartData) {
             <td><input type="checkbox" name="option1" value="Option1"></td>
             <td><img src="/uploadPath/${product.images[0]}" alt="이미지 없음1" class="cart_img"
                      onerror="this.onerror=null; this.src='/images/image01.png';"></td>
-            <td>${product.pname}</td>
+            <td>${product.pName}</td>
             <td>${price}원</td>
             <td>
                 <div class="change_quantity_div">
@@ -89,9 +70,15 @@ export function displayCartData(cartData) {
         decreaseButton.addEventListener('click', () => changeQuantity2(-1, quantityInputId));
         changeCartButton.addEventListener('click', () => {
             let quantity = document.getElementById(quantityInputId).value;
-            changeCart(quantityInputId, quantity);
+            const changeCartData = {
+                cartItemId : quantityInputId,
+                quantity: quantity
+            };
+            fetchUpdateCart(changeCartData).then(() =>{
+               window.location.href="/app/cart";
+            });
         })
-        removeCartButton.addEventListener('click', () => removeCartItem(quantityInputId));
+        removeCartButton.addEventListener('click', () => fetchRemoveCartItem(quantityInputId).then(()=>window.location.href="/app/cart"));
 
 
         cartTable.appendChild(row);
@@ -107,8 +94,13 @@ export function displayCartData(cartData) {
 
     totalDiv.innerHTML = `
         <div>총 상품구매금액 : ${totalPrice}원</div>
-        <div><button>전체상품주문</button></div>
+        <div><button class="add-order-btn">전체상품주문</button></div>
     `;
+    const addOrderBtn = totalDiv.querySelector('.add-order-btn');
+    addOrderBtn.addEventListener('click', () => {
+
+        cartToOrder(cartData.memberId, cartData.cartItems);
+    });
 
     cartContainer.appendChild(totalDiv);
 
@@ -127,52 +119,29 @@ function changeQuantity2(amount, id) {
     quantityInput2.value = currentQuantity;
 }
 
-function changeCart(id, quantity){
-    const data = {
-        cartItemId : id,
-        quantity: quantity
-    };
-
-    fetch(`/cc/cart/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(response => {
-        if(!response.ok) {
-            throw new Error('에러발생!!')
-        }
-        return response.json();
-    }).then(responseData => {
-        alert('카트 수정 완료 되었습니다!!')
-
-    }).catch(error => {
-        console.error('Error updating cart:', error);
-    });
-}
-
-function removeCartItem(id) {
-    fetch(`/cc/cart/cartItem/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert("삭제 완료!!");
-            const cartItemRow = document.getElementById(`cart-item-${id}`);
-            if (cartItemRow) {
-                cartItemRow.remove();
-            }
-        })
-        .catch(error => {
-            console.error('Error removing cart item:', error);
+function cartToOrder(memberId, cartItems) {
+    fetchReadMember(memberId).then(data => {
+        const orderData = [];
+        cartItems.forEach(item => {
+            orderData.push({
+                productId: item.product.productId,
+                quantity: item.quantity
+            });
         });
+        const addOrderData = {
+            memberId : data.memberId,
+            email: data.email,
+            address: data.address,
+            phoneNumber: data.phoneNumber,
+            orderItems: orderData
+        };
+        fetchCreateOrder(addOrderData).then(()=>{
+            const removePromises = cartItems.map(item => fetchRemoveCartItem(item.cartItemId));
+
+            Promise.all(removePromises).then(() => {
+                alert('주문완료');
+                window.location.href = "/app/mypage";
+            });
+        });
+    });
 }

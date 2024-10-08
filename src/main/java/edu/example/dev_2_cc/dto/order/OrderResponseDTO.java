@@ -23,7 +23,7 @@ public class OrderResponseDTO {
     private List<OrderItemResponseDTO> orderItems; // 주문 항목 리스트
     private LocalDateTime createdAt; // 주문 생성 시간
     private LocalDateTime updatedAt; // 주문 수정 시간
-
+    private OrderStatus status;
 
     //엔티티에서 dto로 변환하는 생성자
     public OrderResponseDTO(Orders order) {
@@ -38,5 +38,6 @@ public class OrderResponseDTO {
                 .collect(Collectors.toList());
         this.createdAt = order.getCreatedAt();
         this.updatedAt = order.getUpdatedAt();
+        this.status = order.getOrderStatus();
     }
 }

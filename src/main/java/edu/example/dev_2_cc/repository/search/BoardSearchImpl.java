@@ -30,7 +30,8 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                 board.boardId,
                 board.title,
                 board.category,
-                board.member.memberId
+                board.member.memberId,
+                board.createdAt
         ));
 
         getQuerydsl().applyPagination(pageable, dtoQuery);

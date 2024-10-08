@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/adminstyle.css}">
     <script type="module" th:src="@{/js/admin.js}"></script>
     <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
-    <title>Admin</title>
+    <title>관리자 페이지</title>
 </head>
 <body>
     <div class="admin_main_div">
@@ -18,12 +18,16 @@
             </div>
             <ul class="admin_navbar_menu">
                 <li id="nav_dashboard">Dashboard</li>
-                <li id="nav_member">Member</li>
+<!--                <li id="nav_member">Member</li>-->
                 <li id="nav_product">Product</li>
                 <li id="nav_order">Order</li>
                 <li id="nav_board">Board</li>
-                <li id="nav_menu5">menu5</li>
             </ul>
+            <div class="admin_navbar_logo">
+                <div>
+                    <a href="#" id="logout-btn">로그아웃</a>
+                </div>
+            </div>
         </div>
         <!-- 관리자 페이지 content -->
         <div id="admin_content" class="admin_content">

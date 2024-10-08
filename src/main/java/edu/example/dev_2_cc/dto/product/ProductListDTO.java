@@ -1,5 +1,6 @@
 package edu.example.dev_2_cc.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.example.dev_2_cc.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductListDTO {
     private Long productId;
+    @JsonProperty("pName")
     private String pName;
     private Long price;
     //private String description; //리스트니까 제외

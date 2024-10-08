@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script th:src="@{/js/main.js}" defer></script>
+    <script th:src="@{/js/navbar.js}" defer></script>
     <script src="https://kit.fontawesome.com/1ad5d86581.js" crossorigin="anonymous"></script>
-    <title>Index</title>
+    <title>홈페이지</title>
 </head>
 <body>
+    <div class="background"></div>
     <!-- 네비게이션 바 -->
     <header>
         <div th:replace="~{navbar :: navbar}"></div>
     </header>
     <main>
-        <div class="content_1">
-            <h1>홈화면 입니다!</h1>
+        <div class="home-div">
+            <div>데브코스 백엔드</div>
+            <div>2차 팀 프로젝트</div>
+            <div>5팀 | Team LEGO</div>
+            <div>박현우(팀장) 김세현 이용민 허찬솔 박우건 임현규</div>
         </div>
-
     </main>
 <!--    <footer>-->
 <!--        <div>-->

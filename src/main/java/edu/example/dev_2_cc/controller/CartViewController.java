@@ -19,9 +19,5 @@ public class CartViewController {
         return "cart";
     }
 
-    @GetMapping("/carts")
-    public String cartList() {
-        return "cart-list";
-    }
 
 }

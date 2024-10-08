@@ -60,6 +60,7 @@ public class SecurityConfig {
                     .requestMatchers("/login", "/","/cc/member", "/cc/product/**", "/cc/review/**").permitAll()
                         .requestMatchers("/cc/mypage/**").hasRole("USER")
                         .requestMatchers("/cc/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/signup", "/css/**", "/js/**", "/images/**","/app/**", "/uploadPath/**").permitAll()
                     .anyRequest().authenticated());
 
         //JWTFilter는 로그인 된 사용자에 대한 토큰 검증 필터이다
