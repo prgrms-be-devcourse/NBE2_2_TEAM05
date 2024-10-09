@@ -135,7 +135,7 @@ function myOrder() {
                         <div>${orderItemData.quantity}개</div>
                         <div><button class="add-review-btn">리뷰작성</button></div>
                     `;
-                    totalPrice += orderItemData.product.price * orderItemData.product.stock;
+                    totalPrice += orderItemData.product.price * orderItemData.quantity;
                     const addReview = row2.querySelector('.add-review-btn');
                     addReview.addEventListener('click', () => {
                         createReview(orderItemData.product);
