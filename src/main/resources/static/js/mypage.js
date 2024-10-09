@@ -22,48 +22,50 @@ function myInfo() {
             <div><h3>개인 정보 확인/수정</h3></div>
             <div>
                 <label class="my-label">아이디</label>
-                <input type="text" value="${data.memberId}">
+                <input id="inputMemberId" type="text" value="${data.memberId}">
             </div>
             <div>
                 <label>비밀번호</label>
-                <input type="password"">
+                <input id="inputPassword" type="password"">
             </div>
             <div>
                 <label>이름</label>
-                <input type="text" value="${data.name}">
+                <input id="inputName" type="text" value="${data.name}">
             </div>
             <div>
                 <label>성별</label>
-                <input type="text" value="${data.sex}">
+                <input id="inputSex" type="text" value="${data.sex}">
             </div>
             <div>
                 <label>주소</label>
-                <input type="text" value="${data.address}">
+                <input id="inputAddress" type="text" value="${data.address}">
             </div>
             <div>
                 <label>연락처</label>
-                <input type="text" value="${data.phoneNumber}">
+                <input id="inputPhoneNumber" type="text" value="${data.phoneNumber}">
             </div>
             <div>
                 <label>이메일</label>
-                <input type="text" value="${data.email}">
+                <input id="inputEmail" type="text" value="${data.email}">
             </div>
             <div>
                 <label>이미지</label>
                  <img class="mypage-img" src="/uploadPath/${data.image}" alt="이미지 없음1"
                              onerror="this.onerror=null; this.src='/images/image01.png';">
-                    
             </div>
             <div>
                 <label></label>
-                <input type="file" multiple>
+                <input id="inputImage" type="file" multiple>
             </div>
             <div>
-                <button>수정</button>
+                <button id="update-member">수정</button>
             </div>
             </div>
-            
         `;
+
+
+
+
     });
 
 }
